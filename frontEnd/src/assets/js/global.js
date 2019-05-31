@@ -52,6 +52,9 @@ const commonFn = {
       let authList = moduleRule + Lockr.get('authList')
       return _.includes(authList, val)
     }
+  },
+  jump(pathLink) {
+    router.push(pathLink)
   }
 }
 

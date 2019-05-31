@@ -54,6 +54,16 @@ export default (function () {
     let date = moment(day).format('YYYY/MM/DD')
     return date
   })
+  Vue.filter('formatDate', function (value) {
+    let day = moment.unix(value)
+    let date = moment(day).format('YYYY.MM.DD')
+    return date
+  })
+  Vue.filter('formatDate2', function (value) {
+    let day = moment.unix(value)
+    let date = moment(day).format('YYYY - MM - DD')
+    return date
+  })
   Vue.filter('abstract', function (value) {
     let abstract = ''
     if (value.length > 70) {

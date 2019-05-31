@@ -1,3 +1,14 @@
+import Index from './components/Index/Index.vue'
+import Pro1 from './components/Index/Pro/Pro1.vue'
+import Pro2 from './components/Index/Pro/Pro2.vue'
+import Pro3 from './components/Index/Pro/Pro3.vue'
+import Service from './components/Index/Service/Service.vue'
+import Coor from './components/Index/Coor/Coor.vue'
+import About from './components/Index/About/About.vue'
+import Contact from './components/Index/About/Contact.vue'
+import Download from './components/Index/Download/Download.vue'
+import NewsList from './components/Index/News/list.vue'
+import NewsDetail from './components/Index/News/Detail.vue'
 import Login from './components/Account/Login.vue'
 import refresh from './components/refresh.vue'
 import Home from './components/Home.vue'
@@ -29,7 +40,18 @@ import usersEdit from './components/Administrative/personnel/users/edit.vue'
  */
 
 const routes = [
-  { path: '/', component: Login, name: 'Login' },
+  { path: '/', component: Index, name: 'Index' },
+  { path: '/pro1', component: Pro1, name: 'Pro1' },
+  { path: '/pro2', component: Pro2, name: 'Pro2' },
+  { path: '/pro3', component: Pro3, name: 'Pro3' },
+  { path: '/service', component: Service, name: 'Service' },
+  { path: '/coor', component: Coor, name: 'Coor' },
+  { path: '/about', component: About, name: 'About' },
+  { path: '/contact', component: Contact, name: 'Contact' },
+  { path: '/download', component: Download, name: 'Download' },
+  { path: '/news/list', component: NewsList, name: 'NewsList' },
+  { path: '/news/detail/:id', component: NewsDetail, name: 'NewsDetail' },
+  { path: '/home/login', component: Login, name: 'Login' },
   {
     path: '/home',
     component: Home,
