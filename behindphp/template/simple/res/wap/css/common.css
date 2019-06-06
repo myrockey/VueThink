@@ -1,0 +1,68 @@
+@CHARSET "UTF-8";
+li{ list-style-type: none;}
+ul{ padding: 0; margin: 0;}
+
+        .text-light {
+            color: #999999 !important;
+        }
+        .aui-bg-white.aui-bar-nav     .aui-iconfont{
+         color:#000;
+         }
+        .aui-bg-white{
+        color:#000;
+            background-color: #fff !important;
+        }
+        .aui-btm{background-color:rgba(0,0,0,0.5);overflow:hidden;}
+.aui-btn-trans {
+    color: #fff !important;
+    border:1px solid #fff;
+    
+    background-color: rgba(0,0,0,0) !important;
+}
+.aui-fixed{position:fixed;}
+.emotiondiv{    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+display:none;
+    z-index: 999;}
+    .aui-content-bg a{color:#000;}
+.aui-bg-trans{background-color: rgba(0,0,0,0) !important;}
+.aui-content-bg{background:#fff;overflow:hidden;}
+.content-title{height:2.25rem;line-height:2.25rem;padding:0px 0.75rem;}
+.content-title a{color:#000;}
+.aui-content-list{margin:0px 0.5rem;font-size:0.6rem}
+.aui-content-list img{width:100%;margin-bottom:0.5rem;}
+.aui-content-list.aui-row-padded [class*=aui-col-xs-] {
+    padding: 0.5rem;
+}
+.grouptopiclist .aui-row-padded [class*=aui-col-xs-] {
+    padding: 0.25rem;
+}
+.groupinfo{padding:1rem 0;}
+.groupinfo .aui-list .aui-list-item{background-size: 100% 0px;}
+.groupinfo .aui-list{background-size: 100% 0px;}
+.groupinfo .aui-list-item-text,.groupinfo .aui-list-item-title{color:#fff;}
+.groupinfo .aui-list-item-text{font-size:0.6rem;    margin-bottom: 0.25rem;}
+.aui-text-gray{color:#909090;}
+.aui-tab{
+	
+	color:#666;
+
+}
+.aui-tab-item.aui-active {
+    color: #000;
+    font-weight:bold;
+    border-bottom: 2px solid #fd4400;
+}
+
+/*小组列表*/
+.content-list{ margin-top: -1px;  width: 100%;}
+.list-content{ position: relative; overflow: hidden; }
+.list-left{ width: 25%; position: fixed;     height: 100%;  top: 2.25rem;  overflow: auto;background:#f2f2f2; }
+.list-left li {width: 100%;  font-size: 1.4rem; height: 2rem;line-height: 2rem;text-align: center; background:#f2f2f2;overflow: hidden;}
+.list-left li a{ color: #4a4a4a;font-size:0.6rem;display: block;}
+.list-left .current{ border-bottom: 1px solid #fe4200;background:#fff;}
+.list-left .current a{ color: #fe4200;}
+.list-right{ float: right; width: 75%;position: absolute;right:0px;     min-height: 100%;  top: 2.25rem;padding-bottom: 50px;background:#fff;}
+.list-right .aui-list-item-text{font-size:0.6rem;    margin-bottom: 0.25rem;}

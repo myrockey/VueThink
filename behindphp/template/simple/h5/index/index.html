@@ -1,0 +1,202 @@
+{extend name="Public:base" /}
+{block name="seo"}
+
+{/block}
+{block name="css"}
+<style>
+    *{
+        /*touch-action:none;*/
+    }
+</style>
+{/block}
+{block name="body"}
+<div class="container-h5-bg"></div>
+<div class="container-h5">
+    <div class="page-bd-25">
+        <div class="analysis-title">
+            <h1>研习社</h1><img src="__PUBLIC__/h5/images/z03.png" alt="img">
+        </div>
+        <div class="analysis-border-line"><span></span></div>
+        <div class="analysis-main-box">
+            <div id="topiclist">
+
+            </div>
+            <div class="analysis-content-main">
+                <div class="weui-cells"  id="rank-list">
+
+                </div>
+       <!--         <div class="weui-cells">
+                    <a class="weui-cell weui-cell_access" href="javascript:;">
+                        <div class="weui-cell__bd">
+                            <p class="li-title">投保基金调查显示：大盘乐观指数不改中期向好趋势</p>
+                            <div class="li-desc">证券时报<span>03-15 07:17</span></div>
+                        </div>
+                    </a>
+                    <a class="weui-cell weui-cell_access" href="javascript:;">
+                        <div class="weui-cell__bd">
+                            <p class="li-title">投保基金调查显示：大盘乐观指数不改中期向好趋势</p>
+                            <div class="li-desc">证券时报<span>03-15 07:17</span></div>
+                        </div>
+                    </a> <a class="weui-cell weui-cell_access" href="javascript:;">
+                        <div class="weui-cell__bd">
+                            <p class="li-title">投保基金调查显示：大盘乐观指数不改中期向好趋势</p>
+                            <div class="li-desc">证券时报<span>03-15 07:17</span></div>
+                        </div>
+                    </a>
+                </div>-->
+                <div class="weui-loadmore" id="getmore">
+                    查看更多<i id="loading" class="weui-loading"></i>
+                </div>
+            </div>
+            <script id="tpl" type="text/html">
+                <% for(var i in list) {   %>
+                <%='<a class="weui-cell weui-cell_access" href="/index/analysisdetail/id/'+list[i].id+'.html" >'%>
+                    <div class="weui-cell__bd">
+                        <p class="li-title"><%=list[i].title%> <% if(compare_date(list[i].create_time)){ %> <span class="icon-new"></span> <% } %> <% if(list[i].settop){ %> <span class="icon-top"></span> <% } %></p>
+                        <div class="li-desc"><%=list[i].copyfrom?list[i].copyfrom:'周期研习社'%><span><%=to_date(list[i].create_time)%></span></div>
+                    </div>
+                </a>
+                <% } %>
+            </script>
+
+        </div>
+
+
+    </div>
+
+</div>
+{/block}
+{block name="script"}
+<script>
+    wx.config({
+        debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+        appId: '{$signPackage.appId}', // 必填，公众号的唯一标识
+        timestamp: '{$signPackage.timestamp}', // 必填，生成签名的时间戳
+        nonceStr: '{$signPackage.nonceStr}', // 必填，生成签名的随机串
+        signature: '{$signPackage.signature}',// 必填，签名
+        jsApiList: [
+            'checkJsApi', //判断当前客户端版本是否支持指定JS接口
+            'updateAppMessageShareData',
+            'updateTimelineShareData',
+            'onMenuShareTimeline', //分享给好友
+            'onMenuShareAppMessage'//分享到朋友圈
+        ] // 必填，需要使用的JS接口列表
+    });
+
+    wx.ready(function(){
+        // config信息验证后会执行ready方法，所有接口调用都必须在config接口获得结果之后，config是一个客户端的异步操作，所以如果需要在页面加载时就调用相关接口，则须把相关接口放在ready函数中调用来确保正确执行。对于用户触发时才调用的接口，则可以直接调用，不需要放在ready函数中。
+        // 在这里调用 API
+        wx.checkJsApi({
+            jsApiList: [
+                "updateAppMessageShareData",
+                "updateTimelineShareData",
+                "onMenuShareTimeline",
+                "onMenuShareAppMessage"], // 需要检测的JS接口列表，所有JS接口列表见附录2,
+            success: function(res) {
+                if(res.errMsg !='checkJsApi:ok'){
+                    alert('请升级您的微信版本');
+                    return;
+                }
+            }
+        });
+//                自定义“分享给朋友”及“分享到QQ”按钮的分享内容（1.4.0）
+        wx.updateAppMessageShareData({
+            title: '{$signPackage.title}', // 分享标题
+            desc: '{$signPackage.desc}', // 分享描述
+            link: '{$signPackage.url}', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+            imgUrl: '{$signPackage.imgurl}', // 分享图标
+            success: function () {
+                // 设置成功
+                console.log('分享成功');
+            },
+            cancel:function () {
+                console.log('取消分享');
+            }
+        });
+//                自定义“分享到朋友圈”及“分享到QQ空间”按钮的分享内容（1.4.0）
+        wx.updateTimelineShareData({
+            title: '{$signPackage.title}', // 分享标题
+            link: '{$signPackage.url}', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+            imgUrl: '{$signPackage.imgurl}', // 分享图标
+            success: function () {
+                // 设置成功
+                console.log('分享成功');
+            },
+            cancel:function () {
+                console.log('取消分享');
+            }
+        })
+    });
+    function checkTime(i)
+    {
+        if (i<10)
+        {i="0" + i}
+        return i
+    }
+    function to_date(phpstr) {
+        str = parseInt(phpstr) * 1000;//将php时间戳转化为整形并乘以1000
+        var newDate = new Date(str);
+        var year = newDate.getUTCFullYear();//取年份
+        var month = checkTime(newDate.getUTCMonth() + 1);//取月份
+        var nowday = checkTime(newDate.getUTCDate());//取天数
+        var hours = checkTime(newDate.getHours());//取小时
+        var minutes = checkTime(newDate.getMinutes());//取分钟
+//        var seconds = checkTime(newDate.getSeconds());//取秒
+        return year + "-" + month + "-" + nowday + " " + hours + ":" + minutes ;
+    }
+    function compare_date(phpstr)
+    {
+        str = parseInt(phpstr) * 1000;
+        var oDate1 = new Date(str);
+       // //取得当日0点时间戳 new Date(new Date().toLocaleDateString()).getTime()
+        return oDate1.getTime() > new Date(new Date().toLocaleDateString()).getTime();
+    }
+
+        $('#loading').hide();
+    function ajaxpage(page){
+        $.ajax({
+            type:"post",
+            url:'/index/getarticlelist',
+            data: {"page":page},
+            dataType:'json',
+            timeout:10000,
+            beforeSend:function(xhr){
+                $('#loading').show();
+            },
+            success:function(rs){
+                $('#loading').hide();
+                $("#rank-list").append(tpl(document.getElementById('tpl').innerHTML,rs));
+
+                var maxpage = Math.ceil(rs.total / rs.pagesize);
+                sessionStorage['maxpage'] = maxpage;
+
+                if(page==maxpage){
+                    $("#getmore").html("没有更多数据了");return false;
+                }
+            },
+            error:function(xhr){
+                $.alert('ajax出错');
+            },
+        });
+
+
+    }
+
+
+    $(function(){
+
+        var page = 2;
+        var maxpage;
+
+        $('#getmore').on('click', function() {
+            maxpage = sessionStorage['maxpage'];
+            if(page<=maxpage) {
+                ajaxpage(page);
+                page++;
+            }
+        });
+        ajaxpage(1);
+    });
+</script>
+
+{/block}

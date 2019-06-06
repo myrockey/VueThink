@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+{block name="seo"}{/block}
+<!--<link rel="shortcut icon" href="__PUBLIC__/images/favicon.ico">
+<link rel="stylesheet" type="text/css" href="__WAPCSS__/aui.css" />
+<link rel="stylesheet" type="text/css" href="__WAPCSS__/common.css" />
+<link rel="stylesheet" type="text/css" href="__CSS__/iconfont.css" />
+<script type="text/javascript" src="__PUBLIC__/js/jquery-1.9.1.min.js"></script>-->
+    <link rel="stylesheet" href="__PUBLIC__/h5/css/weui.css"/>
+    <link rel="stylesheet" href="__PUBLIC__/h5/css/weuix.min.css"/>
+    <script type="text/javascript">document.write("<link rel='stylesheet' type='text/css' href='/public/h5/css/style.css?random=" + Math.random() + "' />");</script>
+    <link rel="stylesheet" href="__PUBLIC__/h5/css/scale.css"/>
+    <script src="__PUBLIC__/h5/js/zepto.min.js"></script>
+    <script src="__PUBLIC__/h5/js/zepto.weui.js"></script>
+    <script src="__PUBLIC__/h5/js/iscroll-lite.js"></script>
+    <script src="__PUBLIC__/h5/js/php.js"></script>
+    <script src="http://res2.wx.qq.com/open/js/jweixin-1.4.0.js "></script>
+    {block name="css"}{/block}
+    <script>
+        $(function(){
+            function setTabOn2() {
+                var newArr = document.location.toString().split('/');
+                var href = newArr[newArr.length-1];
+                href = href.replace('.html','');
+                var arr = ['','yesterday','analysis','member'];
+                var newindex = arr.indexOf(href);
+                if(newindex == -1){
+                    newindex = 0;
+                }
+                $("#tab-bottom .weui-tabbar__item").eq(newindex).addClass('weui-bar__item_on');
+            }
+
+            function setTabOn() {
+                var newindex = sessionStorage['currIndex'];
+                $("#tab-bottom .weui-tabbar__item").eq(newindex).addClass('weui-bar__item_on');
+            }
+            setTabOn();
+            $("#tab-bottom .weui-tabbar__item").click(function(){
+                $(this).siblings().removeClass('weui-bar__item_on');
+                $(this).addClass('weui-bar__item_on');
+                sessionStorage['currIndex'] = $(this).index();
+                location.href = $(this).data('href');
+            });
+
+        })
+
+    </script>
+</head>
+
+<body ontouchstart>
+
+{include file="Public/header"}
+{block name="body"}{/block}
+{include file="Public/footer"}
+
+{block name="js"}{/block}
+
+<!--页面JS脚本-->
+
+{block name="script"}{/block}
+<!--<script type="text/javascript" src="__WAPJS__/doT.min.js"></script>
+<script type="text/javascript" src="__WAPJS__/common.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/layer/layer.js"></script>-->
+</body>
+</html>

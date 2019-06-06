@@ -1,0 +1,210 @@
+  {extend name="Public:user_base" /}
+      {block name="seo"}
+        <title>我的小组|{$Think.CONFIG.WEB_SITE_TITLE} - Powered by EasySNS!</title>
+  
+  
+  <meta name="keywords" content="{$Think.CONFIG.WEB_SITE_KEYWORD}">
+  <meta name="description" content="{$Think.CONFIG.WEB_SITE_DESCRIPTION}">
+      {/block}
+  {block name="body"}
+
+<div class="ucenter-right">
+
+<div class="my-contribution fixed-box" style="padding-top: 0px; " id="shoucangname">
+<div class="console-box">
+{if condition="$type eq 1"}
+
+<span class="num-tip">共计创建&nbsp;{:count($grouplist)}个小组<a href="{:url('group/groupadd')}" style="height:auto;color:#fff;" target="_blank" class="btn btn-success btn-sm">创建小组</a></span>{/if}
+{if condition="$type eq 2"}<span class="num-tip">共计关注&nbsp;{:count($grouplist)}个小组</span>{/if}
+
+
+<a href="{:url('user/mygroup',array('type'=>1))}#shoucangname" {if condition="$type eq 1"}class="current"{/if}>创建的小组</a>
+<a href="{:url('user/mygroup',array('type'=>2))}#shoucangname" {if condition="$type eq 2"}class="current"{/if}>关注的小组</a>
+</div>
+{if condition="$type eq 1"}
+
+{if condition="count($grouplist) gt 0"}
+<div class="boxcontent">
+
+       <div class="users_content clearfix">
+<ul class="es-group-simplelist">
+
+{volist name="grouplist" id="vo"}
+
+<li>
+<div class="es-list-img">
+<img src="{$vo.cover_id|get_picture_url}" />
+</div>
+<div class="es-list-row">
+<div class="es-list-title ellipsis"><a href="{:url('group/index',array('id'=>$vo.group_id))}">{$vo.name}</a>&nbsp;&nbsp;<a href="{:url('group/groupedit',array('id'=>$vo.group_id))}" target="_blank">[编辑]</a></div>
+<div class="es-list-info">{$vo.membercount}个成员&nbsp;&nbsp;{$vo.topiccount}个话题</div>
+
+</div>
+           		
+</li>
+
+{/volist}
+</ul>
+
+                   </div>
+                    <div class="pages">
+						<ul class="pagination">
+							{$grouplist->render()}
+						</ul>
+					</div>
+</div>
+{else/}
+
+<div class="empty-tip-box">
+<div class="inner-box">
+
+<div class="info">
+<p class="iconfont icon-wujilu"></p>
+<p class="first">还未找到任何数据</p>
+<p class="second">快去创建个小组吧~</p>
+</div>
+</div>
+</div>
+
+
+{/if}
+{else/}
+{if condition="count($grouplist) gt 0"}
+<div class="boxcontent">
+
+       <div class="users_content clearfix">
+<ul class="es-group-simplelist">
+
+{volist name="grouplist" id="vo"}
+
+<li>
+<div class="es-list-img">
+<img src="{$vo.cover_id|get_picture_url}" />
+</div>
+<div class="es-list-row">
+<div class="es-list-title ellipsis"><a href="{:url('group/index',array('id'=>$vo.group_id))}">{$vo.name}</a></div>
+<div class="es-list-info">{$vo.membercount}个成员&nbsp;&nbsp;{$vo.topiccount}个话题</div>
+
+</div>
+ <a href="javascript:void(0);" class="focusbtn"  data-id="{$vo.group_id}" data-type="2">
+						<i class=" iconfont icon-duigou"></i> <span> 已关注</span></a>  
+</li>
+
+{/volist}
+</ul>
+
+                   </div>
+                    <div class="pages">
+						<ul class="pagination">
+							{$grouplist->render()}
+						</ul>
+					</div>
+</div>
+{else/}
+
+<div class="empty-tip-box">
+<div class="inner-box">
+
+<div class="info">
+<p class="iconfont icon-wujilu"></p>
+<p class="first">还未找到任何数据</p>
+<p class="second">快去关注个小组吧~<a href="{:url('group/glist')}">查看已有小组列表</a></p>
+</div>
+</div>
+</div>
+
+
+{/if}
+{/if}
+
+</div>
+</div>
+    {/block}
+     {block name="script"}
+    <script>
+    $(function(){
+    	$('.focusbtn').click(function(){
+   		 
+  		  
+   		 if(!$(this).hasClass('gzclass')){
+   			
+   			    $.post("{:url('group/joingroup')}",{id:$(this).data('id')},function(data){
+   			    	
+   				      if(data.code == 1){
+   				        
+   				        layer.msg(data.msg, {icon: 1, time: 1000}, function(){
+   				        	$('.focusbtn').removeClass('gzhover');
+   				         $('.focusbtn').addClass('gzclass');
+   				         $('.focusbtn').html('<i class="iconfont icon-iconfont707"></i> <span> 关注</span>');
+   				        	
+   				        });
+   				      }else{
+   				        
+   				        layer.msg(data.msg, {icon: 2, anim: 6, time: 1000});
+   				        
+   				        
+   				        
+   				      }
+   				    });
+   			 
+   			 
+   			 
+   		 }else{
+   			 
+   			    $.post("{:url('user/focususer')}",{id:$(this).data('id')},function(data){
+   			    	
+   				      if(data.code == 1){
+   				     
+   				        layer.msg(data.msg, {icon: 1, time: 1000}, function(){
+   				        	
+   				        	$('.focusbtn').removeClass('gzclass');
+   				 
+   						 $('.focusbtn').html('<i class=" iconfont icon-duigou"></i> <span> 已关注</span>'); 
+   				
+      				       
+   				        	
+   				        });
+   				      }else{
+   				       
+   				        layer.msg(data.msg, {icon: 2, anim: 6, time: 1000});
+   				        
+   				        
+   				        
+   				      }
+   				    });
+   			
+   			
+   		 }
+   		 
+   		
+   	 });
+    	
+    	
+        $('.focusbtn').hover(function(){
+        	
+        	 if(!$(this).hasClass('gzclass')){
+        		 $(this).addClass('gzhover');
+        		 var type=$(this).data('type');
+        		 $(this).html('<i class=" iconfont icon-jianhao1"></i> <span> 取消关注</span>'); 
+        		
+        		 
+        		 
+        	 }
+       		 
+       		
+       	 },function(){
+       		if(!$(this).hasClass('gzclass')){
+       		 $(this).removeClass('gzhover');
+       		
+       	 $(this).html('<i class=" iconfont icon-duigou"></i> <span> 已关注</span>'); 
+       		
+       		 
+       	 }
+       		 
+       	 });
+    });
+
+	
+
+</script>
+{/block}

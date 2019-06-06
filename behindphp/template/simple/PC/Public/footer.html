@@ -1,0 +1,27 @@
+			<div class="n-foot">
+            
+            <div class="n-foot-bottom text-center">
+				
+                <div>
+                 {volist name="nav" id="vo" }
+    {eq name="vo.pid" value="0"}
+    <a class=""  href="{$vo.link|getnavlink=$vo.sid}" title="{$vo.alias}" target="{$vo.target}"><i class="fa fa-{$vo.icon}" ></i> {$vo.name}</a>
+
+ {if condition="count($nav) neq $key+1"}
+ <label></label>
+ {/if}
+      {/eq}
+    {/volist}
+					
+                </div>
+				
+                
+                <p></p>
+                <p>Copyright © 2017 imzaker.com {$Think.CONFIG.web_site_title} {$Think.CONFIG.web_site_icp}</p>
+                <p></p>
+                <p>{$Think.CONFIG.web_site_footer|html_entity_decode}</p>
+            </div>
+        </div>
+
+
+

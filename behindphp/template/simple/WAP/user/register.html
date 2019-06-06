@@ -1,0 +1,124 @@
+{extend name="Public:base" /}
+      {block name="seo"}
+     
+      {/block}
+            {block name="css"}
+
+      {/block}
+{block name="body"}
+
+<header class="aui-bar aui-bar-nav aui-bg-dark">
+    <a class="aui-pull-left aui-btn"  href="javascript:history.back(-1);">
+        <span class="aui-iconfont aui-icon-left"></span>
+    </a>
+    <div class="aui-title">用户注册</div>
+
+  <a href="{:url('user/login')}" class="aui-pull-right aui-btn aui-btn-info aui-margin-r-5">
+                   登录</a>
+</header>
+<div class="aui-content aui-margin-b-15 ">
+       <form class="form-horizontal es-margin-t-20" id="loginform">
+        <ul class="aui-list aui-form-list">
+            
+           
+            <li class="aui-list-item">
+                <div class="aui-list-item-inner">
+                    <div class="aui-list-item-label">
+                        用户名
+                    </div>
+                    <div class="aui-list-item-input">
+                        <input type="text" class="form-control" id="username" name="username" placeholder="用户名6-30个字符">
+                    </div>
+                </div>
+            </li>
+              <li class="aui-list-item">
+                <div class="aui-list-item-inner">
+                    <div class="aui-list-item-label">
+                        邮箱
+                    </div>
+                    <div class="aui-list-item-input">
+                        <input type="text" class="form-control" id="usermail" name="usermail" placeholder="邮箱">
+                    </div>
+                </div>
+            </li>
+            <li class="aui-list-item">
+                <div class="aui-list-item-inner">
+                    <div class="aui-list-item-label">
+                        密码
+                    </div>
+                    <div class="aui-list-item-input">
+                         <input type="password" class="form-control" id="password" name="password" placeholder="密码">
+                    </div>
+                </div>
+            </li>
+             <li class="aui-list-item">
+                <div class="aui-list-item-inner">
+                    <div class="aui-list-item-label">
+                        确认密码
+                    </div>
+                    <div class="aui-list-item-input">
+                         <input type="password" class="form-control" id="repassword" name="repassword" placeholder="重复密码">
+                    </div>
+                </div>
+            </li>
+            
+     {if condition="$yzm eq 1"}
+            <li class="aui-list-item">
+                <div class="aui-list-item-inner">
+                    <div class="aui-list-item-label">
+                        验证码
+                    </div>
+                    <div class="aui-list-item-input">
+                          <input type="text" style="float:left;width:100px;" class="form-control" id="verify" name="verify" placeholder="4位验证码">
+   <img id="captcha" src="{:url('User/captchaShow')}" onclick="this.src='{:url('User/captchaShow')}?'+Math.random();" class="es-margin-l-10 aui-pull-right" style="height:40px;" />
+    
+                    </div>
+                </div>
+            </li>
+
+    
+{/if}
+
+            <li class="aui-list-item">
+                <div class="aui-list-item-inner aui-list-item-center aui-list-item-btn">
+                    <div class="aui-btn aui-btn-danger aui-btn-block" id="submit" >注  册</div>
+                    
+                </div>
+            </li>
+        </ul>
+        </form>
+    </div>
+
+
+{/block}
+{block name="script"}
+<script>
+$(function(){
+	
+	  $('#submit').click(function(){
+		 
+		   loading = layer.load(2, {
+			      shade: [0.2,'#000']
+			    });
+		    $.post('{:url("user/regHandle")}',$('form#loginform').serialize(),function(data){
+		    	
+		      if(data.code == 1){
+		        layer.close(loading);
+		        layer.msg(data.msg, {icon: 1, time: 1000}, function(){
+		          location.href = '{:url("user/login")}';
+		        });
+		      }else{
+		        layer.close(loading);
+		        layer.msg(data.msg, {icon: 2, anim: 6, time: 1000});
+		        
+		        $('#captcha').attr('src',"{:url('user/captchaShow')}?"+Math.random());
+		        
+		      }
+		    });
+		    return false;
+		  });
+	
+})
+</script>
+
+{/block}

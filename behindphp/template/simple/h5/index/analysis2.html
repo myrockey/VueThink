@@ -1,0 +1,89 @@
+{extend name="Public:base" /}
+{block name="seo"}
+
+{/block}
+{block name="css"}
+<style>
+
+</style>
+{/block}
+{block name="body"}
+<div class="container-h5-bg"></div>
+<div class="container-h5">
+    <div class="page-bd-25">
+
+            <h1 class="index-title color-font">
+                大盘多空分析
+            </h1>
+            <div class="analysis-index-line"></div>
+            <div class="weui-flex analysis-desc">
+                <div class="weui-flex__item">
+                    <div class="left analysis-desc-left"><span class="font-bold">{:date('Y.m.d',strtotime($info.title))}</span><span class="analysis-week">{:get_week(date('Y-m-d',strtotime($info.title)))}</span><span class="analysis-time">{:date('A H:i',strtotime($info.title))}</span></div>
+                    <div class="right analysis-desc-right"> <div class="color-font index-public-status">
+                        <div class="left weui-switch-cp-index-btn index-checked">
+                            <label for="" class="weui-switch-cp">
+                                <input id="switchCP" class="weui-switch-cp__input" {if condition="$info['is_update'] eq 1"}checked="checked"{/if} type="checkbox">
+                                <div class="weui-switch-cp__box"></div>
+                            </label>
+                        </div>
+                        <div class="right">{if condition="$info['is_update'] eq 1"}已更新{else/}未更新{/if}</div>
+                        <div class="clear"></div>
+                    </div></div>
+                </div>
+            </div>
+        <div class="analysis-content-box">
+            <div class="analysis-content-title">
+                大小盘切换<img src="__PUBLIC__/h5/images/z03.png" alt="img">
+            </div>
+            <div class="analysis-content-desc">“买”字现，市场进入震荡时期，拔高的蓝筹卖出或降低仓位。布局小盘低位股。</div>
+            <div class="analysis-content-main">
+                <ul class="img-box list" id="imgList">
+                    {volist name="info['imgArr']" id="vo"}
+                    <li><img src="{$vo}" alt="img" class="img-max"/></li>
+                    {/volist}
+                </ul>
+            </div>
+            <div class="weui-gallery" style="display: none">
+                <span class="weui-gallery__img"></span>
+                <div class="weui-gallery__opr">
+                </div>
+            </div>
+
+            <section class="imgzoom_pack">
+                <div class="imgzoom_x">X</div>
+                <div class="imgzoom_img"><img src="" /></div>
+            </section>
+        </div>
+    </div>
+
+</div>
+{/block}
+{block name="script"}
+<script src="__PUBLIC__/h5/js/scale.js"></script>
+
+<script>
+    /*图片缩放*/
+    document.addEventListener("DOMContentLoaded", function(event){
+        ImagesZoom.init({
+            "elem": ".list"
+        });
+    }, false);
+/*    $(function(){
+        var       $uploaderFiles = $("#imgList");    //图片列表
+        var $galleryImg = $(".weui-gallery__img");//相册图片地址
+        var $gallery = $(".weui-gallery");
+        $uploaderFiles.on("click", "li", function(){
+            $galleryImg.attr("style", "background-image: url("+ $(this).find('img').attr("src") +")");
+            console.log($(this).find('img').attr("src"))
+//            console.log(this)
+            $gallery.fadeIn(100);
+        });
+        $gallery.on("click", function(){
+            $gallery.fadeOut(100);
+        });
+
+    });*/
+
+</script>
+
+{/block}

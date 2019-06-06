@@ -1,0 +1,109 @@
+{extend name="base" /}
+{block name="body"}
+
+<!--tab标签-->
+<div class="layui-tab-brief">
+
+    <div class="layui-tab-content">
+        <div class="layui-tab-item layui-show">
+            <form class="layui-form form-container" data-url="{:url('documentAdd')}"
+                  localtion-url="{:url('documentList')}">
+                <input type="hidden" name="tid" value="{$tid}">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">名称</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="title" value="" required
+                               lay-verify="required"
+                               placeholder="" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">上传附件</label>
+                    <div class="layui-input-block">
+                        <div id='uploadFile_show_div2' style="width:120px;display: inline;">
+                            <div class="layui-word-aux"></div>
+                        </div>
+
+                        <input type="hidden" name="attatchment_id" id='attatchment_id' required
+                               lay-verify="required"
+                               value=""/>
+                        <div id="uploadFile"></div>
+                        <span class="layui-btn layui-btn-primary layui-btn-small clearid" data-name="attatchment_id"
+                              data-divname="uploadFile_show_div2">清除附件</span>
+                    </div>
+                </div>
+
+                <link rel="stylesheet" href="__PUBLIC__/js/webuploader/webuploader.css"/>
+                <script src="__PUBLIC__/js/webuploader/webuploader.nolog.min.js"></script>
+                <script>
+                    $(function () {
+                        $('.clearid').click(function () {
+
+                            var id = $(this).data('name');
+                            var div = $(this).data('divname');
+                            $('#' + id).val(0);
+                            $('#' + div).html('');
+
+                        });
+
+                    });
+                    var uploadFile_param1 = WebUploader.create({
+
+                        // 选完文件后，是否自动上传。
+                        auto: true,
+
+                        // swf文件路径
+                        swf: "WEB_URL" + '/addon/imginput/static/dist/Uploader.swf',
+                        chunked: false,
+                        chunkSize: 512 * 1024,
+                        // 文件接收服务端。
+                        server: "{:url('File/fileUpload')}",
+
+                        // 选择文件的按钮。可选。
+                        // 内部根据当前运行是创建，可能是input元素，也可能是flash.
+                        pick: {
+                            id: '#uploadFile',
+                            label: '上传文件'
+                        },
+                        //文件数量限制验证，不限制
+//                        fileNumLimit: 1,
+                        //去重不开启，默认false开启
+                        duplicate: true,
+                        disableGlobalDnd: true,
+                        // 只允许选择图片文件。
+                        accept: {}
+                    });
+
+                    uploadFile_param1.on('uploadSuccess', function (file, response) {
+                        console.log(file)
+                        console.log(response)
+
+                        var show_img_url = response.headpath;
+
+                        $('#uploadFile_show_div2').html('<div class="layui-word-aux">' + show_img_url + '</div>');
+                        $('#attatchment_id').val(response.id);
+                        layer.msg('导入成功', {icon: 1, anim: 6, time: 1000});
+
+
+                    });
+                    uploadFile_param1.on('error', function (type) {
+                        layer.msg('上传错误：' + type, {icon: 2, anim: 6, time: 2000});
+
+                    });
+
+                </script>
+
+                <div class="btable-paged">
+                    <div class="layui-main">
+                        <div class="formbtngroup">
+                            <button class="layui-btn layui-btn-small" lay-submit="" lay-filter="formadd">添加</button>
+                            <a href="javascript:;" class="layui-btn layui-btn-primary layui-btn-small closebtn">返回</a>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{/block}

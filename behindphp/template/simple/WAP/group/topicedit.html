@@ -1,0 +1,83 @@
+{extend name="Public:base" /}
+      {block name="seo"}
+     
+      {/block}
+{block name="body"}
+<div class="container" id="content-container"> 
+          <div class="es-panel es-panel-default">
+<div class="es-panel-heading ">
+<label></label>
+编辑帖子<span class="es-pull-right">
+
+</span></div>
+<div class="es-panel-body ">
+<form class="form-horizontal" id="topiceditform">
+  <div class="form-group">
+    <label for="inputEmail3" class="col-sm-2 control-label">小组</label>
+    <div class="col-sm-4" style="height: 34px;
+    padding: 7px 12px;">
+    <input type="hidden" class="form-control" id="id" name="id" value="{$info.id}">
+      <input type="hidden" class="form-control" id="tid" name="tid" value="{$info.tid}">
+      <input type="hidden" class="form-control" id="gid" name="gid" value="{$info['gid']}">
+      {$groupinfo['name']}
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="inputPassword3" class="col-sm-2 control-label">帖子标题</label>
+    <div class="col-sm-4">
+      <input type="text" class="form-control" id="title" name="title" placeholder="帖子标题6到32个字符" value="{$info['title']}">
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="inputPassword3" class="col-sm-2 control-label">内容</label>
+    <div class="col-sm-9">
+      
+       <textarea name="content" placeholder="" id="content" >{$info['content']}</textarea>
+       {:hook('ArticleEditor', array('name'=> 'content','number'=>10000,'value'=> $info['content'],'items'=>''))}
+      
+    </div>
+  </div>
+    
+  <div class="form-group">
+    <div class="col-sm-offset-2 col-sm-5">
+      <button type="button" data-url="{:url('group/topicedit')}" class="btn btn-success topicedit ajax-post"><i class="iconfont icon-yijianfankui"></i> 发布帖子</button>
+    </div>
+  </div>
+</form>
+
+</div>
+</div>
+
+      </div>
+ {/block}		
+{block name="script"}
+<script>
+$(function(){
+	$('.topicedit').click(function(){
+		
+	    $.post($(this).data('url'),$('form#topiceditform').serialize(),function(data){
+	    	
+		      if(data.code == 1){
+		       
+		        layer.msg(data.msg, {icon: 1, time: 1000}, function(){
+		          location.href="{:url('user/mytopic')}";
+		        });
+		      }else{
+		       
+		        layer.msg(data.msg, {icon: 2, anim: 6, time: 1000});
+		        
+		       
+		        
+		      }
+		    });
+		    return false;
+		
+		
+	});
+	
+	
+});
+</script>
+
+
+{/block}

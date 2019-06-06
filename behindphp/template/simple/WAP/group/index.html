@@ -1,0 +1,350 @@
+{extend name="Public:base" /}
+      {block name="seo"}
+     
+      {/block}
+
+{block name="body"}
+<style>
+.aui-list .aui-list-item:active {
+    background: none;
+}
+.aui-card-list-content-padded p{font-size:0.6rem}
+.aui-popup-content li{font-size:0.6rem;}
+.aui-popup-content .aui-list-item-inner{height:2rem;line-height:2rem;}
+.aui-popup-content {height:4rem;}
+.aui-popup-top-right {
+    top: 12.45rem;
+}
+</style>
+<div class="dingbu" style="background:url({$groupinfo['bg_id']|get_groupbg});background-repeat: no-repeat;background-size: 100% 100%; ">
+<div class="aui-btm">
+<header class="aui-bar aui-bar-nav aui-bg-trans">
+    <a class="aui-pull-left aui-btn" href="javascript:history.back(-1);">
+        <span class="aui-iconfont aui-icon-left"></span>
+    </a>
+    <div class="aui-title">{$groupinfo['name']}</div>
+    {if condition="$usergroupinfo neq null"}
+    <a class="aui-pull-right aui-btn " href="{:url('group/topicadd',array('id'=>$groupid))}">
+        <span class="aui-iconfont aui-icon-edit"></span>
+    </a>
+    {/if}
+</header>
+
+	    	<div class="aui-content groupinfo" >
+        <ul class="aui-list aui-bg-trans aui-media-list aui-padded-r-15">
+         
+            <li class="aui-list-item aui-list-item-middle">
+                <div class="aui-media-list-item-inner" >
+                    <div class="aui-list-item-media" style="width: 3.5rem;">
+                  
+                        <img src="{$groupinfo['cover_id']|get_groupavatar}" class="aui-list-img-sm aui-img-round" >
+                      
+                      
+                    </div>
+                    <div class="" style="width:70%" >
+                        <div class="aui-list-item-text ">
+                            <div class="aui-list-item-title aui-font-size-14">{$groupinfo['name']}</div>
+                            
+                        </div>
+                       
+                         <div class="aui-list-item-text ">
+                            话题:{$groupinfo['topiccount']}&nbsp;&nbsp;成员:{$groupinfo['membercount']}
+                        </div>
+                    </div>
+                         <div class="" style="width:26%">
+                           {if condition="$usergroupinfo neq null"}
+                          <a href="" class="aui-btn aui-btn-success aui-btn-sm aui-btn-block aui-font-size-12 js-add-btn" data-url="{:url('group/joingroup',array('id'=>$groupid))}"style="height: 1.5rem;line-height:1.5rem">
+                          <span class="aui-iconfont aui-icon-minus aui-font-size-12"></span>&nbsp;取消</a>
+                               {else/}
+                                 <a href="" class="aui-btn aui-btn-danger aui-btn-sm aui-btn-block aui-font-size-12 js-add-btn" data-url="{:url('group/joingroup',array('id'=>$groupid))}"style="height: 1.5rem;line-height:1.5rem">
+                          <span class="aui-iconfont aui-icon-plus aui-font-size-12"></span>&nbsp;关注</a>
+                             
+                               
+                            {/if} 
+                        </div>
+                    
+                </div>
+                
+             
+            </li>
+            
+        </ul>
+    </div>
+    </div>
+</div>
+<div class="aui-tab aui-border-b" id="tab">
+    <div class="aui-tab-item aui-active" data-id="topictab">帖子</div>
+
+    <div class="aui-tab-item"  data-id="jieshao">资料</div>
+    
+</div>
+<div id="topictab" >
+<div class=" aui-content-bg">
+
+<div class="content-title aui-border-b">
+<div class="aui-pull-left aui-font-size-14">全部</div>
+<div class="aui-pull-right aui-font-size-12" style="color:#707070;" aui-popup-for="top-right" id="paixu">
+    按最新发表
+    &nbsp;<i class="aui-iconfont aui-icon-down aui-font-size-12"></i>
+    </div>
+    
+    
+<div class="aui-popup aui-popup-top-right" id="top-right">
+    <div class="aui-popup-arrow"></div>
+    <div class="aui-popup-content">
+        <ul class="aui-list aui-list-noborder">
+
+            <li class="aui-list-item">
+              
+                <div class="aui-list-item-inner">
+                   <a class="js-nav" href="javascript:;" data-sort="2"> 按最新回复</a>
+                </div>
+            </li>
+            <li class="aui-list-item active">
+                
+                <div class="aui-list-item-inner">
+                    <a class="js-nav" href="javascript:;"  data-sort="1">按最新发表</a>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>
+<script type="text/javascript" src="__WAPJS__/aui-popup.js" ></script>
+<script type="text/javascript" src="__WAPJS__/aui-tab.js" ></script>
+  <script type="text/javascript" src="__WAPJS__/aui-scroll.js" ></script>  
+    
+</div>
+
+
+</div>
+
+  <script id="topiclisttpl" type="text/x-dot-template">
+ {{ for(var i=0; i< it.length; i++) { }}	
+<section class="aui-content grouptopiclist">
+        <div class="aui-card-list">
+            <div class="aui-card-list-header aui-card-list-user dataurla" data-url="{{=it[i].userurl}}" style="overflow:hidden;">
+                <div class="aui-card-list-user-avatar">
+                    <img src="{{=it[i].userhead}}" class="aui-img-round">
+                </div>
+                <div class="aui-card-list-user-name">
+                    <div class="aui-text-info">{{=it[i].nickname}}</div>
+                    <div class="aui-font-size-14 text-light"></div>
+                </div>
+                <div class="aui-card-list-user-info text-light">{{=it[i].create_time}}</div>
+            </div>
+            <div class="aui-card-list-content-padded aui-padded-t-5 aui-padded-b-5 dataurla" data-url="{{=it[i].gurl}}">
+                <div class="aui-list-item-title aui-font-size-14">
+{{? it[i].settop==1}}               
+
+<span class="aui-label aui-label-info aui-margin-r-5">置顶</span>
+  {{?}}
+{{? it[i].choice==1}}      
+<span class="aui-label aui-label-warning aui-margin-r-5">精</span>
+  {{?}}
+                {{=it[i].title}}</div>
+                    <p class="aui-ellipsis-2 aui-margin-t-10">{{=it[i].descontent}}</p>
+                    
+                <div class="aui-card-list-content">
+                <div class="aui-row aui-row-padded">
+               
+                    {{ for(var k=0; k< it[i].imagesarr.length; k++) { }}	
+                    <div class="aui-col-xs-4 listimg">    
+{{=it[i].imagesarr[k]}}
+   </div>
+                      {{ } }}
+                    
+                    
+                    
+                </div>
+            </div>
+            <div class="aui-info">
+                    <div class="aui-info-item aui-font-size-12">
+                      
+                    </div>
+                    <div class="aui-info-item aui-font-size-12">{{=it[i].reply}}回帖</div>
+                </div>
+                    </div>
+
+        </div>
+       
+    </section>
+  {{ } }}
+    </script>  
+
+<div id="topiclist">
+
+</div>
+
+
+</div>
+<div id="jieshao" class="aui-hide">
+<section class="aui-content grouptopiclist">
+        <div class="aui-card-list">
+            <div class="aui-card-list-header aui-card-list-user "  style="overflow:hidden;">
+            
+                <div class="aui-card-list-user-name">
+                    <div class="aui-text-info">组长:{$groupinfo['uid']|getusernamebyid}</div>
+                    <div class="aui-font-size-14 text-light"></div>
+                </div>
+                <div class="aui-card-list-user-info text-light">创建时间：{$groupinfo['create_time']|friendlyDate}</div>
+            </div>
+            <div class="aui-card-list-content-padded aui-padded-t-5 aui-padded-b-5" >
+
+                    <p class="">{$groupinfo['describe']|htmlspecialchars_decode}</p>
+                    
+                <div class="aui-card-list-content">
+
+            </div>
+            <div class="aui-info">
+                    <div class="aui-info-item aui-font-size-12">
+                      
+                      
+                      
+                      
+                    </div>
+                  
+                </div>
+                    </div>
+
+        </div>
+       
+    </section>
+</div>
+
+
+
+{/block}
+{block name="script"}
+<script>
+var page=1;
+var popup = new auiPopup();
+var tab = new auiTab({
+    element:document.getElementById("tab"),
+    index:1,
+    repeatClick:false
+},function(ret){
+    
+
+	if(ret.index==1){
+		
+		$('#topictab').removeClass('aui-hide');
+		$('#jieshao').addClass('aui-hide');
+		
+	}else{
+		$('#topictab').addClass('aui-hide');
+		$('#jieshao').removeClass('aui-hide');
+		
+	}
+	
+});
+var scroll = new auiScroll({
+    listen:true, //是否监听滚动高度，开启后将实时返回滚动高度
+    distance:200 //判断到达底部的距离，isToBottom为true
+},function(ret){
+	if(ret.isToBottom){
+		page=page+1;
+		gettopiclist(page,true);
+	}
+	
+});
+function gettopiclist(page,sort,isAppend){
+	
+	$.post("{:url('Appapi/getgrouptopic')}",{id:"{$groupid}",sorttype:sort,page:page},function(data){
+		
+		var data=JSON.parse(data);
+	
+		
+		if(data.status!=0){
+			
+			
+			   var interText = doT.template($("#topiclisttpl").text());
+			   
+			  
+				if (!isAppend) {
+					$("#topiclist").html(interText(data));
+				} else {
+					$("#topiclist").append(interText(data));
+				}
+				 $('.dataurla').click(function(){
+				        
+					 var url=$(this).data('url');
+					location.href=url;
+				      
+				 });
+				$('.listimg img').css('height',$('.listimg img').width());
+		}
+		
+		
+		
+		
+		
+	});
+	
+	
+	
+}
+$(function(){
+	
+ 	$('.aui-popup-content li').click(function(){
+		var html=$(this).find('.aui-list-item-inner').html();
+		html=html+'<i class="aui-iconfont aui-icon-down aui-font-size-12"></i>';
+		$('#paixu').html(html);
+		popup.hide();
+		var sort=$(this).find('a').data('sort');
+		gettopiclist(1,sort,false);
+		
+	});
+	
+	
+	gettopiclist(1,"{$sorttype}",false);
+	
+	
+	
+	$('#paixu').click(function(){
+		
+
+		$('#top-right').css('top',$(this).offset().top-$(window).scrollTop()+$(this).height());
+		
+		
+		
+	});
+	$('.js-add-btn').click(function(){
+		var obj=$(this);
+		
+	    $.get($(this).data('url'),function(data){
+	    
+		      if(data.code == 1){
+		      
+		        layer.msg(data.msg, {icon: 1, time: 2000}, function(){
+		         
+		        	var html=$(obj).html();
+		        
+		        /* 	if(html=='退出小组'){
+		        		$(obj).html('加入小组');
+		        		$(obj).addClass('btn-success').removeClass('btn-default');
+		        	}else{
+		        		$(obj).html('退出小组');
+		        		$(obj).removeClass('btn-success').addClass('btn-default');
+		        	} */
+		        	location.reload();
+		        	
+		        	
+		        	
+		        });
+		      }else{
+		      
+		        layer.msg(data.msg, {icon: 2, anim: 6, time: 2000});
+		        
+		     
+		        
+		      }
+		    });
+		
+		return false;
+		
+	});
+	
+})
+
+</script>
+{/block}

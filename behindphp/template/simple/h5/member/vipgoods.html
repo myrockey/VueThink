@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <link rel="stylesheet" href="__PUBLIC__/h5/css/weui.css"/>
+    <link rel="stylesheet" href="__PUBLIC__/h5/css/weuix.min.css"/>
+    <script type="text/javascript">document.write("<link rel='stylesheet' type='text/css' href='/public/h5/css/style.css?random=" + Math.random() + "' />");</script>
+    <script src="__PUBLIC__/h5/js/zepto.min.js"></script>
+    <script src="__PUBLIC__/h5/js/zepto.weui.js"></script>
+    <script src="__PUBLIC__/h5/js/iscroll-lite.js"></script>
+    <script src="__PUBLIC__/h5/js/php.js"></script>
+    <script src="http://res2.wx.qq.com/open/js/jweixin-1.4.0.js "></script>
+    <script>
+        wx.config({
+            debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+            appId: '{$signPackage.appId}', // 必填，公众号的唯一标识
+            timestamp: '{$signPackage.timestamp}', // 必填，生成签名的时间戳
+            nonceStr: '{$signPackage.nonceStr}', // 必填，生成签名的随机串
+            signature: '{$signPackage.signature}',// 必填，签名
+            jsApiList: [
+                'checkJsApi', //判断当前客户端版本是否支持指定JS接口
+                'updateAppMessageShareData',
+                'updateTimelineShareData',
+                'onMenuShareTimeline', //分享给好友
+                'onMenuShareAppMessage'//分享到朋友圈
+            ] // 必填，需要使用的JS接口列表
+        });
+
+        wx.ready(function(){
+            // config信息验证后会执行ready方法，所有接口调用都必须在config接口获得结果之后，config是一个客户端的异步操作，所以如果需要在页面加载时就调用相关接口，则须把相关接口放在ready函数中调用来确保正确执行。对于用户触发时才调用的接口，则可以直接调用，不需要放在ready函数中。
+            // 在这里调用 API
+            wx.checkJsApi({
+                jsApiList: [
+                    "updateAppMessageShareData",
+                    "updateTimelineShareData",
+                    "onMenuShareTimeline",
+                    "onMenuShareAppMessage"], // 需要检测的JS接口列表，所有JS接口列表见附录2,
+                success: function(res) {
+                    if(res.errMsg !='checkJsApi:ok'){
+                        alert('请升级您的微信版本');
+                        return;
+                    }
+                }
+            });
+//                自定义“分享给朋友”及“分享到QQ”按钮的分享内容（1.4.0）
+            wx.updateAppMessageShareData({
+                title: '{$signPackage.title}', // 分享标题
+                desc: '{$signPackage.desc}', // 分享描述
+                link: '{$signPackage.url}', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+                imgUrl: '{$signPackage.imgurl}', // 分享图标
+                success: function () {
+                    // 设置成功
+                    console.log('分享成功');
+                },
+                cancel:function () {
+                    console.log('取消分享');
+                }
+            });
+//                自定义“分享到朋友圈”及“分享到QQ空间”按钮的分享内容（1.4.0）
+            wx.updateTimelineShareData({
+                title: '{$signPackage.title}', // 分享标题
+                link: '{$signPackage.url}', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+                imgUrl: '{$signPackage.imgurl}', // 分享图标
+                success: function () {
+                    // 设置成功
+                    console.log('分享成功');
+                },
+                cancel:function () {
+                    console.log('取消分享');
+                }
+            })
+        });
+
+        $(function () {
+            /*
+            * 表单提交
+            * */
+            function form_submit(goodsid) {
+                    action = '/member/continuetopay';
+                    form = $("<form></form>");
+                    form.attr('action',action);
+                    form.attr('method','post');
+                    input1 = $("<input type='hidden' name='goodsid' />");
+                    input1.attr('value',goodsid);
+                    form.append(input1);
+                    form.appendTo("body");
+                    form.css('display','none');
+                    form.submit();
+            }
+            $(".weui-payselect-li").on('click', function () {
+                $(this).children().addClass("weui-payselect-on");
+                $(this).siblings().children().removeClass("weui-payselect-on");
+                return false;
+            })
+
+            $(document).on("click", "#wxtopay", function () {
+                wxtopay();
+            });
+            function wxtopay() {
+                if (!$('#weuiAgree').prop("checked")) {
+                    $.toast('请先勾选同意');
+                    return false;
+                }
+                var id = $('.weui-payselect-ul .weui-payselect-on').attr('data-id');
+                console.log('/Member/wxpay/goodsid/'+id)
+//                var money = $('.weui-payselect-ul .weui-payselect-on').html();
+//                $.alert("调用微信支付,支付的商品,\r\nVIP会员：" + money);
+
+                  form_submit(id);
+          /*      $.ajax({
+                    type: "POST",
+                    url: '/member/continuetopay',
+                    data: {"goodsid": id},
+                    dataType: "json",
+                    beforeSend: function () {
+                    },
+                    success: function (rs) {
+                        console.log(rs)
+                        if (rs.code == 1) {
+                            $.toast(rs.msg, function () {
+                                location.href = '/member/tovip';
+                            });
+                        } else {
+                            $.alert(rs.msg);
+                        }
+                    },
+                    timeout: 15000
+                });*/
+            }
+
+        })
+
+    </script>
+
+    <script type="text/javascript">
+        //调用微信JS api 支付
+        function jsApiCall()
+        {
+            var data={$data};
+            WeixinJSBridge.invoke(
+                    'getBrandWCPayRequest', data,
+                    function(res){
+                        WeixinJSBridge.log(res.err_msg);
+                        //alert('err_code:'+res.err_code+'err_desc:'+res.err_desc+'err_msg:'+res.err_msg);
+                        //alert(res.err_code+res.err_desc+res.err_msg);
+                        //alert(res);
+                        if(res.err_msg == "get_brand_wcpay_request:ok"){
+                            $.ajax({
+                                type: "POST",
+                                url: '/member/checkIsPay',
+                                data: {},
+                                dataType: "json",
+                                beforeSend: function () {
+                                },
+                                success: function (rs) {
+                                    console.log(rs);
+                                    if (rs.code == 1) {
+                                        alert("支付成功!");
+                                        window.location.href="/member/tovip" ;
+                                    } else {
+                                        alert(rs.msg);
+                                        window.location.href="/member/continuetopay" ;
+                                    }
+                                },
+                                timeout: 15000
+                            });
+                        }else if(res.err_msg == "get_brand_wcpay_request:cancel"){
+                            alert("用户取消支付!");
+                            window.location.href="/member/continuetopay" ;
+                        }else{
+                            alert("支付失败!");
+                            window.location.href="/member/continuetopay" ;
+                        }
+                    }
+            );
+        }
+        function callpay()
+        {
+            if (typeof WeixinJSBridge == "undefined"){
+                if( document.addEventListener ){
+                    document.addEventListener('WeixinJSBridgeReady', jsApiCall, false);
+                }else if (document.attachEvent){
+                    document.attachEvent('WeixinJSBridgeReady', jsApiCall);
+                    document.attachEvent('onWeixinJSBridgeReady', jsApiCall);
+                }
+            }else{
+                jsApiCall();
+            }
+        }
+        {$func}
+    </script>
+</head>
+
+<body ontouchstart>
+
+<div class="page-bd page-bg-tovip">
+    <div class="weui-pay">
+        <h1 class="weui-payselect-title" style="color: #fff;">选择金额付款</h1>
+        <p class="weui-payselect-info">支付金额给周期研习社</p>
+        <ul class="weui-payselect-ul">
+
+            {notempty name="list"}
+            {volist name="list" id="vo" key="k"}
+                <li class="weui-payselect-li">
+                    <a href="javascript:;" class="weui-payselect-a {if condition='$k eq 1'}weui-payselect-on{/if}" data-id="{$vo.id}">{$vo.title}
+                        <!--<span class="weui-pay-12">活动价：800元/月</span>-->
+                    </a>
+                </li>
+            {/volist}
+            {/notempty}
+        </ul>
+        <br>
+        <div class="weui-flex">
+            <label class="left" for="weuiAgree" class="weui-agree">
+                <input id="weuiAgree" class="weui-agree__checkbox" checked="checked" type="checkbox"><span
+                    class="weui-agree__text"> 阅读并同意</span>
+            </label>
+            <a class="left" href="{:url('index/intro')}">《周期研习社服务协议》</a>
+            <div class="clear"></div>
+        </div>
+        <br>
+        <!--<a href="javascript:;" class="weui-btn weui-btn_primary" id="wxtopay">下单</a>-->
+        <a href="javascript:;" class="weui-btn weui-btn_primary" id="wxtopay">立即支付</a>
+
+    </div>
+</div>
+<a class="goback" href="{:url('member/tovip')}"><span class="icon icon-109"></span>返回</a>
+</body>
+</html>

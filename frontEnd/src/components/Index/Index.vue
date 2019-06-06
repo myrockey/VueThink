@@ -54,10 +54,7 @@
         companyTitleEN: 'HESHAN INFORMATION',
         companyDesc: '河山信息致力于物联网管理层的设计与开发、智能通讯网络设计、互联网产品开发、金融科技产品委托开发等，主营产品有“智慧办公管理系统“、 ”城市之芯·资产行情终端“、”周期精灵“等。',
         companyDesc2: '河山信息的主要业务范围为计算机软件、互联网相关软件的技术开发 、技术咨询、技术服务、信息咨询；数据库管理；计算机系统集成的技术开发等。',
-        newsData: [
-          { id: '1', title: '合一产业与河山信息举行战略合作签约仪式' },
-          { id: '2', title: '城市之芯与乌尔比安律所战略合作签约' }
-        ],
+        newsData: [],
         proData: [
           { link: '/pro2', title: '城市之芯' },
           { link: '/pro3', title: '周期研习社' }
@@ -73,7 +70,7 @@
       IndexHeader, IndexFooter
     },
     created() {
-      this.apiGet('v1/api/news').then((res) => {
+      this.apiGet('v1/api/index/articleLists').then((res) => {
         this.handelResponse(res, (data) => {
           this.newsData = data
         })

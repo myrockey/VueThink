@@ -1,0 +1,444 @@
+/**
+* Version: 1.5
+* Title: Eleditor 移动端富文本编辑器
+* Site: https://eleditor.fixel.cn
+* Author: Try
+*/
+.Eleditor-wrap.Eleditor-mask {
+	position: fixed;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	background: rgba(0, 0, 0, .5)
+}
+
+.Eleditor-loading {
+	display: none;
+	position: absolute;
+	left: 50%;
+	padding: 15px;
+	border-radius: 5px;
+	top: 50%;
+	background: rgba(255, 255, 255, .9);
+	transform: translate(-50%, -50%);
+	-webkit-transform: translate(-50%, -50%)
+}
+
+.Eleditor-loading p {
+	font-size: 12px;
+	color: #666;
+	text-align: center
+}
+
+.Eleditor-loading p:before {
+	content: '';
+	width: 25px;
+	height: 25px;
+	margin: 0 auto;
+	background:
+		url('loading.gif')
+		no-repeat center top;
+	background-size: 100%;
+	display: inline-block;
+	vertical-align: middle;
+	margin-right: 10px
+}
+
+.Eleditor-wrap ul {
+	list-style: none
+}
+
+.Eleditor-area, .Eleditor-area * {
+	cursor: pointer;
+	-webkit-tap-highlight-color: rgba(0, 0, 0, 0)
+}
+
+.Eleditor-area .Eleditor-active {
+	background: #cce0f2 !important;
+	padding: 2% !important
+}
+
+.Eleditor-controller {
+	background: #fafafa;
+	position: absolute;
+	box-sizing: border-box;
+	transform: translate(-50%, 0);
+	-webkit-transform: translate(-50%, 0);
+	left: 50%;
+	display: none;
+	margin-top: 5px;
+	box-shadow: 0 0 20px rgba(0, 0, 0, .2);
+	-webkit-box-shadow: 0 0 20px rgba(0, 0, 0, .2);
+	border-bottom: 1px solid #e1e1e1;
+	border-radius: 3px;
+	-webkit-border-radius: 3px
+}
+
+.Eleditor-controller ul {
+	margin-bottom: 2.5%
+}
+
+.Eleditor-controller ul:after {
+	content: '';
+	display: block;
+	height: 0;
+	clear: both
+}
+
+.Eleditor-controller ul li {
+	float: left;
+	display: inline-block;
+	width: 30%;
+	margin: 2% 0 0 2.5%;
+	height: 42px;
+	border-radius: 3px;
+	-webkit-border-radius: 3px;
+	line-height: 42px;
+	padding-left: 10%;
+	box-sizing: border-box;
+	font-size: 14px;
+	border-right: 1px solid #ddd;
+	border-bottom: 1px solid #ddd;
+	border-top: 1px solid #eee;
+	border-left: 1px solid #eee;
+	white-space: nowrap;
+	position: relative
+}
+
+.Eleditor-controller ul li.Eleditor-undo {
+	display: none
+}
+
+.Eleditor-controller ul li:before, .Eleditor-textStyle ul li:before {
+	background-image:
+		url('css.png');
+	background-size: 100%;
+	background-repeat: no-repeat
+}
+
+.Eleditor-controller ul li:before {
+	content: '';
+	position: absolute;
+	left: 8px;
+	top: 12px;
+	width: 15px;
+	height: 15px;
+	display: block
+}
+
+.Eleditor-controller ul li.Eleditor-insertText:before {
+	background-position: 0 -46px
+}
+
+.Eleditor-controller ul li.Eleditor-insertImage:before {
+	background-position: 0px -62px
+}
+
+.Eleditor-controller ul li.Eleditor-undo:before {
+	background-position: 0px -231px
+}
+
+.Eleditor-controller ul li.Eleditor-insertImage div[id^='rt_rt_'] {
+	left: 0 !important;
+	width: 100% !important;
+	opacity: 0;
+	-webkit-tap-highlight-color: rgba(0, 0, 0, 0)
+}
+
+.Eleditor-controller ul li.Eleditor-insertLink:before {
+	background-position: 0 -93px
+}
+
+.Eleditor-controller ul li.Eleditor-insertHr:before {
+	background-position: 0 -108px
+}
+
+.Eleditor-controller ul li.Eleditor-deleteThis:before,
+	.Eleditor-controller ul li.Eleditor-deleteBefore:before,
+	.Eleditor-controller ul li.Eleditor-deleteAfter:before {
+	background-position: 0 -31px
+}
+
+.Eleditor-controller ul li.Eleditor-cancel:before {
+	background-position: 0 -15px
+}
+
+.Eleditor-controller ul li.Eleditor-editText:before {
+	background-position: 0 -77px
+}
+
+@media screen and (max-width:300px) {
+	.Eleditor-controller ul li {
+		width: 30%;
+		text-align: center;
+		padding-left: 0;
+		font-size: 12px
+	}
+	.Eleditor-controller ul li:before {
+		display: none
+	}
+}
+
+.Eleditor-textEditor {
+	display: none;
+	width: 95%;
+	background: #fff;
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%, -50%);
+	-webkit-transform: translate(-50%, -50%);
+	border-radius: 5px;
+	overflow: hidden
+}
+
+.Eleditor-textStyle {
+	position: relative;
+	background: #eee
+}
+
+@media screen and (max-width:350px) {
+	.Eleditor-textStyle {
+		overflow-x: scroll;
+		height: 45px
+	}
+	.Eleditor-textEditor-clean {
+		display: none
+	}
+}
+
+.Eleditor-textEditor-colors, .Eleditor-textEditor-fontsizes,
+	.Eleditor-textEditor-lineheight {
+	display: none;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: #fff
+}
+
+.Eleditor-textEditor-modulePane {
+	margin: 10px 8px;
+	border-bottom: 1px solid #ccc;
+	padding-bottom: 10px
+}
+
+.Eleditor-textEditor-colors ul:after {
+	content: '';
+	display: block;
+	clear: both;
+	height: 0
+}
+
+.Eleditor-textEditor-colors ul li {
+	float: left;
+	text-align: center;
+	width: 20%;
+	margin-bottom: 10px
+}
+
+.Eleditor-textEditor-colors ul li span {
+	width: 40px;
+	height: 40px;
+	display: inline-block;
+	border-radius: 3px;
+	cursor: pointer;
+	position: relative
+}
+
+.Eleditor-textEditor-colors ul li span.transparent:after,
+	.Eleditor-textEditor-colors ul li span.transparent:before {
+	position: absolute;
+	background: #dedede;
+	content: '';
+	transform: rotate(45deg);
+	-webkit-transform: rotate(45deg)
+}
+
+.Eleditor-textEditor-colors ul li span.transparent:after {
+	width: 1px;
+	height: 100%;
+	left: 50%;
+	top: 0
+}
+
+.Eleditor-textEditor-colors ul li span.transparent:before {
+	width: 100%;
+	height: 1px;
+	left: 0;
+	top: 50%
+}
+
+.Eleditor-textEditor-fontsizes ul li, .Eleditor-textEditor-lineheight ul li
+	{
+	text-align: center;
+	color: #333;
+	font-size: 14px;
+	line-height: 30px
+}
+
+.Eleditor-textStyle ul {
+	
+}
+
+.Eleditor-textStyle ul:after {
+	content: '';
+	height: 0;
+	clear: both;
+	display: block
+}
+
+.Eleditor-textStyle ul li {
+	float: left;
+	width: 24px;
+	height: 24px;
+	margin: 10px 5px;
+	border: 1px solid #eee;
+	position: relative
+}
+
+.Eleditor-textStyle ul li:before {
+	content: '';
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	display: block
+}
+
+.Eleditor-textStyle ul li.Eleditor-active {
+	background-color: #FFE69F !important;
+	padding: 0;
+	border: 1px solid #DCAC6C;
+	border-radius: 2px
+}
+
+.Eleditor-textStyle ul li.Eleditor-textStyle-bold:before {
+	background-position: 0 -198px
+}
+
+.Eleditor-textStyle ul li.Eleditor-textStyle-color:before,
+	.Eleditor-textStyle ul li.Eleditor-textStyle-underline:before {
+	background-position: 0 -222px
+}
+
+.Eleditor-textStyle ul li.Eleditor-textStyle-color span {
+	display: block;
+	width: 18px;
+	height: 3px;
+	margin: 19px 0 0 3px;
+	background: #333
+}
+
+.Eleditor-textStyle ul li.Eleditor-textStyle-underline span {
+	display: block;
+	width: 18px;
+	height: 1px;
+	margin: 21px 0 0 3px;
+	background: #848484
+}
+
+.Eleditor-textStyle ul li.Eleditor-textStyle-bgColor:before {
+	background-position: 0 -241px
+}
+
+.Eleditor-textStyle ul li.Eleditor-textStyle-fontSize:before {
+	background-position: 0 -263px
+}
+
+.Eleditor-textStyle ul li.Eleditor-textStyle-lineHeight:before {
+	background-position: 0 -285px
+}
+
+.Eleditor-textStyle ul li.Eleditor-textStyle-alignLeft:before {
+	background-position: 0 -307px
+}
+
+.Eleditor-textStyle ul li.Eleditor-textStyle-alignCenter:before {
+	background-position: 0 -328px
+}
+
+.Eleditor-textStyle ul li.Eleditor-textStyle-alignRight:before {
+	background-position: 0 -350px
+}
+
+.Eleditor-textStyle .Eleditor-textEditor-clean {
+	position: absolute;
+	right: 10px;
+	top: 50%;
+	color: #F44336;
+	background: transparent;
+	border: none;
+	font-size: 16px;
+	transform: translate(0, -50%)
+}
+
+.Eleditor-inputarea {
+	
+}
+
+.Eleditor-inputarea .textarea {
+	-webkit-user-select: auto;
+	overflow-y: scroll;
+	border: none;
+	height: 160px;
+	width: 100%;
+	padding: 10px;
+	box-sizing: border-box;
+	font-size: 14px;
+	color: #555;
+	outline: none
+}
+
+.Eleditor-inputarea input {
+	display: none
+}
+
+.Eleditor-textEditor[type=link] .Eleditor-inputarea .textarea {
+	height: 106px
+}
+
+.Eleditor-textEditor[type=link] .Eleditor-inputarea input {
+	height: 33px;
+	display: block;
+	border: none;
+	border-bottom: 1px solid #ddd;
+	width: 100%;
+	margin: 10px;
+	color: #333;
+	outline: none
+}
+
+.Eleditor-method {
+	border-top: 1px solid #ddd
+}
+
+.Eleditor-method:after {
+	content: '';
+	clear: both;
+	display: block;
+	height: 0
+}
+
+.Eleditor-method button {
+	width: 50%;
+	border: none;
+	padding: 0;
+	margin: 0;
+	box-sizing: border-box;
+	float: left;
+	background: #fff;
+	height: 40px;
+	color: #333
+}
+
+.Eleditor-method .Eleditor-commit {
+	border-right: 1px solid #ddd
+}
+
+.Eleditor-placeholder {
+	color: #999
+}

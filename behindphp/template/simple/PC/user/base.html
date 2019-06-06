@@ -1,0 +1,71 @@
+
+<div class="ucenter-left">
+<div class="userinfo">
+    <div class="media">
+      <div class="media-left">
+          <span>
+    <img class="avatar-md" src="{$nowuserinfo.userhead|getheadurl}" alt="{$nowuserinfo['nickname']}">
+           
+            
+          </span>
+  
+      </div>
+      <div class="media-body">
+        <div class="title">
+              <span class="link-light ellipsis" >{$nowuserinfo['nickname']}</span>
+              
+        </div>
+      <span>{$nowuserinfo['grades']|getusergrade=$nowuserinfo['id']}</span>
+      </div>
+    </div>
+</div>
+
+
+<div class=" user-level">
+
+{if condition="$nowuserinfo['grades'] neq -1"}
+
+{if condition="$nowuserinfo['description'] neq null"}
+{$nowuserinfo['description']}
+{else/}
+这个家伙很懒，什么都没有留下！
+{/if}
+
+{else/}
+{$nowuserinfo['statusdes']}
+<span class="iconfont icon-renzheng-copy1 positionrz" title="达人" style="font-size:30px;"></span>
+{/if}
+</div>
+
+<div class="mydoc-list" id="usercentermenu">
+<ul>
+<li {if condition="$actionname eq 'user/index'"}class="current"{/if} ><a href="{:url('user/index')}"><i class="iconfont icon-zhanghao"></i> 我的账号</a></li>
+
+<li {if condition="$actionname eq 'user/userfocus'"}class="current"{/if} ><a href="{:url('user/userfocus')}"><i class="iconfont icon-zhuanjialiebiaohaoyouguanxianniu"></i> 好友关系</a></li>
+<li {if condition="$actionname eq 'user/mygroup'"}class="current"{/if} ><a href="{:url('user/mygroup')}" ><i class="iconfont icon-xiaozu"></i> 我的小组</a></li>
+<li {if condition="$actionname eq 'user/mytopic'"}class="current"{/if}><a href="{:url('user/mytopic')}" ><i class="iconfont icon-yijianfankui"></i> 我的帖子</a></li>
+<li {if condition="$actionname eq 'user/shoucang'"}class="current"{/if}><a href="{:url('user/shoucang')}"><i class="iconfont icon-tubiao114"></i> 我的收藏</a></li>
+<li {if condition="$actionname eq 'user/mess'"}class="current"{/if}><a href="{:url('user/mess')}"><i class="iconfont icon-remind"></i> 我的消息</a></li>
+</ul>
+</div>
+</div>
+<script>
+$(function(){
+	var obj;
+	$('#usercentermenu li').hover(function(){
+		
+		obj=$('#usercentermenu li.current');
+		
+		$(obj).removeClass('current');
+		$(this).addClass('current');
+		
+	},function(){
+		
+		$(obj).addClass('current').siblings().removeClass('current');
+		
+	});
+	
+	
+});
+
+</script>

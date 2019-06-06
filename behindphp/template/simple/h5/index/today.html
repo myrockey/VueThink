@@ -1,0 +1,183 @@
+{extend name="Public:base" /}
+{block name="seo"}
+
+{/block}
+{block name="css"}
+<style>
+
+</style>
+{/block}
+{block name="body"}
+<div class="container-h5">
+<div class="page-bd-25">
+    <div class="clearfx">
+        <h1 class="index-title color-font">
+            今日模拟
+        </h1>
+        <div class="color-font index-public-status">
+            <div class="left weui-switch-cp-index-btn index-checked">
+                <label for="" class="weui-switch-cp">
+                <input id="switchCP" class="weui-switch-cp__input" {if condition="$info['is_update'] eq 1"}checked="checked"{/if} type="checkbox">
+                <div class="weui-switch-cp__box"></div>
+            </label>
+            </div>
+            <div class="left">{if condition="$info['is_update'] eq 1"}已更新{else/}未更新{/if}</div>
+            <div class="clear"></div>
+        </div>
+    </div>
+    <div class="index-desc">
+        <div class="left">
+            <span class="index-desc-item index-line"></span>
+            <div class="index-desc-item-desc1">发布时间</div>
+            <div class="index-desc-item-desc2"><span>{:date('Y.m.d',strtotime($info.title))}</span>{:get_week(date('Y-m-d',strtotime($info.title)))}</div>
+            <div class="index-desc-item-desc4">操作建议：<span>{$info.operation_suggestion}</span></div>
+            <div class="index-desc-item-desc5"><img src="__PUBLIC__/h5/images/index_z.png" alt="img"><br>卖点提示:<span>14:30后未封板即卖出</span></div>
+            <div class="index-desc-item-desc6 font-yellow">*所有股票仅限于展示模拟，不代表推荐</span></div>
+        </div>
+        <div class="right">
+            <a href="javascript:;" class="index-border-btn index-border-blue">市场连扳指数<span>{$info.market_connectivity_index}%</span></a>
+            <a href="javascript:;" class="index-border-btn index-border-blue">市场超跌指数<span>{$info.market_overfall_index}</span></a>
+        </div>
+        <div class="clear"></div>
+    </div>
+</div>
+    <div class="index-content-box">
+        <div class="index-content-item">
+            <div class="weui-flex">
+                <div class="weui-flex__item">
+                    <div class="index-item-box">
+                        <div class="index-item-title">周期</div>
+                    </div>
+                </div>
+            </div>
+            <div class="weui-flex">
+                {notempty name="info['cycle_shares']"}
+                    {volist name="info['cycle_shares']" id="vo"}
+                    <div class="weui-flex__item"><div class="index-item-border">{$vo[0]|default='/'}</div></div>
+                    {/volist}
+                {else/}
+                    <div class="weui-flex__item"><div class="index-item-border">/</div></div>
+                {/notempty}
+            </div>
+        </div>
+        <div class="index-content-item">
+            <div class="weui-flex">
+                <div class="weui-flex__item">
+                    <div class="index-item-box">
+                        <div class="index-item-title">L2</div>
+                    </div>
+                </div>
+            </div>
+            <div class="weui-flex">
+                {notempty name="info['grade2_shares']"}
+                    {volist name="info['grade2_shares']" id="vo"}
+                    <div class="weui-flex__item"><div class="index-item-border">{$vo[0]|default='/'}</div></div>
+                    {/volist}
+                {else/}
+                    <div class="weui-flex__item"><div class="index-item-border">/</div></div>
+                {/notempty}
+            </div>
+        </div>
+        <div class="index-content-item">
+            <div class="weui-flex">
+                <div class="weui-flex__item">
+                    <div class="index-item-box">
+                        <div class="index-item-title">L1</div>
+                    </div>
+                </div>
+            </div>
+            <div class="weui-flex">
+                {notempty name="info['grade1_shares']"}
+                    {volist name="info['grade1_shares']" id="vo"}
+                    <div class="weui-flex__item"><div class="index-item-border">{$vo[0]|default='/'}</div></div>
+                    {/volist}
+                {else/}
+                    <div class="weui-flex__item"><div class="index-item-border">/</div></div>
+                {/notempty}
+            </div>
+        </div>
+        <div class="index-content-line"></div>
+    </div>
+    <div class="index-follow-box">
+        <div class="index-follow-title">
+            <div class="left">关注股<img src="__PUBLIC__/h5/images/z03.png" alt="img"> </div>
+            <div class="right font-yellow">*关注股在盘后更新，不计入胜率统计</div>
+            <div class="clear"></div>
+        </div>
+        <div class="weui-flex index-follow-content">
+            {notempty name="info['follow_shares']"}
+                {volist name="info['follow_shares']" id="vo"}
+                <div class="weui-flex__item"><div class="index-fololw-border">{$vo[0]|default='/'}</div></div>
+                {/volist}
+            {else/}
+                <div class="weui-flex__item"><div class="index-fololw-border">/</div></div>
+            {/notempty}
+        </div>
+    </div>
+
+</div>
+{/block}
+{block name="script"}
+<script>
+    wx.config({
+        debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+        appId: '{$signPackage.appId}', // 必填，公众号的唯一标识
+        timestamp: '{$signPackage.timestamp}', // 必填，生成签名的时间戳
+        nonceStr: '{$signPackage.nonceStr}', // 必填，生成签名的随机串
+        signature: '{$signPackage.signature}',// 必填，签名
+        jsApiList: [
+            'checkJsApi', //判断当前客户端版本是否支持指定JS接口
+            'updateAppMessageShareData',
+            'updateTimelineShareData',
+            'onMenuShareTimeline', //分享给好友
+            'onMenuShareAppMessage'//分享到朋友圈
+        ] // 必填，需要使用的JS接口列表
+    });
+
+    wx.ready(function(){
+        // config信息验证后会执行ready方法，所有接口调用都必须在config接口获得结果之后，config是一个客户端的异步操作，所以如果需要在页面加载时就调用相关接口，则须把相关接口放在ready函数中调用来确保正确执行。对于用户触发时才调用的接口，则可以直接调用，不需要放在ready函数中。
+        // 在这里调用 API
+        wx.checkJsApi({
+            jsApiList: [
+                "updateAppMessageShareData",
+                "updateTimelineShareData",
+                "onMenuShareTimeline",
+                "onMenuShareAppMessage"], // 需要检测的JS接口列表，所有JS接口列表见附录2,
+            success: function(res) {
+                if(res.errMsg !='checkJsApi:ok'){
+                    alert('请升级您的微信版本');
+                    return;
+                }
+            }
+        });
+//                自定义“分享给朋友”及“分享到QQ”按钮的分享内容（1.4.0）
+        wx.updateAppMessageShareData({
+            title: '{$signPackage.title}', // 分享标题
+            desc: '{$signPackage.desc}', // 分享描述
+            link: '{$signPackage.url}', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+            imgUrl: '{$signPackage.imgurl}', // 分享图标
+            success: function () {
+                // 设置成功
+                console.log('分享成功');
+            },
+            cancel:function () {
+                console.log('取消分享');
+            }
+        });
+//                自定义“分享到朋友圈”及“分享到QQ空间”按钮的分享内容（1.4.0）
+        wx.updateTimelineShareData({
+            title: '{$signPackage.title}', // 分享标题
+            link: '{$signPackage.url}', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+            imgUrl: '{$signPackage.imgurl}', // 分享图标
+            success: function () {
+                // 设置成功
+                console.log('分享成功');
+            },
+            cancel:function () {
+                console.log('取消分享');
+            }
+        })
+    });
+</script>
+
+{/block}

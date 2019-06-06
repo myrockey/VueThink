@@ -1,0 +1,424 @@
+{extend name="Public:base" /}
+      {block name="seo"}
+              <title>{$topicinfo['title']}|{$groupinfo['name']}|帖子详情页|{$Think.CONFIG.WEB_SITE_TITLE} - Powered by EasySNS!</title>
+  
+  
+  <meta name="keywords" content="{$Think.CONFIG.WEB_SITE_KEYWORD}">
+  <meta name="description" content="{$Think.CONFIG.WEB_SITE_DESCRIPTION}">
+      {/block}
+{block name="body"}
+<div class="container " >
+<div class="group-header" style="background:url({$groupinfo['bg_id']|get_groupbg});background-repeat: no-repeat;background-size: 100% 100%;">
+  <div class="media">
+    <div class="media-left">
+      <a href="#">
+        <img src="{$groupinfo['cover_id']|get_groupavatar}" alt="{$groupinfo['name']}" class="avatar-square-md">
+      </a>
+    </div>
+    <div class="media-body">
+      <h2 class="media-heading">
+        {$groupinfo['name']}
+        
+        {if condition="$usergroupinfo neq null"}
+           <a id="add-btn" class="btn btn-default btn-sm es-margin-l-10 js-add-btn" data-url="{:url('group/joingroup',array('id'=>$groupid))}">退出小组</a>
+                
+        {else/}
+           <a id="add-btn" class="btn btn-success btn-sm es-margin-l-10 js-add-btn" data-url="{:url('group/joingroup',array('id'=>$groupid))}">加入小组</a>
+                
+        {/if}
+               
+      </h2>
+      <div class="media-metas">
+
+        {$groupinfo['membercount']}个成员
+        <span class="es-margin-l-10">{$groupinfo['topiccount']}个话题</span>
+        <span class="fsn es-margin-l-10">创建时间：{$groupinfo['create_time']|friendlyDate}</span>
+
+      </div>
+    </div>
+  </div>
+  <div class="image-overlay image-overlay-o"></div>
+</div>
+	
+	<div class="row">
+      <div class="col-md-8 group-main">
+
+  <div class="panel panel-default group-thread">
+    <div class="panel-heading">
+      <ol class="breadcrumb">
+        <li><a href="{:url('index/index')}">{$Think.config.WEB_SITE_TITLE}</a></li>
+        <li><a href="{:url('group/index',array('id'=>$groupinfo['id']))}">{$groupinfo['name']}</a></li>
+        <li class="active">{$topicinfo['title']}</li>
+      </ol>
+      <h2>
+        {$topicinfo['title']}
+        {if condition="$topicinfo['choice'] eq 1"}
+                <span class="label label-warning">精</span>{/if}
+                {if condition="$topicinfo['settop'] eq 1"}
+                      <span class="label label-danger">置顶</span>
+      {/if}
+           </h2>
+          
+      <div class="actions thread-list" id="thread-list">
+      
+       {if condition="$topicinfo['uid'] neq $uid"}
+      
+      {if condition="$topicinfo['hassc'] eq 1"}
+              <a class="btn btn-link  collect-btn" data-url="{:url('group/sctopic')}" href="javascript:;" data-id="{$topicinfo['id']}"><i class="iconfont icon-shoucang01-copy"></i> 已收藏</a>
+        
+      {else/}
+              <a class="btn btn-link  collect-btn" data-url="{:url('group/sctopic')}" href="javascript:;" data-id="{$topicinfo['id']}"><i class="iconfont icon-shoucang"></i> 收藏</a>
+        
+      {/if}
+        {/if}
+          </div>
+      <div class="metas clearfix">
+
+        发表于 {$topicinfo.create_time|friendlyDate}
+        <span class="divider">•</span>
+        <span>{$topicinfo['view']} 次查看</span>
+
+
+      </div>
+    </div>
+    <div class="panel-body editor-text" id="post-action">
+             <style>
+            .editor-text img{max-width:100%;}
+             
+             </style>
+            
+            {$topicinfo['content']|htmlspecialchars_decode}
+            
+            
+            
+            <div class="mtl">
+
+                  <a class="btn btn-link" {if condition="$viewl eq 2"}href="{:url('group/gview',array('id'=>$topicid,'ctype'=>$ctype,'viewl'=>1))}" {else/}href="{:url('group/gview',array('id'=>$topicid,'ctype'=>$ctype,'viewl'=>2))}"{/if}><span class="iconfont icon-icon"></span> 
+                  {if condition="$viewl eq 1"}只看楼主回复{else/}查看全部回复{/if}
+                  </a>
+                
+                  <a type="button" class="btn btn-link " {if condition="$ctype eq 2"}href="{:url('group/gview',array('id'=>$topicid,'ctype'=>1,'viewl'=>$viewl))}" {else/}href="{:url('group/gview',array('id'=>$topicid,'ctype'=>2,'viewl'=>$viewl))}"{/if}><span class="iconfont icon-diandaoxulie"></span> {if condition="$ctype eq 2"}正序查看回复{else/}倒序查看回复{/if}</a>
+        
+                
+        
+                 <a class="btn btn-link pull-right" href="#post-thread-form">
+          <i class="hz-icon icon-textsms"></i>
+          回复
+        </a>
+      </div>
+    </div>
+  </div>
+
+              <div class="panel panel-default group-post-list">
+    <div class="panel-heading">
+      {$topicinfo['reply']}回复
+    </div>
+    <div class="panel-body">
+
+      <ul class="media-list">
+                           {volist name="commentlist" id="vo"} 
+                            <li id="comment-{$vo.id}" class="media">
+                  <a class="pull-left js-user-card" href="{:url('user/home',array('id'=>$vo.uid))}" data-user-id="{$vo.uid}">
+    <img class="avatar-sm " src="{$vo.userhead|getheadurl}" 　alt="{$vo.nickname}">
+  </a>
+  
+                    <div class="media-body">
+              <div class="metas">
+                <span class="floor">
+              
+                                      {$vo.floor}楼
+                                  </span>
+                <strong>    <a class="link-light " href="{:url('user/home',array('id'=>$vo.uid))}">{$vo.nickname}</a>
+  </strong>
+                <span class="mhm">{$vo.create_time|friendlyDate} </span>
+              </div>
+
+              <div class="content">
+                {$vo.content|htmlspecialchars_decode}
+              </div>
+
+              <div class="actions">
+                                
+                     
+ <a  href="javascript:" class="reply" id="reply-{$vo.id}" postid="{$vo.id}" postname="{$vo.nickname}" >回复({:count($vo['child'])})</a>
+                 {if condition="count($vo['child']) gt 0"}
+                 &nbsp;&nbsp;
+                  <a href="javascript:" class="unreply" id="unreply-{$vo.id}" postid="{$vo.id}">收起</a>
+                  {/if}
+                              </div>
+                               {if condition="count($vo['child']) gt 0"}
+              <div class="reply-{$vo.id}">
+                              <div class="well">
+  <div class="reply-post-list-{$vo.id}">
+    <ul class="media-list">
+             
+              {volist name="vo['child']" id="subvo"}       
+              <li class="media li-reply-{$vo.id}">
+                <a class="pull-left js-user-card" href="{:url('user/home',array('id'=>$subvo.uid))}" data-user-id="{$subvo.uid}">
+    <img class="avatar-sm " src="{$subvo.userhead|getheadurl}" 　alt="{$subvo.nickname}">
+  </a>
+  
+          <div class="media-body">
+            <div class="metas">
+              <strong>    <a class="link-light " href="{:url('user/home',array('id'=>$subvo.uid))}">{$subvo.nickname}</a>
+  </strong>
+              <span class="mhm"> {$subvo.create_time|friendlyDate}</span>
+            </div>
+            <div class="content">
+            {$subvo.content|htmlspecialchars_decode}
+            </div>
+           
+            <div class="text-muted text-normal pull-right">
+                            <a href="javascript:" class="li-reply" postid="{$vo.id}" postname="{$subvo.nickname}" data-from-user-id="{$subvo.uid}"> 回复</a>
+            </div>
+          </div>
+        </li>
+             {/volist} 
+
+    </ul>
+
+  </div>
+  
+</div>
+                            </div>
+                            
+                              {/if}
+                <div>
+            </div>
+                    </div></li>
+                           {/volist}
+              </ul>
+
+     {$commentlist->render()}
+
+
+
+    </div>
+  </div>
+    <div class="panel panel-default">
+    <div class="panel-heading">发表回复</div>
+    <div class="panel-body ">
+
+              <form id="post-thread-form" class="post-thread-form thread-form hz-unlogin-editor " method="post" post-url="#" >
+
+          <div class="form-group">
+              <label class="control-label hide" for="post_content">回复内容</label>
+              <div class="controls">
+              <div class="help-block" id="replycontent"></div>
+              <textarea name="content" rows="10" id="post_content" class="form-control" >                
+              </textarea>
+           
+               {:hook('ArticleEditor', array('name'=> 'content','number'=>10000,'value'=> '','items'=>json_encode(array('justifyleft','justifycenter','justifyright','justifyfull', '|','fontname','fontsize','forecolor','hilitecolor', '|','bold', 'italic','underline','removeformat', '|','emoticons','table', 'link','unlink'))))}
+              </div>
+          </div>
+          <div class="form-group">
+            <div class="controls clearfix">
+            <button id="post-thread-btn" data-url="{:url('group/commentadd')}" type="button" class="post-thread-btn btn btn-primary pull-right ajax-post" >发表</button>
+            </div>
+          </div>
+          <input type="hidden" name="pidcontent" id="pidcontent" value="0">
+                       <input type="hidden" name="fid" value="{$topicinfo['id']}">
+                    <input type="hidden" name="pid" value="0" id="replypid">
+          <div class="hz-login-editor"></div>
+        </form>
+     
+    </div>
+  </div>
+
+     </div>
+
+      <div class="col-md-4 group-side">
+          <div class="panel panel-default">
+    <div class="panel-heading">话题作者</div>
+    <div class="panel-body">
+      <div class="media">
+           <a class="pull-left js-user-card" href="{:url('user/home',array('id'=>$topicinfo.uid))}"  title="{$topicinfo.nickname}">
+    <img class="avatar-sm" src="{$topicinfo.userhead|getheadurl}" alt="{$topicinfo.nickname}">
+      </a>
+  
+        <div class="media-body">
+          <div class="metas mbm">
+            <strong>    <a class="link-light " href="{:url('user/home',array('id'=>$topicinfo.uid))}">{$topicinfo.nickname}</a>
+  </strong>
+          </div>
+          <div class="content"> <span class="text-muted">头衔:</span>
+          {if condition="$topicinfo['statusdes'] neq null"}{$topicinfo.statusdes}{else/} 无{/if}
+         </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+          <div class="panel panel-default">
+  <div class="panel-heading">活跃成员</div>
+  <div class="panel-body">
+          <ul class="user-grids">
+          {volist name="memberlist" id="vo"}
+                  <li style="width:22%;">
+              <a class="user-link user-avatar-link pull-left media-object media-object-small  js-user-card" href="{:url('user/home',array('id'=>$vo.uid))}" >
+    <img class="avatar-sm" src="{$vo.userhead|getheadurl}" alt="{$vo.nickname}">
+    
+      {if condition="$vo['grades'] eq -1"}
+          <span class="iconfont icon-renzheng-copy positionrz" title="达人"></span> 
+          {/if}
+    
+      </a>
+  
+            <p>
+                  <a class="link-light link-muted" href="{:url('user/home',array('id'=>$vo.uid))}">{$vo.nickname}</a>
+  
+            </p>
+          </li>
+               {/volist}
+              </ul>
+        <br>
+  </div>
+</div>          </div>
+    </div>
+	
+	
+</div>
+
+
+
+
+ {/block}		
+{block name="script"}
+<script>
+$(function(){
+	 $('.collect-btn').click(function(){
+         
+         var url=$(this).data('url');
+         var id=$(this).data('id');
+        
+         $.post(url,{id:id},function(data){
+        	 console.log(data);
+         if(data.code==1){
+        	    if($(".collect-btn").find('i').hasClass('icon-shoucang01-copy')){
+        	          
+        	          $(".collect-btn").html("<i class='iconfont icon-shoucang'></i> 收藏");
+        	          }else{
+        	          
+        	           $(".collect-btn").html("<i class='iconfont icon-shoucang01-copy'></i> 已收藏");
+        	          
+        	          }
+          layer.msg(data.msg, {icon: 1, time: 1000}, function(){
+          
+      
+         
+         
+          
+          });
+         
+         }else{
+         
+          layer.msg(data.msg, {icon: 2, anim: 6, time: 1000});
+         
+         }
+         
+         
+         
+         });
+         
+         
+         });
+	 
+	 
+	 $('.li-reply').click(function(){
+         
+         var nickname=$(this).attr('postname');
+          var pid=$(this).attr('postid');
+          $('#replypid').val(pid);
+          $('#pidcontent').val('回复'+nickname+':');
+          $('#replycontent').html('回复'+nickname+':');
+          location.href = "#post-thread-form";
+         
+         });
+	
+	
+$('.unreply').click(function(){
+	
+	if($(this).html()=='展开'){
+		 $(this).closest('.media-body').find('.reply-'+$(this).attr('postid')).slideDown("slow");
+	        $(this).html('收起');
+	}else{
+		 $(this).closest('.media-body').find('.reply-'+$(this).attr('postid')).slideUp("slow");
+	        $(this).html('展开');
+	}
+       
+        
+        });  
+	
+	
+	
+    $('.reply').click(function(){
+        
+        $('#replypid').val($(this).attr('postid'));
+        location.href = "#post-thread-form";
+        
+        });    
+
+	$('.post-thread-btn').click(function(){
+		
+	    $.post($(this).data('url'),$('form#post-thread-form').serialize(),function(data){
+	    	
+		      if(data.code == 1){
+		       
+		        layer.msg(data.msg, {icon: 1, time: 1000}, function(){
+		          location.reload();
+		        });
+		      }else{
+		       
+		        layer.msg(data.msg, {icon: 2, anim: 6, time: 1000});
+		        
+		       
+		        
+		      }
+		    });
+		    return false;
+		
+		
+	});
+	
+	
+	$('.js-add-btn').click(function(){
+		var obj=$(this);
+		
+	    $.get($(this).data('url'),function(data){
+	    
+		      if(data.code == 1){
+		      
+		        layer.msg(data.msg, {icon: 1, time: 1000}, function(){
+		         
+		        	var html=$(obj).html();
+		        
+		        /* 	if(html=='退出小组'){
+		        		$(obj).html('加入小组');
+		        		$(obj).addClass('btn-success').removeClass('btn-default');
+		        	}else{
+		        		$(obj).html('退出小组');
+		        		$(obj).removeClass('btn-success').addClass('btn-default');
+		        	} */
+		        	
+		        	location.reload();	
+		        	
+		        	
+		        });
+		      }else{
+		      
+		        layer.msg(data.msg, {icon: 2, anim: 6, time: 1000});
+		        
+		     
+		        
+		      }
+		    });
+		
+		
+		
+	});
+	
+})
+
+</script>
+{/block}

@@ -1,0 +1,47 @@
+{extend name="base" /}
+{block name="body"}
+<blockquote class="layui-elem-quote news_search">
+    {notempty name='list'}
+    <div class="layui-inline">
+        <a class="layui-btn layui-btn-normal exportExcel" href="{:url('index/exportExcel',array('name'=>'周期精灵反馈列表','tabname'=>'question'))}">导出excel</a>
+    </div>
+    {/notempty}
+</blockquote>
+<div class="layui-form users_list">
+    <table class="layui-table">
+        <thead>
+        <tr>
+            <th>反馈用户</th>
+            <th>内容</th>
+            <th>创建时间</th>
+        </tr>
+        </thead>
+        {notempty name='list'}
+        <tbody class="users_content">
+        {foreach name="$list" item="vo"}
+        <tr>
+            <td>{$vo.member_nickname}</td>
+            <td>{$vo.content}</td>
+            <td>{$vo.create_time|friendlyDate='full'}</td>
+        </tr>
+        {/foreach}
+        </tbody>
+        {else/}
+        <tbody class="users_content">
+        <tr class="odd">
+            <td colspan="8" class="text-center" valign="top">{:config('empty_list_describe')}</td>
+        </tr>
+        </tbody>
+        {/notempty}
+    </table>
+</div>
+
+
+{/block}
+{block name="page"}
+<div class="btable-paged">
+    <div class="layui-main">
+        {$list->render()}
+    </div>
+</div>
+{/block}

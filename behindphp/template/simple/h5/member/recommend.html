@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <link rel="stylesheet" href="__PUBLIC__/h5/css/weui.css"/>
+    <link rel="stylesheet" href="__PUBLIC__/h5/css/weuix.min.css"/>
+    <script type="text/javascript">document.write("<link rel='stylesheet' type='text/css' href='/public/h5/css/style.css?random=" + Math.random() + "' />");</script>
+    <script src="__PUBLIC__/h5/js/zepto.min.js"></script>
+    <script src="__PUBLIC__/h5/js/zepto.weui.js"></script>
+    <script src="__PUBLIC__/h5/js/iscroll-lite.js"></script>
+    <script src="__PUBLIC__/h5/js/php.js"></script>
+    <script src="http://res2.wx.qq.com/open/js/jweixin-1.4.0.js "></script>
+
+    <script>
+        wx.config({
+            debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+            appId: '{$signPackage.appId}', // 必填，公众号的唯一标识
+            timestamp: '{$signPackage.timestamp}', // 必填，生成签名的时间戳
+            nonceStr: '{$signPackage.nonceStr}', // 必填，生成签名的随机串
+            signature: '{$signPackage.signature}',// 必填，签名
+            jsApiList: [
+                'checkJsApi', //判断当前客户端版本是否支持指定JS接口
+                'updateAppMessageShareData',
+                'updateTimelineShareData',
+                'onMenuShareTimeline', //分享给好友
+                'onMenuShareAppMessage'//分享到朋友圈
+            ] // 必填，需要使用的JS接口列表
+        });
+
+        wx.ready(function(){
+            // config信息验证后会执行ready方法，所有接口调用都必须在config接口获得结果之后，config是一个客户端的异步操作，所以如果需要在页面加载时就调用相关接口，则须把相关接口放在ready函数中调用来确保正确执行。对于用户触发时才调用的接口，则可以直接调用，不需要放在ready函数中。
+            // 在这里调用 API
+            wx.checkJsApi({
+                jsApiList: [
+                    "updateAppMessageShareData",
+                    "updateTimelineShareData",
+                    "onMenuShareTimeline",
+                    "onMenuShareAppMessage"], // 需要检测的JS接口列表，所有JS接口列表见附录2,
+                success: function(res) {
+                    if(res.errMsg !='checkJsApi:ok'){
+                        alert('请升级您的微信版本');
+                        return;
+                    }
+                }
+            });
+//                自定义“分享给朋友”及“分享到QQ”按钮的分享内容（1.4.0）
+            wx.updateAppMessageShareData({
+                title: '{$signPackage.title}', // 分享标题
+                desc: '{$signPackage.desc}', // 分享描述
+                link: '{$signPackage.url}', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+                imgUrl: '{$signPackage.imgurl}', // 分享图标
+                success: function () {
+                    // 设置成功
+                    console.log('分享成功');
+                },
+                cancel:function () {
+                    console.log('取消分享');
+                }
+            });
+//                自定义“分享到朋友圈”及“分享到QQ空间”按钮的分享内容（1.4.0）
+            wx.updateTimelineShareData({
+                title: '{$signPackage.title}', // 分享标题
+                link: '{$signPackage.url}', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+                imgUrl: '{$signPackage.imgurl}', // 分享图标
+                success: function () {
+                    // 设置成功
+                    console.log('分享成功');
+                },
+                cancel:function () {
+                    console.log('取消分享');
+                }
+            })
+        });
+        $(function(){
+
+        })
+
+    </script>
+</head>
+
+<body ontouchstart>
+
+<div class="page-bd page-bg-recommend">
+<div class="recommend-box">
+     <div class="recommend-head">
+         <div class="recommend-desc">专注于短线投资研究</div>
+         <div class="recommend-desc">赢在起跑线</div>
+
+     </div>
+     <div class="recommend-main">
+         <img class="qrcode" src="{$info.qrcode}" alt="qrcode"/>
+         <div class="recommend-main-desc">邀请码：<span>{$info.recommendCode}</span></div>
+         <div class="recommend-main-desc font-12">长按识别二维码</div>
+         <div class="recommend-main-desc"><a href="javascript:;" class="weui-btn weui-btn_primary" onclick="share()">分享到朋友圈</a></div>
+     </div>
+</div>
+    <a class="goback" href="{:url('member/index')}"><span class="icon icon-109"></span>返回</a>
+</div>
+</body>
+</html>

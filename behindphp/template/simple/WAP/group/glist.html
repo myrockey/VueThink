@@ -1,0 +1,95 @@
+{extend name="Public:base" /}
+      {block name="seo"}
+     
+      {/block}
+      {block name="css"}
+
+      <style>
+      body{background: #fff;}
+      @media screen and (-webkit-min-device-pixel-ratio: 1.5)
+{
+.list-right .aui-list {
+    border: none;
+    background-size: 100% 0px;
+    }
+    }
+      </style>
+      
+      {/block}
+{block name="body"}
+<header class="aui-bar aui-bar-nav aui-bg-white aui-fixed aui-border-b" >
+    <a class="aui-pull-left aui-btn" href="javascript:history.back(-1);">
+        <span class="aui-iconfont aui-icon-left"></span>
+    </a>
+    <div class="aui-title">全部小组</div>
+   
+</header>
+
+<div class="content-list " id="wrapper">
+	    	<div class="list-left" id="tab">
+	    	{volist name="waplist" id="vo"}
+	    	
+	    	
+	    		<li data-id="{$vo.id}"  ><a href="javascript:;" >{$vo.name}&nbsp;{$vo.count}</a></li>
+	    	 {/volist}
+	    	</div>
+	    	<div class="list-right" id="content">
+	    	
+	    	<div class="aui-content ">
+     {volist name="waplist" id="vo"}
+        <ul class="aui-list aui-media-list" id="{$vo.id}">
+          {volist name="vo['child']" id="subvo"}
+            <li class="aui-list-item aui-list-item-middle dataurla" data-url="{:url('group/index',array('id'=>$subvo.id))}">
+                <div class="aui-media-list-item-inner">
+                    <div class="aui-list-item-media" style="width: 4rem;">
+                        <img src="{$subvo['cover_id']|get_picture_url}" class="aui-list-img-sm">
+                    </div>
+                    <div class="aui-list-item-inner ">
+                        <div class="aui-list-item-text">
+                            <div class="aui-list-item-title aui-font-size-14">{$subvo.name}</div>
+                            <div class="aui-list-item-right"></div>
+                        </div>
+                        <div class="aui-list-item-text aui-ellipsis-1">
+                            {$subvo.describe|htmlspecialchars_decode|clearHtml|msubstr=0,30}
+                        </div>
+                         <div class="aui-list-item-text ">
+                            成员:{$subvo.membercount}&nbsp;&nbsp;帖子:{$subvo.topiccount}
+                        </div>
+                    </div>
+                </div>
+            </li>
+             	 {/volist}       
+        </ul>
+       	 {/volist}       
+    </div>
+	    	
+	    		
+	    	</div>
+	    </div>
+ {/block}	
+ {block name="script"}
+ 
+
+ <script>
+
+
+
+ 
+ $(function(){
+	 
+
+	 
+	 
+	 
+	 $('.list-left li').click(function(){
+         $(this).addClass('current').siblings().removeClass('current');
+		 var id=$(this).data('id');
+		 $('#'+id).removeClass('aui-hide').siblings().addClass('aui-hide');
+	      
+	 });
+	 $('.list-left li:first').click();
+ });
+ </script>	
+
+
+ {/block}	

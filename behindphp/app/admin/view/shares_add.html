@@ -1,0 +1,484 @@
+{extend name="base" /}
+{block name="body"}
+
+<!--tab标签-->
+<div class="layui-tab-brief">
+
+    <div class="layui-tab-content">
+        <div class="layui-tab-item layui-show">
+            <form class="layui-form form-container" data-url="{:url('sharesAdd')}"
+                  localtion-url="{:url('sharesList')}">
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label">发布时间</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="title" value="{:date('Y-m-d H:i:s',time())}" required lay-verify="required"
+                               placeholder="发布时间长度为12,19个字符之间" class="layui-input">
+                    </div>
+                    <div class="layui-form-mid layui-word-aux">日期格式：2019/04/29 09:00:00或者2019-04-29 09:00:00</div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">市场连板指数</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="market_connectivity_index" value="" required lay-verify="required"
+                               placeholder="10.00" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">市场超跌指数</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="market_overfall_index" value="" required lay-verify="required"
+                               placeholder="0" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">操作建议</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="operation_suggestion" value="" placeholder="" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">周期</label>
+                    <div class="layui-input-inline input-width2">
+                        <input type="text" name="cycle_shares" value="" placeholder="多个股票以分号隔开" class="layui-input">
+                    </div>
+                    <div class="layui-form-mid layui-word-aux">例（股票名称|买入价|卖出价|日涨幅）：<span style="color:#1AA094">复旦复华|11.20|11.57|+3.58;国电自南|8.60|8.28|-6.53;赫美集团|16.37|16.48|+0.67;</span></div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">L2</label>
+                    <div class="layui-input-inline input-width2">
+                        <input type="text" name="grade2_shares" value="" placeholder="多个股票以分号隔开" class="layui-input">
+                    </div>
+                    <div class="layui-form-mid layui-word-aux">例（股票名称|买入价|卖出价|日涨幅）：<span style="color:#1AA094">复旦复华|11.20|11.57|+3.58;国电自南|8.60|8.28|-6.53;赫美集团|16.37|16.48|+0.67;</span></div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">L1</label>
+                    <div class="layui-input-inline input-width2">
+                        <input type="text" name="grade1_shares" value="" placeholder="多个股票以分号隔开" class="layui-input">
+                    </div>
+                    <div class="layui-form-mid layui-word-aux">例（股票名称|买入价|卖出价|日涨幅）：<span style="color:#1AA094">复旦复华|11.20|11.57|+3.58;国电自南|8.60|8.28|-6.53;赫美集团|16.37|16.48|+0.67;</span></div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">关注股</label>
+                    <div class="layui-input-inline input-width2">
+                        <input type="text" name="follow_shares" value="" placeholder="多个股票以分号隔开" class="layui-input">
+                    </div>
+                    <div class="layui-form-mid layui-word-aux">例（股票名称|买入价|卖出价|日涨幅）：<span style="color:#1AA094">复旦复华|11.20|11.57|+3.58;国电自南|8.60|8.28|-6.53;赫美集团|16.37|16.48|+0.67;</span></div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">荐股胜率</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="share_winning_rate" value="" placeholder="88.88" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">上传附件</label>
+                    <div class="layui-input-block">
+                        <div id='uploadFile_show_div2' style="width:120px;display: inline;">
+                            <div class="layui-word-aux">{$info['attatchment_id']|default='0'|get_file_url}</div>
+                        </div>
+
+                        <input type="hidden" name="attatchment_id" id='attatchment_id' value="{$info['attatchment_id']|default='0'}"/>
+                        <div id="uploadFile"></div>
+                        <span class="layui-btn layui-btn-primary layui-btn-small clearid" data-name="attatchment_id"
+                              data-divname="uploadFile_show_div2">清除附件</span>
+                    </div>
+                </div>
+
+                <link rel="stylesheet" href="__PUBLIC__/js/webuploader/webuploader.css"/>
+                <script src="__PUBLIC__/js/webuploader/webuploader.nolog.min.js"></script>
+                <script>
+                    $(function () {
+                        $('.clearid').click(function () {
+
+                            var id = $(this).data('name');
+                            var div = $(this).data('divname');
+                            $('#' + id).val(0);
+                            $('#' + div).html('');
+
+                        });
+
+                    });
+                    var uploadFile_param1 = WebUploader.create({
+
+                        // 选完文件后，是否自动上传。
+                        auto: true,
+
+                        // swf文件路径
+                        swf: "WEB_URL" + '/addon/imginput/static/dist/Uploader.swf',
+                        chunked: false,
+                        chunkSize: 512 * 1024,
+                        // 文件接收服务端。
+//                        server: "{:url('File/fileUpload')}",
+                        server: "{:url('Shares/insertExcel')}",
+
+                        // 选择文件的按钮。可选。
+                        // 内部根据当前运行是创建，可能是input元素，也可能是flash.
+                        pick: {
+                            id: '#uploadFile',
+                            label: '导入EXCEL'
+                        },
+                        //文件数量限制验证，不限制
+//                        fileNumLimit: 1,
+                        //去重不开启，默认false开启
+                        duplicate:true,
+                        disableGlobalDnd: true,
+                        // 只允许选择图片文件。
+//                        accept: {}
+                        //只允许上传excel
+                        accept: {
+                            title: 'Files',
+                            extensions: 'xls,xlsx',
+                            mimeTypes: 'application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+                        }
+                    });
+
+                    uploadFile_param1.on('uploadSuccess', function (file, response) {
+                        console.log(file)
+                        console.log(response)
+                        if(response.code == 1){
+                            var show_img_url = response.headpath;
+
+                            $('#uploadFile_show_div2').html('<div class="layui-word-aux">'+show_img_url+'</div>');
+                            $('#attatchment_id').val(response.id);
+                            if(response.title)$('input[name="title"]').val(response.title);
+                            $('input[name="market_connectivity_index"]').val(response.market_connectivity_index);
+                            $('input[name="market_overfall_index"]').val(response.market_overfall_index);
+                            $('input[name="operation_suggestion"]').val(response.operation_suggestion);
+                            $('input[name="share_winning_rate"]').val(response.share_winning_rate);
+                            $('input[name="cycle_shares"]').val(response.cycle_shares);
+                            $('input[name="grade2_shares"]').val(response.grade2_shares);
+                            $('input[name="grade1_shares"]').val(response.grade1_shares);
+                            $('input[name="follow_shares"]').val(response.follow_shares);
+
+                            layer.msg('导入成功', {icon: 1, anim: 6, time: 1000});
+                        }else{
+                            layer.msg(response.msg, {icon: 2, anim: 6, time: 2000});
+                        }
+
+                    });
+                    uploadFile_param1.on('error', function (type ) {
+                        layer.msg('上传错误：'+type, {icon: 2, anim: 6, time: 2000});
+
+                    });
+
+                </script>
+<!--                <div class="layui-form-item">
+                    <label class="layui-form-label">多空分析图1</label>
+                    <div class="layui-input-block">
+
+                        <div id='upload_show_img1_id' style="width:120px;display: inline;">
+                            <img style='max-width:100px; margin-right: 20px;'
+                                 src="{$info['img1_id']|default='0'|get_picture_url}"/>
+                        </div>
+
+                        <input type="hidden" name="img1_id" id='img1_id' value="{$info['img1_id']|default='0'}"/>
+                        <div id="img1_id_div"></div>
+                        <span class="layui-btn layui-btn-primary layui-btn-small clearid clearImgId" data-name="img1_id"
+                              data-divname="upload_show_img1_id">清除图片</span>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">多空分析图2</label>
+                    <div class="layui-input-block">
+
+                        <div id='upload_show_img2_id' style="width:120px;display: inline;">
+                            <img style='max-width:100px; margin-right: 20px;'
+                                 src="{$info['img2_id']|default='0'|get_picture_url}"/>
+                        </div>
+
+                        <input type="hidden" name="img2_id" id='img2_id' value="{$info['img2_id']|default='0'}"/>
+                        <div id="img2_id_div"></div>
+                        <span class="layui-btn layui-btn-primary layui-btn-small clearid clearImgId" data-name="img2_id"
+                              data-divname="upload_show_img2_id">清除图片</span>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">多空分析图3</label>
+                    <div class="layui-input-block">
+
+                        <div id='upload_show_img3_id' style="width:120px;display: inline;">
+                            <img style='max-width:100px; margin-right: 20px;'
+                                 src="{$info['img3_id']|default='0'|get_picture_url}"/>
+                        </div>
+
+                        <input type="hidden" name="img3_id" id='img3_id' value="{$info['img3_id']|default='0'}"/>
+                        <div id="img3_id_div"></div>
+                        <span class="layui-btn layui-btn-primary layui-btn-small clearid clearImgId" data-name="img3_id"
+                              data-divname="upload_show_img3_id">清除图片</span>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">多空分析图4</label>
+                    <div class="layui-input-block">
+
+                        <div id='upload_show_img4_id' style="width:120px;display: inline;">
+                            <img style='max-width:100px; margin-right: 20px;'
+                                 src="{$info['img4_id']|default='0'|get_picture_url}"/>
+                        </div>
+
+                        <input type="hidden" name="img4_id" id='img4_id' value="{$info['img4_id']|default='0'}"/>
+                        <div id="img4_id_div"></div>
+                        <span class="layui-btn layui-btn-primary layui-btn-small clearid clearImgId" data-name="img4_id"
+                              data-divname="upload_show_img4_id">清除图片</span>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">多空分析图5</label>
+                    <div class="layui-input-block">
+
+                        <div id='upload_show_img5_id' style="width:120px;display: inline;">
+                            <img style='max-width:100px; margin-right: 20px;'
+                                 src="{$info['img5_id']|default='0'|get_picture_url}"/>
+                        </div>
+
+                        <input type="hidden" name="img5_id" id='img5_id' value="{$info['img5_id']|default='0'}"/>
+                        <div id="img5_id_div"></div>
+                        <span class="layui-btn layui-btn-primary layui-btn-small clearid clearImgId" data-name="img5_id"
+                              data-divname="upload_show_img5_id">清除图片</span>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">多空分析图6</label>
+                    <div class="layui-input-block">
+
+                        <div id='upload_show_img6_id' style="width:120px;display: inline;">
+                            <img style='max-width:100px; margin-right: 20px;'
+                                 src="{$info['img6_id']|default='0'|get_picture_url}"/>
+                        </div>
+
+                        <input type="hidden" name="img6_id" id='img6_id' value="{$info['img6_id']|default='0'}"/>
+                        <div id="img6_id_div"></div>
+                        <span class="layui-btn layui-btn-primary layui-btn-small clearid clearImgId" data-name="img6_id"
+                              data-divname="upload_show_img6_id">清除图片</span>
+                    </div>
+                </div>
+                <script>
+                    $(function () {
+                        $('.clearImgId').click(function () {
+                            var id = $(this).data('name');
+                            var div = $(this).data('divname');
+                            $('#' + id).val(0);
+                            $('#' + div).find('img').attr('src', '__PUBLIC__/images/onimg.png');
+                        });
+                    });
+                    var uploadImg_param1 = WebUploader.create({
+                        // 选完文件后，是否自动上传。
+                        auto: true,
+                        // swf文件路径
+                        swf: "WEB_URL" + '/addon/imginput/static/dist/Uploader.swf',
+                        chunked: false,
+                        chunkSize: 512 * 1024,
+                        // 文件接收服务端。
+                        server: "{:url('File/pictureUpload')}",
+                        // 选择文件的按钮。可选。
+                        // 内部根据当前运行是创建，可能是input元素，也可能是flash.
+                        pick: {
+                            id: '#img1_id_div',
+                            label: '点击选择文件'
+                        },
+                        duplicate: true,
+//                        fileNumLimit: 1,
+                        disableGlobalDnd: true,
+                        // 只允许选择图片文件。
+                        accept: {
+                            title: 'Images',
+                            extensions: 'gif,jpg,jpeg,bmp,png',
+                            mimeTypes: 'image/*'
+                        }
+                    });
+                    uploadImg_param1.on('uploadSuccess', function (file, response) {
+                        var show_img_url = response.headpath;
+                        $('#upload_show_img1_id').html("<img style='max-width:100px; margin-right: 20px;' src='" + show_img_url + "' />");
+                        $('#img1_id').val(response.id);
+                    });
+                    uploadImg_param1.on('error', function (type) {
+                        layer.msg('上传错误：' + type, {icon: 2, anim: 6, time: 2000});
+                    });
+
+                    var uploadImg_param2 = WebUploader.create({
+                        // 选完文件后，是否自动上传。
+                        auto: true,
+                        // swf文件路径
+                        swf: "WEB_URL" + '/addon/imginput/static/dist/Uploader.swf',
+                        chunked: false,
+                        chunkSize: 512 * 1024,
+                        // 文件接收服务端。
+                        server: "{:url('File/pictureUpload')}",
+                        // 选择文件的按钮。可选。
+                        // 内部根据当前运行是创建，可能是input元素，也可能是flash.
+                        pick: {
+                            id: '#img2_id_div',
+                            label: '点击选择文件'
+                        },
+                        duplicate: true,
+//                        fileNumLimit: 1,
+                        disableGlobalDnd: true,
+                        // 只允许选择图片文件。
+                        accept: {
+                            title: 'Images',
+                            extensions: 'gif,jpg,jpeg,bmp,png',
+                            mimeTypes: 'image/*'
+                        }
+                    });
+                    uploadImg_param2.on('uploadSuccess', function (file, response) {
+                        var show_img_url = response.headpath;
+                        $('#upload_show_img2_id').html("<img style='max-width:100px; margin-right: 20px;' src='" + show_img_url + "' />");
+                        $('#img2_id').val(response.id);
+                    });
+                    uploadImg_param2.on('error', function (type) {
+                        layer.msg('上传错误：' + type, {icon: 2, anim: 6, time: 2000});
+                    });
+
+                    var uploadImg_param3 = WebUploader.create({
+                        // 选完文件后，是否自动上传。
+                        auto: true,
+                        // swf文件路径
+                        swf: "WEB_URL" + '/addon/imginput/static/dist/Uploader.swf',
+                        chunked: false,
+                        chunkSize: 512 * 1024,
+                        // 文件接收服务端。
+                        server: "{:url('File/pictureUpload')}",
+                        // 选择文件的按钮。可选。
+                        // 内部根据当前运行是创建，可能是input元素，也可能是flash.
+                        pick: {
+                            id: '#img3_id_div',
+                            label: '点击选择文件'
+                        },
+                        duplicate: true,
+//                        fileNumLimit: 1,
+                        disableGlobalDnd: true,
+                        // 只允许选择图片文件。
+                        accept: {
+                            title: 'Images',
+                            extensions: 'gif,jpg,jpeg,bmp,png',
+                            mimeTypes: 'image/*'
+                        }
+                    });
+                    uploadImg_param3.on('uploadSuccess', function (file, response) {
+                        var show_img_url = response.headpath;
+                        $('#upload_show_img3_id').html("<img style='max-width:100px; margin-right: 20px;' src='" + show_img_url + "' />");
+                        $('#img3_id').val(response.id);
+                    });
+                    uploadImg_param3.on('error', function (type) {
+                        layer.msg('上传错误：' + type, {icon: 2, anim: 6, time: 2000});
+                    });
+
+                    var uploadImg_param4 = WebUploader.create({
+                        // 选完文件后，是否自动上传。
+                        auto: true,
+                        // swf文件路径
+                        swf: "WEB_URL" + '/addon/imginput/static/dist/Uploader.swf',
+                        chunked: false,
+                        chunkSize: 512 * 1024,
+                        // 文件接收服务端。
+                        server: "{:url('File/pictureUpload')}",
+                        // 选择文件的按钮。可选。
+                        // 内部根据当前运行是创建，可能是input元素，也可能是flash.
+                        pick: {
+                            id: '#img4_id_div',
+                            label: '点击选择文件'
+                        },
+                        duplicate: true,
+//                        fileNumLimit: 1,
+                        disableGlobalDnd: true,
+                        // 只允许选择图片文件。
+                        accept: {
+                            title: 'Images',
+                            extensions: 'gif,jpg,jpeg,bmp,png',
+                            mimeTypes: 'image/*'
+                        }
+                    });
+                    uploadImg_param4.on('uploadSuccess', function (file, response) {
+                        var show_img_url = response.headpath;
+                        $('#upload_show_img4_id').html("<img style='max-width:100px; margin-right: 20px;' src='" + show_img_url + "' />");
+                        $('#img4_id').val(response.id);
+                    });
+                    uploadImg_param4.on('error', function (type) {
+                        layer.msg('上传错误：' + type, {icon: 2, anim: 6, time: 2000});
+                    });
+
+                    var uploadImg_param5 = WebUploader.create({
+                        // 选完文件后，是否自动上传。
+                        auto: true,
+                        // swf文件路径
+                        swf: "WEB_URL" + '/addon/imginput/static/dist/Uploader.swf',
+                        chunked: false,
+                        chunkSize: 512 * 1024,
+                        // 文件接收服务端。
+                        server: "{:url('File/pictureUpload')}",
+                        // 选择文件的按钮。可选。
+                        // 内部根据当前运行是创建，可能是input元素，也可能是flash.
+                        pick: {
+                            id: '#img5_id_div',
+                            label: '点击选择文件'
+                        },
+                        duplicate: true,
+//                        fileNumLimit: 1,
+                        disableGlobalDnd: true,
+                        // 只允许选择图片文件。
+                        accept: {
+                            title: 'Images',
+                            extensions: 'gif,jpg,jpeg,bmp,png',
+                            mimeTypes: 'image/*'
+                        }
+                    });
+                    uploadImg_param5.on('uploadSuccess', function (file, response) {
+                        var show_img_url = response.headpath;
+                        $('#upload_show_img5_id').html("<img style='max-width:100px; margin-right: 20px;' src='" + show_img_url + "' />");
+                        $('#img5_id').val(response.id);
+                    });
+                    uploadImg_param5.on('error', function (type) {
+                        layer.msg('上传错误：' + type, {icon: 2, anim: 6, time: 2000});
+                    });
+                    var uploadImg_param6 = WebUploader.create({
+                        // 选完文件后，是否自动上传。
+                        auto: true,
+                        // swf文件路径
+                        swf: "WEB_URL" + '/addon/imginput/static/dist/Uploader.swf',
+                        chunked: false,
+                        chunkSize: 512 * 1024,
+                        // 文件接收服务端。
+                        server: "{:url('File/pictureUpload')}",
+                        // 选择文件的按钮。可选。
+                        // 内部根据当前运行是创建，可能是input元素，也可能是flash.
+                        pick: {
+                            id: '#img6_id_div',
+                            label: '点击选择文件'
+                        },
+                        duplicate: true,
+//                        fileNumLimit: 1,
+                        disableGlobalDnd: true,
+                        // 只允许选择图片文件。
+                        accept: {
+                            title: 'Images',
+                            extensions: 'gif,jpg,jpeg,bmp,png',
+                            mimeTypes: 'image/*'
+                        }
+                    });
+                    uploadImg_param6.on('uploadSuccess', function (file, response) {
+                        var show_img_url = response.headpath;
+                        $('#upload_show_img6_id').html("<img style='max-width:100px; margin-right: 20px;' src='" + show_img_url + "' />");
+                        $('#img6_id').val(response.id);
+                    });
+                    uploadImg_param6.on('error', function (type) {
+                        layer.msg('上传错误：' + type, {icon: 2, anim: 6, time: 2000});
+                    });
+
+                </script>-->
+
+
+                <div class="btable-paged">
+                    <div class="layui-main">
+                        <div class="formbtngroup">
+                            <button class="layui-btn layui-btn-small" lay-submit="" lay-filter="formadd">添加</button>
+                            <a href="javascript:;"
+                               class="layui-btn layui-btn-primary layui-btn-small closebtn">返回</a>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{/block}

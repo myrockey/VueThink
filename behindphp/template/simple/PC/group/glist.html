@@ -1,0 +1,76 @@
+{extend name="Public:base" /}
+      {block name="seo"}
+           <title>小组列表|{$Think.CONFIG.WEB_SITE_TITLE} - Powered by EasySNS!</title>
+  
+  
+  <meta name="keywords" content="{$Think.CONFIG.WEB_SITE_KEYWORD}">
+  <meta name="description" content="{$Think.CONFIG.WEB_SITE_DESCRIPTION}">
+      {/block}
+{block name="body"}
+<div class="container" id="content-container"> 
+          <div class="panel panel-default panel-lg group-all">
+    <div class="panel-heading">
+
+      <div class="row">
+        <div class="col-sm-8"><h1>小组搜索</h1></div>
+        <div class="col-sm-4">
+          <form class="form-inline pull-right" id="form_group_search" action="{:url('group/glist')}" method="get">
+            <div class="form-group">
+              <div class="input-group group-search">
+                <input type="text" class="form-control" placeholder="小组搜索" name="keyword" value="{$keyword}">
+                <input type="hidden" class="form-control" name="pid" value="{$pid}">
+                <span class="input-group-btn">
+                  <button class="btn btn-default" type="submit">
+                    <span class="iconfont icon-sousuo"></span>
+                  </button>
+                </span>
+
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="panel-body">
+        <div class="nav inline">
+          <a href="{:url('group/glist',array('pid'=>0))}" {if condition="$pid eq 0"}class="active"{/if}>全部</a>
+           {volist name="groupcatelist" id="vo"}
+                        <a href="{:url('group/glist',array('pid'=>$vo.id))}" {if condition="$pid eq $vo['id']"}class="active"{/if}>{$vo.name}</a>
+           {/volist}
+                  </div>
+      <div class="row">
+                        
+                        {volist name="grouplist" id="vo"}
+                        <div class="col-md-3">
+            <div class="media group-media group-media-sm">
+  <a href="{:url('group/index',array('id'=>$vo.id))}" title="{$vo.name}" class="pull-left">
+    <img src="{$vo['cover_id']|get_picture_url}" alt="{$vo.name}" class="media-object">
+  </a>
+  <div class="media-body">
+    <p>
+      <a href="{:url('group/index',array('id'=>$vo.id))}" title="{$vo.name}">{$vo.name}</a>
+    </p>
+    <div class="text-muted es-font12">
+      {$vo.membercount}个成员&nbsp;
+      {$vo.topiccount}个话题
+    </div>
+  </div> 
+</div>          </div>
+
+{/volist}
+
+                 
+                    </div>
+
+        <nav class="text-center">
+            {$grouplist->render()}
+  
+      </nav>
+
+    </div>
+  </div>
+
+      </div>
+ {/block}		

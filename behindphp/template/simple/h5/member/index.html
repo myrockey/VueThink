@@ -1,0 +1,139 @@
+{extend name="Public:base" /}
+{block name="seo"}
+
+{/block}
+{block name="css"}
+<style>
+
+</style>
+{/block}
+{block name="body"}
+<div class="container-h5-bg"></div>
+<div class="container-h5">
+    <div class="member-box">
+        <div class="member-head">
+            <div class="weui-avatar-circle">
+                <img src="{$nowuserinfo.userhead|default='__PUBLIC__/h5/images/avatar.png'}">
+            </div>
+        </div>
+        {if condition="$nowuserinfo['is_vip'] eq 1"}<div class="is-vip"></div>{/if}
+        <div class="member-item-title">{$nowuserinfo.nickname|default='巴菲特'}</div>
+        <div class="member-item-img"><img src="__PUBLIC__/h5/images/z04.png" alt="img" /></div>
+
+        <div class="member-main">
+            <div class="weui-cells">
+                {if condition="($nowuserinfo['is_vip'] eq 0) && ($nowuserinfo['leader_id'] eq 0)"}
+                <a class="weui-cell weui-cell_access" href="{:url('member/toinputcode')}">
+                    <div class="weui-cell__hd"><i class="member-icon icon-vip"></i></div>
+                    <div class="weui-cell__bd">
+                        <p>免费体验7天VIP会员<span class="hot-icon"></span></p>
+                    </div>
+                    <div class="weui-cell__ft"></div>
+                </a>
+                {else/}
+                <a class="weui-cell weui-cell_access" href="{:url('member/tovip')}">
+                    <div class="weui-cell__hd"><i class="member-icon icon-vip"></i></div>
+                    <div class="weui-cell__bd">
+                        <p>我的VIP<span class="hot-icon"></span></p>
+                    </div>
+                    <div class="weui-cell__ft"></div>
+                </a>
+                {/if}
+                <a class="weui-cell weui-cell_access" href="{:url('member/recommend')}">
+                    <div class="weui-cell__hd"><i class="member-icon icon-01"></i></div>
+                    <div class="weui-cell__bd">
+                        <p>我的邀请码</p>
+                    </div>
+                    <div class="weui-cell__ft"></div>
+                </a>
+            </div>
+            <div class="weui-cells">
+                <a class="weui-cell weui-cell_access" href="{:url('member/question')}">
+                    <div class="weui-cell__hd"><i class="member-icon icon-02"></i></div>
+                    <div class="weui-cell__bd">
+                        <p>问题反馈</p>
+                    </div>
+                    <div class="weui-cell__ft"></div>
+                </a>
+                <a class="weui-cell weui-cell_access" href="tel:13510123411">
+                    <div class="weui-cell__hd"><i class="member-icon icon-03"></i></div>
+                    <div class="weui-cell__bd">
+                        <p>联系客服</p>
+                    </div>
+                    <div class="weui-cell__ft"></div>
+                </a>
+            </div>
+
+        </div>
+    </div>
+</div>
+</div>
+{/block}
+{block name="script"}
+<script>
+    wx.config({
+        debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+        appId: '{$signPackage.appId}', // 必填，公众号的唯一标识
+        timestamp: '{$signPackage.timestamp}', // 必填，生成签名的时间戳
+        nonceStr: '{$signPackage.nonceStr}', // 必填，生成签名的随机串
+        signature: '{$signPackage.signature}',// 必填，签名
+        jsApiList: [
+            'checkJsApi', //判断当前客户端版本是否支持指定JS接口
+            'updateAppMessageShareData',
+            'updateTimelineShareData',
+            'onMenuShareTimeline', //分享给好友
+            'onMenuShareAppMessage'//分享到朋友圈
+        ] // 必填，需要使用的JS接口列表
+    });
+
+    wx.ready(function(){
+        // config信息验证后会执行ready方法，所有接口调用都必须在config接口获得结果之后，config是一个客户端的异步操作，所以如果需要在页面加载时就调用相关接口，则须把相关接口放在ready函数中调用来确保正确执行。对于用户触发时才调用的接口，则可以直接调用，不需要放在ready函数中。
+        // 在这里调用 API
+        wx.checkJsApi({
+            jsApiList: [
+                "updateAppMessageShareData",
+                "updateTimelineShareData",
+                "onMenuShareTimeline",
+                "onMenuShareAppMessage"], // 需要检测的JS接口列表，所有JS接口列表见附录2,
+            success: function(res) {
+                if(res.errMsg !='checkJsApi:ok'){
+                    alert('请升级您的微信版本');
+                    return;
+                }
+            }
+        });
+//                自定义“分享给朋友”及“分享到QQ”按钮的分享内容（1.4.0）
+        wx.updateAppMessageShareData({
+            title: '{$signPackage.title}', // 分享标题
+            desc: '{$signPackage.desc}', // 分享描述
+            link: '{$signPackage.url}', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+            imgUrl: '{$signPackage.imgurl}', // 分享图标
+            success: function () {
+                // 设置成功
+                console.log('分享成功');
+            },
+            cancel:function () {
+                console.log('取消分享');
+            }
+        });
+//                自定义“分享到朋友圈”及“分享到QQ空间”按钮的分享内容（1.4.0）
+        wx.updateTimelineShareData({
+            title: '{$signPackage.title}', // 分享标题
+            link: '{$signPackage.url}', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+            imgUrl: '{$signPackage.imgurl}', // 分享图标
+            success: function () {
+                // 设置成功
+                console.log('分享成功');
+            },
+            cancel:function () {
+                console.log('取消分享');
+            }
+        })
+    });
+    $(function(){
+
+    });
+
+</script>
+
+{/block}

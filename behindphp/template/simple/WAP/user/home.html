@@ -1,0 +1,230 @@
+{extend name="Public:base" /}
+      {block name="seo"}
+     
+      {/block}
+
+{block name="body"}
+<style>
+.aui-list .aui-list-item:active {
+    background: none;
+}
+.aui-card-list-content-padded p{font-size:0.6rem}
+
+</style>
+<div class="dingbu" style="background:url({$userinfo['userhead']|getheadurl});background-repeat: no-repeat;background-size: 100% 100%; ">
+<div class="aui-btm">
+<header class="aui-bar aui-bar-nav aui-bg-trans">
+    <a class="aui-pull-left aui-btn" href="javascript:history.back(-1);">
+        <span class="aui-iconfont aui-icon-left"></span>
+    </a>
+    <div class="aui-title">{$userinfo['nickname']}</div>
+
+</header>
+
+	    	<div class="aui-content groupinfo" >
+        <ul class="aui-list aui-bg-trans aui-media-list aui-padded-r-15">
+         
+            <li class="aui-list-item aui-list-item-middle">
+                <div class="aui-media-list-item-inner" >
+                    <div class="aui-list-item-media" style="width: 3.5rem;">
+                  
+                        <img src="{$userinfo['userhead']|getheadurl}" class="aui-list-img-sm aui-img-round" >
+                      
+                      
+                    </div>
+                    <div class="" style="width:70%" >
+                        <div class="aui-list-item-text ">
+                            <div class="aui-list-item-title aui-font-size-14">{$userinfo['nickname']}</div>
+                            
+                        </div>
+                       
+                         <div class="aui-list-item-text ">
+                            
+                        </div>
+                    </div>
+
+                    
+                </div>
+                
+             
+            </li>
+            
+        </ul>
+    </div>
+    </div>
+</div>
+
+<div id="topictab" >
+<div class=" aui-content-bg">
+
+<div class="content-title aui-border-b">
+<div class="aui-pull-left aui-font-size-14">全部</div>
+
+
+  <script type="text/javascript" src="__WAPJS__/aui-scroll.js" ></script>  
+    
+</div>
+
+
+</div>
+
+  <script id="topiclisttpl" type="text/x-dot-template">
+ {{ for(var i=0; i< it.length; i++) { }}	
+<section class="aui-content grouptopiclist">
+        <div class="aui-card-list">
+            <div class="aui-card-list-header aui-card-list-user dataurla" data-url="{{=it[i].userurl}}" style="overflow:hidden;">
+                <div class="aui-card-list-user-avatar">
+                    <img src="{{=it[i].userhead}}" class="aui-img-round">
+                </div>
+                <div class="aui-card-list-user-name">
+                    <div class="aui-text-info">{{=it[i].nickname}}</div>
+                    <div class="aui-font-size-14 text-light"></div>
+                </div>
+                <div class="aui-card-list-user-info text-light">{{=it[i].create_time}}</div>
+            </div>
+            <div class="aui-card-list-content-padded aui-padded-t-5 aui-padded-b-5 dataurla" data-url="{{=it[i].gurl}}">
+                <div class="aui-list-item-title aui-font-size-14">
+
+{{? it[i].choice==1}}      
+<span class="aui-label aui-label-warning aui-margin-r-5">精</span>
+  {{?}}
+                {{=it[i].title}}</div>
+                    <p class="aui-ellipsis-2 aui-margin-t-10">{{=it[i].descontent}}</p>
+                    
+                <div class="aui-card-list-content">
+                <div class="aui-row aui-row-padded">
+               
+                    {{ for(var k=0; k< it[i].imagesarr.length; k++) { }}	
+                    <div class="aui-col-xs-4 listimg">    
+{{=it[i].imagesarr[k]}}
+   </div>
+                      {{ } }}
+                    
+                    
+                    
+                </div>
+            </div>
+            <div class="aui-info">
+                    <div class="aui-info-item aui-font-size-12">
+                      
+                    </div>
+                    <div class="aui-info-item aui-font-size-12">{{=it[i].reply}}回帖</div>
+                </div>
+                    </div>
+
+        </div>
+       
+    </section>
+  {{ } }}
+    </script>  
+
+<div id="topiclist">
+
+</div>
+
+
+</div>
+
+
+
+
+{/block}
+{block name="script"}
+<script>
+var page=1;
+
+
+var scroll = new auiScroll({
+    listen:true, //是否监听滚动高度，开启后将实时返回滚动高度
+    distance:200 //判断到达底部的距离，isToBottom为true
+},function(ret){
+	if(ret.isToBottom){
+		page=page+1;
+		gettopiclist(page,true);
+	}
+	
+});
+function gettopiclist(page,isAppend){
+	
+	$.post("{:url('Appapi/getusertopic')}",{useruid:"{$useruid}",page:page},function(data){
+		
+		var data=JSON.parse(data);
+	
+		
+		if(data.status!=0){
+			
+			
+			   var interText = doT.template($("#topiclisttpl").text());
+			   
+			  
+				if (!isAppend) {
+					$("#topiclist").html(interText(data));
+				} else {
+					$("#topiclist").append(interText(data));
+				}
+				 $('.dataurla').click(function(){
+				        
+					 var url=$(this).data('url');
+					location.href=url;
+				      
+				 });
+				$('.listimg img').css('height',$('.listimg img').width());
+		}
+		
+		
+		
+		
+		
+	});
+	
+	
+	
+}
+$(function(){
+	
+
+	
+	
+	gettopiclist(1,false);
+	
+
+	$('.js-add-btn').click(function(){
+		var obj=$(this);
+		
+	    $.get($(this).data('url'),function(data){
+	    
+		      if(data.code == 1){
+		      
+		        layer.msg(data.msg, {icon: 1, time: 2000}, function(){
+		         
+		        	var html=$(obj).html();
+		        
+		        /* 	if(html=='退出小组'){
+		        		$(obj).html('加入小组');
+		        		$(obj).addClass('btn-success').removeClass('btn-default');
+		        	}else{
+		        		$(obj).html('退出小组');
+		        		$(obj).removeClass('btn-success').addClass('btn-default');
+		        	} */
+		        	location.reload();
+		        	
+		        	
+		        	
+		        });
+		      }else{
+		      
+		        layer.msg(data.msg, {icon: 2, anim: 6, time: 2000});
+		        
+		     
+		        
+		      }
+		    });
+		
+		return false;
+		
+	});
+	
+})
+
+</script>
+{/block}

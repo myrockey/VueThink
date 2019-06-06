@@ -1,0 +1,178 @@
+{extend name="Public:base" /}
+      {block name="seo"}
+     
+      {/block}
+           {block name="css"}
+      <style type="text/css">
+    
+    body{background:#fff;}
+    </style>
+     {/block}
+{block name="body"}
+<header class="aui-bar aui-bar-nav aui-bg-dark">
+    <a class="aui-pull-left aui-btn"  href="javascript:history.back(-1);">
+        <span class="aui-iconfont aui-icon-left"></span>
+    </a>
+    <div class="aui-title">发帖子</div>
+    <a data-url="{:url('group/topicadd')}" class="aui-pull-right aui-btn aui-btn-info aui-margin-r-5 topicadd ajax-post">
+                   发表</a>
+</header>
+
+<div class="aui-content aui-margin-b-15">
+<form class="form-horizontal" id="topicaddform">
+        <ul class="aui-list aui-form-list">
+            <input type="hidden" class="form-control" id="tid" name="tid" value="{$tid}">
+      <input type="hidden" class="form-control" id="gid" name="gid" value="{$groupinfo['pid']}">
+       <input type="hidden" class="form-control" id="contentid" name="content" value="">
+      <li class="aui-list-item">
+                <div class="aui-list-item-inner">
+                    <div class="aui-list-item-label">
+                        发帖小组
+                    </div>
+                    <div class="aui-list-item-input">
+                        {$groupinfo['name']}
+                    </div>
+                </div>
+            </li>
+         
+            <li class="aui-list-item">
+                <div class="aui-list-item-inner">
+                    <div class="aui-list-item-label">
+                        帖子标题
+                    </div>
+                    <div class="aui-list-item-input">
+                        <input type="text"  id="title" name="title" placeholder="帖子标题6到32个字符">
+                        
+                    </div>
+                </div>
+            </li>
+     <section class="aui-grid emotiondiv" >
+        <div class="aui-row">
+        {volist name="emotionlist" id="vo"}
+            <div class="aui-col-xs-3" >
+                <img src="{$vo}"/>
+            </div>
+          {/volist} 
+         
+        </div>
+        <div class="aui-content-padded">
+        <div class="aui-btn aui-btn-success aui-btn-block cancleemotion">取消(cancle)</div>
+        </div>
+    </section>
+        
+            <li class=" aui-padded-t-10">
+                <div class="aui-list-item-inner">
+                   
+                    <div class="aui-padded-10" style="width:100%;">
+                    <div id="content"  style="width:100%;min-height:20rem;"></div>
+                     
+                   </div>
+                </div>
+            </li>
+          
+
+        </ul>
+        </form>
+    </div>
+
+ {/block}		
+{block name="script"}
+
+		<script type="text/javascript" src="__WAPJS__/editor/Eleditor.js"></script>
+				<script type="text/javascript" src="__WAPJS__/editor/webuploader.min.js"></script>
+<script>
+var Edr = new Eleditor({
+    el: '#content', //容器
+    placeHolder: '发表帖子正文',
+    upload:{ //上传配置
+       server:"{:url('File/pictureUpload')}", //上传路径
+       compress: true, //上传前是否压缩图片
+       fileSizeLimit: 2 //限制图片上传大小，单位M
+    },
+    toolbars: [
+               'insertText',
+               'editText',
+               'insertImage',
+               'insertLink',
+               'deleteBefore',
+               'deleteAfter',
+               'insertHr',
+               'deleteThis',
+               {
+                   id: 'emotion',
+                   tag: 'P', //指定P标签操作，可不填
+                   name: '添加表情',
+                   handle: function(select, controll){
+                	   
+               		layer.open({
+          			  type: 1,
+          			anim: 2,
+          			title: false,
+          			  content: $('.emotiondiv'), //这里content是一个DOM，注意：最好该元素要存放在body最外层，否则可能被其它的相对元素所影响
+          			 success: function(layero, index){
+          				  layerindex=index;
+          				  layer.full(index);
+          				  }//这里content是一个DOM，注意：最好该元素要存放在body最外层，否则可能被其它的相对元素所影响
+          			});
+                	   
+ 
+                   }
+               
+               },
+               'cancel',
+               ]
+});
+
+//请记住下面常用方法---------------------------------------->
+//Edr.append( str ); 往编辑器追加内容
+//Edr.getContent(); 获取编辑器内容
+//Edr.getContentText(); 获取编辑器纯文本
+//Edr.destory(); 移除编辑器
+$(function(){
+	$('.emotiondiv .aui-col-xs-3').click(function(){
+		
+		
+		Edr.append($(this).html());
+		layer.close(layer.index);
+	
+		
+	});
+	$('.cancleemotion').click(function(){
+		
+		
+		
+		layer.close(layer.index);
+	
+		
+	});
+	$('.topicadd').click(function(){
+		$('#contentid').val(Edr.getContent());
+	    $.post($(this).data('url'),$('form#topicaddform').serialize(),function(data){
+	    	
+		      if(data.code == 1){
+
+		    	  layer.msg(data.msg, { time: 1000}, function(){
+			          location.href="{:url('group/index',array('id'=>$groupinfo['id']))}";
+			        });
+		    	 
+		     
+		      }else{
+		    	   layer.msg(data.msg, {anim:6, time: 1000});
+		    	
+		       
+		        
+		       
+		        
+		      }
+		    });
+		    return false;
+		
+		
+	});
+	
+	
+});
+</script>
+
+
+{/block}

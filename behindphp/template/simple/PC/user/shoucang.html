@@ -1,0 +1,91 @@
+  {extend name="Public:user_base" /}
+      {block name="seo"}
+        <title>我的收藏|{$Think.CONFIG.WEB_SITE_TITLE} - Powered by EasySNS!</title>
+  
+  
+  <meta name="keywords" content="{$Think.CONFIG.WEB_SITE_KEYWORD}">
+  <meta name="description" content="{$Think.CONFIG.WEB_SITE_DESCRIPTION}">
+      {/block}
+  {block name="body"}
+
+<div class="ucenter-right">
+
+<div class="my-contribution fixed-box" style="padding-top: 0px; " id="shoucangname">
+<div class="console-box">
+{if condition="$type eq 1"}<span class="num-tip">共计收藏&nbsp;{:count($topiclist)}篇帖子</span>{/if}
+
+<a href="{:url('user/shoucang',array('type'=>1))}#shoucangname" {if condition="$type eq 1"}class="current"{/if}>收藏帖子</a>
+
+</div>
+{if condition="$type eq 1"}
+
+{if condition="count($topiclist) gt 0"}
+<div class="boxcontent">
+
+       <div class="users_content clearfix">
+<ul class="es-topic-list ">
+
+{volist name="topiclist" id="vo"}
+<li >
+
+<div class="es-list-circleimg">
+<img src="{$vo.userhead|getheadurl}" />
+</div>
+<div class="es-list-row">
+<div class="es-list-title ">
+
+
+
+{if condition="$vo['settop'] eq 1"}
+<span class="label label-danger es-margin-r-5">置顶</span>
+{/if}
+<a href="{:url('group/gview',array('id'=>$vo.sid))}">{$vo.title}</a>
+{if condition="$vo['choice'] eq 1"}
+<span class="label label-warning es-margin-l-5">精</span>
+{/if}
+
+
+</div>
+<div class="es-list-info"><a class="" href="{:url('user/home',array('id'=>$vo.uid))}">{$vo.nickname}</a>&nbsp;&nbsp;{$vo.topiccreate_time|friendlyDate}&nbsp;&nbsp;
+收藏时间：{$vo.create_time|friendlyDate}
+</div>
+<div  class="es-list-info"></div>
+</div>
+<div class="pull-right rightinfo">
+<span><i class="fa fa-comment-o"></i> {$vo.reply}</span>
+<span><i class="fa fa-eye"></i> {$vo.view}</span>
+</div>
+</li>
+{/volist}
+</ul>
+
+                   </div>
+                    <div class="pages">
+						<ul class="pagination">
+							{$topiclist->render()}
+						</ul>
+					</div>
+</div>
+{else/}
+
+
+<div class="empty-tip-box">
+<div class="inner-box">
+<div class="radius">
+<p class="iconfont icon-tubiao114"></p>
+<p>我的收藏</p>
+</div>
+<div class="info">
+<p class="first">看到好帖子就果断收藏吧</p>
+<p class="second">在帖子阅读页，点击"帖子标题下方收藏图标"，好帖子分分钟到碗里来~</p>
+</div>
+</div>
+</div>
+{/if}
+
+
+{/if}
+
+</div>
+</div>
+    {/block}

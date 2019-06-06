@@ -1,0 +1,206 @@
+{extend name="Public:base" /}
+      {block name="seo"}
+              <title>小组成员页|{$Think.CONFIG.WEB_SITE_TITLE} - Powered by EasySNS!</title>
+  
+  
+  <meta name="keywords" content="{$Think.CONFIG.WEB_SITE_KEYWORD}">
+  <meta name="description" content="{$Think.CONFIG.WEB_SITE_DESCRIPTION}">
+      {/block}
+{block name="body"}
+<div class="container">
+<div class="es-panel es-panel-default">
+<div class="es-panel-body ">
+<ul class="nav nav-tabs">
+       <li ><a href="{:url('group/index',array('id'=>$groupid))}">小组首页</a></li>
+        <li class="active"><a href="{:url('group/member',array('id'=>$groupid))}">小组成员</a></li>
+        {if condition="!empty($usergroupinfo) AND ($usergroupinfo['grade'] eq 2)"}
+        <li ><a href="{:url('group/groupedit',array('id'=>$groupid))}">修改小组信息</a></li>
+           {/if}
+           </ul>
+     
+        <h4 class="es-font16 es-margin-t-20 " >组长</h4>
+        <div class="clearfix">
+        <div class="grouplist" style="width: 148px;">
+            <a class=" js-user-card" href="{:url('user/home',array('id'=>$zuzhanginfo.uid))}" title="">
+    <img class="avatar-sm" src="{$zuzhanginfo.userhead|getheadurl}" alt="{$zuzhanginfo['nickname']}">
+             {if condition="$zuzhanginfo['grades'] eq -1"}
+          <span class="iconfont icon-renzheng-copy positionrz" title="达人"></span> 
+          {/if}
+          </a>
+  
+                    <p class="text-center">
+               <a class="link-light link-light" href="{:url('user/home',array('id'=>$zuzhanginfo.uid))}">{$zuzhanginfo['nickname']} </a>
+  
+                      </p>
+        </div>
+      </div>
+
+      <h4 class="es-font16 es-margin-t-20">副组长</h4>
+      <div class="clearfix">
+    
+      
+      
+      
+        
+        {if condition="count($fzuzlist) eq 0"}
+        
+                      <p><sapn class="text-muted">还没有副组长！</sapn></p>
+                      
+            {else/}          
+              {volist name="fzuzlist" id="vo"}
+                                             <div class="grouplist fzuzlist showcz" style="width: 148px;">
+            <a class=" js-user-card" href="{:url('user/home',array('id'=>$vo.uid))}" title="">
+    <img class="avatar-sm" src="{$vo.userhead|getheadurl}" alt="{$vo['nickname']}">
+           {if condition="$vo['grades'] eq -1"}
+          <span class="iconfont icon-renzheng-copy positionrz" title="达人"></span> 
+          {/if}
+          </a>
+  
+                    <p class="text-center">
+               <a class="link-light link-light" href="{:url('user/home',array('id'=>$vo.uid))}">{$vo['nickname']} 
+               {if condition="$vo['status'] eq 0"}
+                <span class="iconfont icon-jinyan" title="禁言"></span>
+             
+               
+              
+                  {/if}
+               
+               </a>
+  
+                      </p>
+                      
+                      
+                      {if condition="!empty($usergroupinfo)"}
+                      <div class="memcz">
+                        {if condition="$vo['status'] eq 0"}
+                      <a href="javascript:;" class="groupcz" data-gid="{$vo['group_id']}" data-uid="{$vo['uid']}" data-type="jcjinyan">解除禁言</a>
+                      {else/}
+                      <a href="javascript:;" class="groupcz" data-gid="{$vo['group_id']}" data-uid="{$vo['uid']}" data-type="jinyan">禁言</a>
+                      {/if}
+                      {if condition="$usergroupinfo['grade'] eq 2"}
+                      <a href="javascript:;" class="groupcz"   data-gid="{$vo['group_id']}" data-uid="{$vo['uid']}" data-type="jiangzhi">降为组员</a>
+                      {/if}
+                      <a href="javascript:;" class="groupcz"   data-gid="{$vo['group_id']}" data-uid="{$vo['uid']}" data-type="tichu">踢出</a>
+                      </div>
+                      {/if}
+                      
+                      
+                      
+        </div>
+                        {/volist} 
+             {/if}         
+             
+                  
+               
+      </div>
+      
+      
+        <h4 class="es-font16 es-margin-t-20">组员</h4>
+                  
+                       {if condition="count($zuylist) eq 0"}
+        
+                      <p><sapn class="text-muted">还没有组员！</sapn></p>
+                      
+            {else/}          
+              {volist name="zuylist" id="vo"}
+                                             <div class="grouplist zuylist showcz" style="width: 148px;">
+            <a class=" js-user-card" href="{:url('user/home',array('id'=>$vo.uid))}" title="">
+    <img class="avatar-sm" src="{$vo.userhead|getheadurl}" alt="{$vo['nickname']}">
+            {if condition="$vo['grades'] eq -1"}
+          <span class="iconfont icon-renzheng-copy positionrz" title="达人"></span> 
+          {/if}
+          </a>
+  
+                    <p class="">
+               <a class="link-light link-light" href="{:url('user/home',array('id'=>$vo.uid))}">{$vo['nickname']} 
+               
+                {if condition="$vo['status'] eq 0"}
+                <span class="iconfont icon-jinyan" title="禁言"></span>
+             
+              
+                  {/if}
+               </a>
+  
+                      </p>
+                      
+                      {if condition="!empty($usergroupinfo)"}
+                      <div class="memcz">
+                      {if condition="$vo['status'] eq 0"}
+                      <a href="javascript:;" class="groupcz" data-gid="{$vo['group_id']}" data-uid="{$vo['uid']}" data-type="jcjinyan">解除禁言</a>
+                      {else/}
+                      <a href="javascript:;" class="groupcz" data-gid="{$vo['group_id']}" data-uid="{$vo['uid']}" data-type="jinyan">禁言</a>
+                      {/if}
+                      
+                      {if condition="$usergroupinfo['grade'] eq 2"}
+                      <a href="javascript:;" class="groupcz"  data-gid="{$vo['group_id']}" data-uid="{$vo['uid']}" data-type="shengzhi">升为副组长</a>
+                       {/if}
+                      
+                      <a href="javascript:;" class="groupcz"  data-gid="{$vo['group_id']}" data-uid="{$vo['uid']}" data-type="tichu">踢出</a>
+                      </div>
+                      
+                       {/if}
+        </div>
+                        {/volist} 
+             {/if}    
+                    
+                    
+           
+              
+              <nav class="text-center">
+              {$zuylist->render()}
+  
+      </nav>
+          
+              
+
+
+</div>
+</div>
+</div>
+ {/block}		
+{block name="script"}
+<script>
+$(function(){
+	
+	$('.showcz').mouseover(function(){
+		
+		$(this).find('.memcz').show();
+		
+	});
+	$('.showcz').mouseout(function(){
+		
+		$(this).find('.memcz').hide();
+		
+	});
+	
+	$('.groupcz').click(function(){
+		
+	    $.post("{:url('group/groupcz')}",{id:$(this).data('gid'),uid:$(this).data('uid'),type:$(this).data('type')},function(data){
+		    
+		      if(data.code == 1){
+		      
+		        layer.msg(data.msg, {icon: 1, time: 1000}, function(){
+		         
+		        location.reload();
+		        	
+		        	
+		        });
+		      }else{
+		      
+		        layer.msg(data.msg, {icon: 2, anim: 6, time: 1000});
+		        
+		     
+		        
+		      }
+		    });
+		
+	})
+	
+	
+	
+})
+
+
+</script>
+
+{/block}

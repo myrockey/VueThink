@@ -42,7 +42,7 @@
                                 <el-input v-model="ruleForm.tel"></el-input>
                             </el-form-item>
                             <el-form-item class="hs-m-t-65 hs-m-b-150 hs-submit-btn-box m-l-p10">
-                                <el-button class="hs-submit-btn" type="warning" @click="submitForm('ruleForm')">提交</el-button>
+                                <el-button class="hs-submit-btn" type="warning" @click="submitForm('ruleForm')" :loading="isLoading">提交</el-button>
                             </el-form-item>
                         </el-form>
                     </div>
@@ -92,6 +92,7 @@
         }
       }
       return {
+        loading: false,
         imgData: [
           { src: require('../../../assets/images/banner05.png'), title: '河山官网' }
         ],
@@ -106,16 +107,16 @@
         },
         rules: {
           companyName: [
-            { validator: checkEmpty, trigger: 'blur' }
+            { required: true, validator: checkEmpty, trigger: 'blur' }
           ],
           companyUrl: [
-            { validator: checkUrl, trigger: 'blur' }
+            { required: true, validator: checkUrl, trigger: 'blur' }
           ],
           companyContact: [
-            { validator: checkEmpty, trigger: 'blur' }
+            { required: true, validator: checkEmpty, trigger: 'blur' }
           ],
           tel: [
-            { validator: checkTel, trigger: 'blur' }
+            { required: true, validator: checkTel, trigger: 'blur' }
           ]
         }
       }
@@ -127,7 +128,19 @@
       submitForm(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            alert('submit!')
+            this.isLoading = !this.isLoading
+            this.apiPost('v1/api/coors', this.ruleForm).then((res) => {
+              this.handelResponse(res, (data) => {
+                _g.clearVuex('setRules')
+                _g.toastMsg('success', '添加成功')
+                setTimeout(() => {
+                  this.$refs[formName].resetFields()
+                  this.isLoading = !this.isLoading
+                }, 1500)
+              }, () => {
+                this.isLoading = !this.isLoading
+              })
+            })
           } else {
             console.log('error submit!!')
             return false

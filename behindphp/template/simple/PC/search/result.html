@@ -1,0 +1,189 @@
+
+<!doctype html>
+<html>
+
+    <head>
+		<meta charset="utf-8">
+		<meta name="renderer" content="webkit">
+		<link rel="shortcut icon" href="__PUBLIC__/images/favicon.ico" type="image/x-icon"/>
+		<title>{$keyword}的搜索结果 - {$Think.CONFIG.sitename}</title>
+		<script type="text/javascript"  src="__PUBLIC__/js/uaredirect.js"></script>
+		<script type="text/javascript">uaredirect("{$Think.CONFIG.wap_url}{:U('/app/'.$cate['dir'])}");</script>
+		<meta name="keywords" content="{$cate.keywords}" />
+		<meta name="description" content="{$cate.description}" />
+		<link rel="stylesheet" type="text/css" href="__PUBLIC__/css/reseting.css" />
+		<link rel="stylesheet" type="text/css" href="__PUBLIC__/css/common.css" />
+		<link rel="stylesheet" type="text/css" href="__PUBLIC__/css/lite.css" />
+		<link rel="stylesheet" type="text/css" href="__PUBLIC__/css/list.css" />
+		<link rel="stylesheet" type="text/css" href="__PUBLIC__/css/page.css" />
+		<link rel="stylesheet" type="text/css" href="__PUBLIC__/js/layer/skin/default/layer.css">
+		<script type="text/javascript" src="__PUBLIC__/js/jquery-1.9.1.min.js"></script>
+		<script type="text/javascript" src="__PUBLIC__/js/common.js" charset="utf-8"></script>
+		<script type="text/javascript" src="__PUBLIC__/js/layer/layer.js"></script>
+	</head>
+
+    <body>
+
+
+<div class="body-container">
+
+    <include file="Public:header" />
+
+    <div class="title_common containers"><a href="/">首页</a> <label></label><a href="{:U('/app')}">搜索</a><label></label> {$keyword}</div>
+
+    <div class="search-switch clear" style="width:681px">
+        <a href="{:U('/search/result',array('keyword'=>$keyword,'t'=>'app'))}" <if condition="$t eq 'app' or empty($t)">class="active"</if>>小程序</a>
+        <a href="{:U('/search/result',array('keyword'=>$keyword,'t'=>'eva'))}" <if condition="$t eq 'eva'">class="active"</if>>评测</a>
+        <a href="{:U('/search/result',array('keyword'=>$keyword,'t'=>'news'))}" <if condition="$t eq 'news'">class="active"</if>>资讯</a>
+        <a href="{:U('/search/result',array('keyword'=>$keyword,'t'=>'wp'))}" <if condition="$t eq 'wp'">class="active"</if>>公众号</a>
+    </div>
+
+    <div class="search-container">
+        <div class="lite">
+			<if condition="$list">
+           
+				<if condition="$t eq 'app'"> 
+				<div id="thelist" class="show-content clear">
+				<volist name="list" id="vo">
+				<a class="list" href="{:U('/app/'.$vo[aid])}" title="{$vo.title}" target="_blank">
+					<div class="imgLeft">
+						<span>
+							<img onload="setImgWH(this)" src="{$vo.thumbnail}" style="width: 100%;">
+						</span>
+					</div>
+					<div class="dataRight">
+						<div class="title clear">
+							<h3 class="ellipsis">{$vo.title}</h3>
+							<span class="app-try">体验</span>
+						</div>
+						<div class="score-show2">
+							<span>
+								<i style="width: 100%;"></i>
+							</span>
+							<p></p>
+						</div>
+						<p class="introduce">{$vo.description}</p>
+					</div>
+					<div class="list-bottom">
+						<p class="view-count"><label></label>{$vo.n}</p>
+					</div>
+					<div class="qrcode">
+						<img src="{$vo.qrcode|default='/Public/images/default_qrcode.png'}">
+						<p>微信体验扫描</p>
+					</div>
+				</a>
+				</volist>
+				</div>
+				</if>
+				<if condition="$t eq 'eva'">
+				<div id="thelist" class="boutique-content">
+				<volist name="list" id="vo">
+				<div class="imgScale">
+					<a href="{:U('/eva/'.$vo[aid])}" target="_blank"><h2>{$vo.title}</h2></a>
+					<div class="data-detail clear">
+						<p class="fl time-art"><label></label>{$vo.t|date='Y-m-d',###}</p>
+						<p class="view-count fl"><label></label>{$vo.n}</p>
+						<p class="label-art fr">
+							<label class="lableIcon"></label>
+							<span></span>
+						</p>
+					</div>
+					
+					<a class="imgs content">
+						<!-- <span class="num">9.6<label>分</label></span> -->
+						<img src="{$vo.thumbnail}" style="width: 100%;height: 100%;">
+					</a>
+					<a class="details">{$vo.description}&nbsp;<br/></a>
+				</div>
+				</volist>
+				</div>
+				</if>
+				<if condition="$t eq 'news'">
+				<div id="thelist" class="artList">
+				<volist name="list" id="vo">
+				<div class="list-art imgScale clear">
+					<a href="{:U('/news/'.$vo[aid])}" target="_blank" class="img-article content">
+						<img onload="setImgWH(this)" src="{$vo.thumbnail}" class="scale_return" style="height: 100%;">
+					</a>
+					<div class="data-art">
+						<a href="{:U('/news/'.$vo[aid])}" target="_blank">
+							<h3>{$vo.title}</h3></a>
+						<div class="label-art">
+							<label class="lableIcon"></label>
+							
+						</div>
+						<div class="else-art">
+							<p class="fl time-art"><label></label>{$vo.t|date='Y-m-d',###}</p>
+							<p class="view-count"><label></label>{$vo.n}</p>
+						</div>
+					</div>
+				</div>
+				</volist>
+				</div>
+				</if>
+				<if condition="$t eq 'wp'"> 
+				<div id="thelist" class="show-content clear">
+				<volist name="list" id="vo">
+				<a class="list" href="{:U('/wp/ac/view/',array('id'=>$vo[aid]))}" title="{$vo.title}" target="_blank">
+					<div class="imgLeft">
+						<span>
+							<img onload="setImgWH(this)" src="{$vo.thumbnail}" style="width: 100%;">
+						</span>
+					</div>
+					<div class="dataRight">
+						<div class="title clear">
+							<h3 class="ellipsis">{$vo.title}</h3>
+							<span class="app-try">体验</span>
+						</div>
+						<div class="score-show2">
+							
+							<p></p>
+						</div>
+						<p class="introduce">{$vo.description}</p>
+					</div>
+					<div class="list-bottom">
+						<p class="view-count"><label></label>{$vo.n}</p>
+					</div>
+					<div class="qrcode">
+						<img src="{$vo.qrcode|default='/Public/images/default_qrcode.png'}">
+						<p>微信体验扫描</p>
+					</div>
+				</a>
+				</volist>
+				</div>
+				</if>
+			<div class="page_group clear">
+			{$page}
+			</div>
+			<else/>
+			<div class="nonebox text-center">
+                <img src="__PUBLIC__/m/images/none.png">
+                <p>“很抱歉“没有相应的结果</p>
+            </div>
+            </if>
+            
+            
+        </div>
+    </div>
+
+    <include file="Public:footer" />
+	
+</div>
+
+
+<script type="text/javascript">
+    $(function () {
+        var $index = 0;
+        $("#wrapper").on('mouseenter', '.list .app-try', function () {
+            $index = $(this).parents(".list").index();
+            $(".qrcode").hide().eq($index).fadeIn();
+        });
+        $("#wrapper").on('mouseleave', '.list .app-try', function () {
+            $index = $(this).parents(".list").index();
+            $(".qrcode").hide();
+        });
+    });
+</script>
+
+    </body>
+</html>

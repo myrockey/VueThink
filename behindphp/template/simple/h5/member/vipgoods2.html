@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <link rel="stylesheet" href="__PUBLIC__/h5/css/weui.css"/>
+    <link rel="stylesheet" href="__PUBLIC__/h5/css/weuix.min.css"/>
+    <script type="text/javascript">document.write("<link rel='stylesheet' type='text/css' href='/public/h5/css/style.css?random=" + Math.random() + "' />");</script>
+    <script src="__PUBLIC__/h5/js/zepto.min.js"></script>
+    <script src="__PUBLIC__/h5/js/zepto.weui.js"></script>
+    <script src="__PUBLIC__/h5/js/iscroll-lite.js"></script>
+    <script src="__PUBLIC__/h5/js/php.js"></script>
+
+    <script>
+
+        $(function () {
+            $(".weui-payselect-li").on('click', function () {
+                $(this).children().addClass("weui-payselect-on");
+                $(this).siblings().children().removeClass("weui-payselect-on");
+                return false;
+            })
+
+            $(document).on("click", "#wxtopay", function () {
+                wxtopay();
+            });
+            function wxtopay() {
+                if (!$('#weuiAgree').prop("checked")) {
+                    $.toast('请先勾选同意');
+                    return false;
+                }
+                var id = $('.weui-payselect-ul .weui-payselect-on').attr('data-id');
+                console.log('/Member/wxpay/goodsid'+id)
+//                var money = $('.weui-payselect-ul .weui-payselect-on').html();
+//                $.alert("调用微信支付,支付的商品,\r\nVIP会员：" + money);
+
+                location.href = '/Member/wxpay/goodsid/'+id;
+          /*      $.ajax({
+                    type: "POST",
+                    url: '/member/continuetopay',
+                    data: {"goodsid": id},
+                    dataType: "json",
+                    beforeSend: function () {
+                    },
+                    success: function (rs) {
+                        console.log(rs)
+                        if (rs.code == 1) {
+                            $.toast(rs.msg, function () {
+                                location.href = '/member/tovip';
+                            });
+                        } else {
+                            $.alert(rs.msg);
+                        }
+                    },
+                    timeout: 15000
+                });*/
+            }
+
+        })
+
+    </script>
+</head>
+
+<body ontouchstart>
+
+<div class="page-bd page-bg-tovip">
+    <div class="weui-pay">
+        <h1 class="weui-payselect-title" style="color: #fff;">选择金额付款</h1>
+        <p class="weui-payselect-info">支付金额给周期研习社</p>
+        <ul class="weui-payselect-ul">
+
+            {notempty name="list"}
+            {volist name="list" id="vo" key="k"}
+                <li class="weui-payselect-li">
+                    <a href="javascript:;" class="weui-payselect-a {if condition='$k eq 1'}weui-payselect-on{/if}" data-id="{$vo.id}">{$vo.title}
+                        <!--<span class="weui-pay-12">活动价：800元/月</span>-->
+                    </a>
+                </li>
+            {/volist}
+            {/notempty}
+        </ul>
+        <br>
+        <div class="weui-flex">
+            <label class="left" for="weuiAgree" class="weui-agree">
+                <input id="weuiAgree" class="weui-agree__checkbox" type="checkbox"><span
+                    class="weui-agree__text"> 阅读并同意</span>
+            </label>
+            <a class="left" href="{:url('index/intro')}">《周期研习社服务协议》</a>
+            <div class="clear"></div>
+        </div>
+        <br>
+        <!--<a href="javascript:;" class="weui-btn weui-btn_primary" id="wxtopay">下单</a>-->
+        <a href="javascript:;" class="weui-btn weui-btn_primary" id="wxtopay">立即支付</a>
+
+    </div>
+</div>
+<a class="goback" href="{:url('member/tovip')}"><span class="icon icon-109"></span>返回</a>
+</body>
+</html>

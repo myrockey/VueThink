@@ -13,15 +13,22 @@
                         <div class="hs-news-item" v-for="item in newsListData" >
                             <el-row :gutter="20">
                                 <el-col :span="12">
-                                    <el-image width="100%" :src="item.imgUrl" :alt="item.title" lazy>
-                                        <div slot="error" class="image-slot fz-24">
-                                            <i class="el-icon-picture-outline"></i>
-                                        </div>
-                                    </el-image>
+                                    <router-link :to="{ name: 'NewsDetail', params: { id: item.id }}">
+                                        <el-image width="100%" :src="item.thumb" :alt="item.title">
+                                            <div slot="error" class="image-slot fz-24">
+                                                {{item.title}}
+                                                <i class="el-icon-picture-outline"></i>
+                                            </div>
+                                        </el-image>
+                                    </router-link>
                                 </el-col>
                                 <el-col :span="12">
-                                    <div class="news-item-title">{{item.title}}</div>
-                                    <div class="news-item-data">{{item.create_time | formatDate}}</div>
+                                    <div class="news-item-title">
+                                        <router-link :to="{ name: 'NewsDetail', params: { id: item.id }}">
+                                        {{item.title}}
+                                        </router-link>
+                                    </div>
+                                    <div class="news-item-date">{{item.create_time | formatDate}}</div>
                                     <div class="news-item-desc">{{item.description}}</div>
                                     <div class="news-item-btn">
                                         <router-link :to="{ name: 'NewsDetail', params: { id: item.id }}" class="el-button el-button--warning is-plain">
@@ -32,7 +39,17 @@
                             </el-row>
                             <el-divider></el-divider>
                         </div>
-
+                        <div class="tx-c hs-m-t-100">
+                            <el-pagination
+                                    background
+                                    hide-on-single-page
+                                    @current-change="handleCurrentChange"
+                                    layout="prev, pager, next"
+                                    :page-size="limit"
+                                    :current-page="currentPage"
+                                    :total="dataCount">
+                            </el-pagination>
+                        </div>
                     </div>
                 </div>
 
@@ -50,22 +67,13 @@
   export default {
     data() {
       return {
+        dataCount: null,
+        currentPage: null,
+        limit: 15,
         imgData: [
           { src: require('../../../assets/images/banner08.png'), title: '河山官网' }
         ],
-        newsListData: [{
-          id: '1',
-          imgUrl: require('../../../assets/images/list01.png'),
-          title: '合一产业与河山信息举行战略合作签约仪式',
-          date: '2019.01.20',
-          desc: '党中央、国务院高度重视信息化，特别是习近平总书记关于信息化建设的一系列重要讲话和指示，是新时代“数字法治·智慧司法”建设工作的科学.....指南和根本遵循。各级司法行政机关要认真学习、贯彻落实，充分认识智慧监狱建设的重要性和紧迫性，加快建设步伐，为全面实现“数字法治·智慧司法”战略部署做出表率，要切实加强组织领导，积极筹措建设资金，努力造就一支高素质的信息技术人才队伍，全面推进智慧监狱建设。'
-        }, {
-          id: '2',
-          imgUrl: require('../../../assets/images/list02.png'),
-          title: '城市之芯与乌尔比安律所战略合作签约',
-          date: '2019.01.20',
-          desc: '党中央、国务院高度重视信息化，特别是习近平总书记关于信息化建设的一系列重要讲话和指示，是新时代“数字法治·智慧司法”建设工作的科学.....指南和根本遵循。各级司法行政机关要认真学习、贯彻落实，充分认识智慧监狱建设的重要性和紧迫性，加快建设步伐，为全面实现“数字法治·智慧司法”战略部署做出表率，要切实加强组织领导，积极筹措建设资金，努力造就一支高素质的信息技术人才队伍，全面推进智慧监狱建设。'
-        }]
+        newsListData: []
       }
     },
     methods: {
@@ -73,7 +81,37 @@
         this.$router.push(pathLink)
       },
       handleClick(row) {
-        console.log(row)
+      },
+      handleCurrentChange(page) {
+        router.push({ path: this.$route.path, query: { page: page }})
+      },
+      getCurrentPage() {
+        let data = this.$route.query
+        if (data) {
+          if (data.page) {
+            this.currentPage = parseInt(data.page)
+          } else {
+            this.currentPage = 1
+          }
+        }
+      },
+      getArticleLists() {
+        const data = {
+          params: {
+            page: this.currentPage,
+            limit: this.limit
+          }
+        }
+        this.apiGet('v1/api/articles', data).then((res) => {
+          this.handelResponse(res, (data) => {
+            this.newsListData = data.data
+            this.dataCount = data.total
+          })
+        })
+      },
+      init() {
+        this.getCurrentPage()
+        this.getArticleLists()
       }
     },
     components: {
@@ -81,13 +119,14 @@
       IndexFooter
     },
     created() {
-      this.apiGet('v1/api/news').then((res) => {
-        this.handelResponse(res, (data) => {
-          this.newsListData = data
-        })
-      })
+      this.init()
     },
     mounted() {
+    },
+    watch: {
+      '$route' (to, from) {
+        this.init()
+      }
     },
     mixins: [http]
   }

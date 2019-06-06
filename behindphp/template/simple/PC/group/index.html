@@ -1,0 +1,255 @@
+{extend name="Public:base" /}
+      {block name="seo"}
+              <title>小组页|{$Think.CONFIG.WEB_SITE_TITLE} - Powered by EasySNS!</title>
+  
+  
+  <meta name="keywords" content="{$Think.CONFIG.WEB_SITE_KEYWORD}">
+  <meta name="description" content="{$Think.CONFIG.WEB_SITE_DESCRIPTION}">
+      {/block}
+{block name="body"}
+<div class="container " >
+<div class="group-header" style="background:url({$groupinfo['bg_id']|get_groupbg});background-repeat: no-repeat;background-size: 100% 100%;">
+  <div class="media">
+    <div class="media-left">
+      <a href="#">
+        <img src="{$groupinfo['cover_id']|get_groupavatar}" alt="{$groupinfo['name']}" class="avatar-square-md">
+      </a>
+    </div>
+    <div class="media-body">
+      <h2 class="media-heading">
+        {$groupinfo['name']}
+        
+        {if condition="$usergroupinfo neq null"}
+           <a id="add-btn" class="btn btn-default btn-sm es-margin-l-10 js-add-btn" data-url="{:url('group/joingroup',array('id'=>$groupid))}">退出小组</a>
+                
+        {else/}
+           <a id="add-btn" class="btn btn-success btn-sm es-margin-l-10 js-add-btn" data-url="{:url('group/joingroup',array('id'=>$groupid))}">加入小组</a>
+                
+        {/if}
+               
+      </h2>
+      <div class="media-metas">
+
+        {$groupinfo['membercount']}个成员
+        <span class="es-margin-l-10">{$groupinfo['topiccount']}个话题</span>
+        <span class="fsn es-margin-l-10">创建时间：{$groupinfo['create_time']|friendlyDate}</span>
+
+      </div>
+    </div>
+  </div>
+  <div class="image-overlay image-overlay-o"></div>
+</div>
+	
+</div>
+
+<div class="container" id="content-container">
+<div class="row">
+  <div class="col-md-8">
+  <div class="es-panel es-panel-default">
+<div class="es-panel-body ">
+<ul class="nav nav-tabs">
+        <li class="active"><a href="{:url('group/index',array('id'=>$groupid))}">小组首页</a></li>
+        <li><a href="{:url('group/member',array('id'=>$groupid))}">小组成员</a></li>
+         {if condition="!empty($usergroupinfo) AND ($usergroupinfo['grade'] eq 2)"}
+        <li ><a href="{:url('group/groupedit',array('id'=>$groupid))}">修改小组信息</a></li>
+           {/if}
+           </ul>
+      <div class="alert alert-info clearfix">
+         {$groupinfo['describe']|htmlspecialchars_decode}
+           <hr>
+          <div class="">
+                      
+            <span class="text-muted es-font12 es-margin-r-10">创建时间：{$groupinfo['create_time']|friendlyDate}</span>
+            <span class="text-muted es-font12 es-margin-r-10">组长：    <a class="link-light link-muted " href="{:url('user/home',array('id'=>$groupinfo['uid']))}">{$groupinfo['uid']|getusernamebyid}</a>
+  </span>
+
+            
+          </div>
+        </div>
+        
+        <div class="nav-filter clearfix es-margin-b-20">
+
+      <ul class="nav nav-pills nav-pills-sm">
+
+        <li {if condition="$type eq 1"}class="active" {/if}><a class="js-nav" data-target="#thread-pane" href="{:url('group/index',array('id'=>$groupid,'type'=>1,'sorttype'=>$sorttype))}">全部</a></li>
+            
+        <li      {if condition="$type eq 2"}class="active" {/if}    ><a class="js-nav" data-target="#thread-pane" href="{:url('group/index',array('id'=>$groupid,'type'=>2,'sorttype'=>$sorttype))}">精华</a></li>
+
+          
+        <li class="dropdown">
+          <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+            <span class="text-muted">排序：</span>
+                          {if condition="$sorttype eq 1"}最新发帖{elseif condition="$sorttype eq 2"/}最后回复{else/}回复数{/if}
+                        <span class="caret"></span>
+          </a>
+          <ul class="dropdown-menu">
+            <li {if condition="$sorttype eq 1"}class="active"{/if}><a class="js-nav" href="{:url('group/index',array('id'=>$groupid,'type'=>$type,'sorttype'=>1))}">最新发帖</a></li>
+            <li class=""><a class="js-nav" href="{:url('group/index',array('id'=>$groupid,'type'=>$type,'sorttype'=>2))}">最后回复</a></li>
+            <li class=""><a class="js-nav" href="{:url('group/index',array('id'=>$groupid,'type'=>$type,'sorttype'=>3))}">回复数</a></li>
+          </ul>
+        </li>
+      </ul>
+<div class="pull-right">
+ {if condition="$usergroupinfo neq null"}
+<a href="{:url('group/topicadd',array('id'=>$groupid))}" class="btn btn-primary btn-sm" role="button">发话题</a>
+
+  {/if}
+          </div>
+            </div>        
+              
+<ul class="es-topic-list ">
+
+{volist name="list" id="vo"}
+<li >
+
+<div class="es-list-circleimg">
+<img src="{$vo.userhead|getheadurl}" />
+</div>
+<div class="es-list-row">
+<div class="es-list-title ">
+
+
+
+{if condition="$vo['settop'] eq 1"}
+<span class="label label-danger es-margin-r-5">置顶</span>
+{/if}
+<a href="{:url('group/gview',array('id'=>$vo.id))}">{$vo.title}</a>
+{if condition="$vo['choice'] eq 1"}
+<span class="label label-warning es-margin-l-5">精</span>
+{/if}
+
+
+</div>
+<div class="es-list-info">&nbsp;&nbsp;<a class="" href="{:url('user/home',array('id'=>$vo.uid))}">{$vo.nickname}</a>&nbsp;&nbsp;{$vo.create_time|friendlyDate}&nbsp;&nbsp;
+{if condition="$vo['reply'] gt 0"}最后回复:{$vo.ccreate_time|friendlyDate}&nbsp;&nbsp;by&nbsp;&nbsp;<a class="" href="{:url('user/home',array('id'=>$vo.cuid))}">{$vo.cuid|getusernamebyid}</a>
+{/if}
+</div>
+<div  class="es-list-info"></div>
+</div>
+<div class="pull-right rightinfo">
+<span><i class="fa fa-comment-o"></i> {$vo.reply}</span>
+<span><i class="fa fa-eye"></i> {$vo.view}</span>
+</div>
+</li>
+{/volist}
+</ul>
+
+</div>
+</div>
+
+
+</div>
+  <div class="col-md-4">
+  
+  {if condition="$uid gt 0"}
+  
+   {if condition="$usergroupinfo neq null"}
+  <div class="panel panel-default">
+      <div class="panel-heading">我在小组</div>
+      <div class="panel-body">
+        <div class="media group-item">
+            <a class="pull-left media-object media-object-small js-user-card" href="{:url('user/index')}" >
+    <img class="avatar-sm " src="{$userinfo['userhead']|getheadurl}" 　alt="{$userinfo['nickname']}">
+  </a>
+  
+
+          <div class="media-body">
+            <p>    <a class="link-light link-muted" href="{:url('user/index')}">{$userinfo['nickname']}</a>
+      
+
+                            <span class="label label-success">{php}if($usergroupinfo['grade']==2){echo '组长';}elseif($usergroupinfo['grade']==1){echo '副组长';}else{echo '组员';}{/php}</span>
+               
+
+              
+                
+            </p>
+
+            <p class="text-muted es-font12">
+              <span class="es-margin-r-10">我的话题: {$topiccount}</span>
+              <span>我的回复: {$commentcount}</span>
+            </p>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  {/if}
+    {/if}
+  <div class="es-panel es-panel-default">
+<div class="es-panel-heading ">
+<label></label>
+最新加入<span class="es-pull-right">
+
+</span></div>
+<div class="es-panel-body ">
+<ul class="user-avatar-list">
+
+{volist name="memberlist" id="vo"}
+<li>
+<a class=" js-user-card" href="{:url('user/home',array('id'=>$vo.uid))}">
+<img class="avatar-sm" src="{$vo.userhead|getheadurl}" />
+  {if condition="$vo['grades'] eq -1"}
+          <span class="iconfont icon-renzheng-copy positionrz" title="达人"></span> 
+          {/if}
+</a>
+<div class="name">
+                    <a class="link-light " href="{:url('user/home',array('id'=>$vo.uid))}">{$vo.nickname}</a>
+</div>
+</li>
+{/volist}
+
+
+</ul>
+
+</div>
+</div>
+
+
+
+</div>
+</div>
+</div>
+ {/block}		
+{block name="script"}
+<script>
+$(function(){
+	$('.js-add-btn').click(function(){
+		var obj=$(this);
+		
+	    $.get($(this).data('url'),function(data){
+	    
+		      if(data.code == 1){
+		      
+		        layer.msg(data.msg, {icon: 1, time: 1000}, function(){
+		         
+		        	var html=$(obj).html();
+		        
+		        /* 	if(html=='退出小组'){
+		        		$(obj).html('加入小组');
+		        		$(obj).addClass('btn-success').removeClass('btn-default');
+		        	}else{
+		        		$(obj).html('退出小组');
+		        		$(obj).removeClass('btn-success').addClass('btn-default');
+		        	} */
+		        	location.reload();
+		        	
+		        	
+		        	
+		        });
+		      }else{
+		      
+		        layer.msg(data.msg, {icon: 2, anim: 6, time: 1000});
+		        
+		     
+		        
+		      }
+		    });
+		
+		
+		
+	});
+	
+})
+
+</script>
+{/block}

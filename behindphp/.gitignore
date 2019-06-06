@@ -1,0 +1,11 @@
+.settings/
+.buildpath
+.project
+!.gitignore
+/app/admin/controller/Domain.php
+/app/admin/view/domain_edit.html
+/app/admin/view/domain_index.html
+/app/common/model/Domain.php
+/data/
+/uploads/
+/runtime/

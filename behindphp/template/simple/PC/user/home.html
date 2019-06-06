@@ -1,0 +1,242 @@
+{extend name="Public:base" /}
+      {block name="seo"}
+        <title>{$userinfo['nickname']}的详情页|用户页|{$Think.CONFIG.WEB_SITE_TITLE} - Powered by EasySNS!</title>
+  
+  
+  <meta name="keywords" content="{$Think.CONFIG.WEB_SITE_KEYWORD}">
+  <meta name="description" content="{$Think.CONFIG.WEB_SITE_DESCRIPTION}">
+      {/block}
+{block name="body"}
+<section class="m-home">
+    <div class="container">
+      <div class="userImg">
+          <a class=" js-user-card" href="/u/1740750/" data-card-url="/user/1740750/card/show" data-user-id="1740750">
+    <img class="img-responsive" src="{$userinfo['userhead']|getheadurl}" alt="{$userinfo['nickname']}">
+      </a>
+  
+        <div class="user-info">
+          <a class="user-name">{$userinfo['nickname']}</a>
+                              <p>“{if condition="$userinfo['description'] neq null"}{$userinfo['description']}{else/}TA还未设置签名哦{/if}”
+                    </p>
+
+{if condition="($nowuid gt 0) AND ($nowuid neq $useruid)"}
+
+<div class="m-btns" style="margin-top: 20px;">
+
+        {if condition="$hasfocus gt 0"}
+        <a href="javascript:;" data-url="{:url('user/focususer',array('id'=>$useruid))}" class="btn btn-default focususer">
+
+<span class="has-attent" ><i class="iconfont icon-duigou"></i> 已关注</span>
+
+<span class="hide qxfocus"><i class="iconfont icon-jianhao1"></i> 取消关注</span>
+</a>
+         
+                
+        {else/}
+            <a href="javascript:;" data-url="{:url('user/focususer',array('id'=>$useruid))}" class="btn btn-success focususer">
+<span class="has-attent" ><i class="fa fa-plus"></i> 关注</span>
+</a>
+                
+        {/if}
+
+
+   </div>
+   {/if}
+                  </div>
+      </div>
+    </div>
+  </section>
+  <nav class="home-nav">
+    <div class="container">
+      <ul class="nav nav-mian">
+     
+      </ul>
+    </div>
+  </nav>
+  <section class="container home">
+       <div class="row">
+        <div class="col-md-9">
+       	
+          <div class="myhz-group flat">
+             <h3>{$userinfo['nickname']}的个人页面</h3>
+            <div class="group-item course-in">
+            <h4>
+              参加的小组
+            </h4>
+              <ul class="course-in-ul clearfix">
+  {volist name="joingrouplist"  id="vo"} 
+           
+              <li>
+                <a href="{:url('group/index',array('id'=>$vo.group_id))}"><img style="width:65px;height:65px;" src="{$vo['cover_id']|get_picture_url}"></a>
+                <p><a href="{:url('group/index',array('id'=>$vo.group_id))}" title="{$vo.name}">{$vo.name}</a> </p>
+              </li>
+            {/volist}     
+            
+            </ul>            
+            <h4>发表的话题</h4>
+              <ul class="es-topic-list group-new">
+    {volist name="list" id="vo"}
+<li >
+
+<div class="es-list-circleimg">
+<img src="{$vo.userhead|getheadurl}" />
+</div>
+<div class="es-list-row  es-margin-l-20">
+<div class="es-list-title ">
+
+
+
+{if condition="$vo['settop'] eq 1"}
+<span class="label label-danger es-margin-r-5">置顶</span>
+{/if}
+<a href="{:url('group/gview',array('id'=>$vo.id))}">{$vo.title}</a>
+{if condition="$vo['choice'] eq 1"}
+<span class="label label-warning es-margin-l-5">精</span>
+{/if}
+
+
+</div>
+<div class="es-list-info">
+{if condition="$vo['reply'] gt 0"}最后回复:{$vo.ccreate_time|friendlyDate}&nbsp;&nbsp;by&nbsp;&nbsp;<a class="" href="{:url('user/home',array('id'=>$vo.cuid))}">{$vo.cuid|getusernamebyid}</a>
+{/if}
+</div>
+<div  class="es-list-info"></div>
+</div>
+<div class="pull-right rightinfo">
+<span><i class="fa fa-comment-o"></i> {$vo.reply}</span>
+<span><i class="fa fa-eye"></i> {$vo.view}</span>
+</div>
+</li>
+{/volist}          
+
+
+
+
+</ul>
+            {$list->render()}
+              
+            </div> 
+          </div>
+
+        </div>
+       	        <aside class="col-md-3">
+                                    <div class="person-count">
+                <ul class="clearfix">
+                  <li><span class="count" >{$userinfo['topiccount']|formatnumber}</span><span>帖子</span></li>
+                  <li class="line"></li>
+                  <li><span class="count" >{$userinfo['groupcount']|formatnumber}</span><span>小组</span></li>
+                  <li class="line"></li>
+                  <li><span class="count" >{$userinfo['fsusercount']|formatnumber}</span><span>粉丝</span></li>
+                   <li class="line"></li>
+                  <li><span class="count" >{$userinfo['gzusercount']|formatnumber}</span><span>关注</span></li>
+                </ul>
+            </div> 
+          
+
+                                  <div class="person-info flat">
+            <ul>
+                                          <li><span class="first">昵称：</span><span>{$userinfo['nickname']}</span></li>
+              <li><span class="first">等级：</span><a href="#">{$userinfo['grades']|getusergrade=$userinfo['id']}</a></li>
+              <li><span class="first">来自：</span><span>{$userinfo['userhome']}</span></li>
+              <li><span class="first">简介：</span><span class="content">{if condition="$userinfo['description'] neq null"}{$userinfo['description']}{else/}TA还未设置签名哦{/if}</span></li>
+            </ul>
+                      </div>
+          
+                              
+       
+     
+          
+                                    <div class="flat person-visitor">
+                <h3>
+                  最新来访<span class="count"></span>
+                </h3> 
+                                <ul class="clearfix"> 
+                                
+                                {volist name="newvisitorlist" id="vo"}
+<li>
+<a class=" js-user-card" href="{:url('user/home',array('id'=>$vo.uid))}">
+<img class="avatar-sm" src="{$vo.userhead|getheadurl}" />
+
+</a>
+
+                    <a class="name" href="{:url('user/home',array('id'=>$vo.uid))}">{$vo.nickname}</a>
+
+</li>
+{/volist}
+                                
+              
+                                                      
+                                  </ul>
+                            </div>
+
+                  </aside>         
+       	       </div>
+    </section>
+ {/block}		
+{block name="script"}
+  <script>
+ $(function(){
+	 $('.focususer').click(function(){
+		 
+		 var obj=$(this);
+	
+			 
+			    $.post("{:url('user/focususer')}",{useruid:"{$useruid}"},function(data){
+			    	
+				      if(data.code == 1){
+	if($(obj).hasClass('btn-default')){
+				        		
+				        		$(obj).addClass('btn-success').removeClass('btn-default');
+				        		$(obj).html("<span class='has-attent' ><i class='fa fa-plus'></i> 关注</span>");
+				        		
+				        	}else{
+				        		
+				        		$(obj).removeClass('btn-success').addClass('btn-default');
+				        		
+				        		$(obj).html("<span class='has-attent' ><i class='iconfont icon-duigou'></i> 已关注</span><span class='hide qxfocus'><i class='iconfont icon-jianhao1'></i> 取消关注</span>");
+					        	
+				        		
+				        	}
+				        layer.msg(data.msg, {icon: 1, time: 1000}, function(){
+				        	
+				        	
+				        
+				        	
+				        	
+				        	
+
+							 
+							 
+							 
+							 
+				        });
+				      }else{
+				       
+				        layer.msg(data.msg, {icon: 2, anim: 6, time: 1000});
+				        
+				        
+				        
+				      }
+				    });
+			 
+		
+		 
+		
+	 });
+	
+$('.focususer').hover(function(){
+		 
+		 $(this).find('.qxfocus').removeClass('hide').siblings().hide();
+		 
+		 
+	 },function(){
+		 $(this).find('.qxfocus').addClass('hide').siblings().show();
+		 
+	 });
+	 
+	 
+ })
+  
+  </script>
+  
+    {/block}
