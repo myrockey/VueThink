@@ -64,7 +64,8 @@ class Article extends ApiBaseCommon
             return resultArray(['error' => self::$articleLogic->getError()]);
         }
         $data['content'] = htmlspecialchars_decode($data['content']);
-        $data['content'] = preg_replace('/src=&quot;\//i','src="'.getDomain().'/',$data['content']);
+//        $data['content'] = preg_replace('/src=&quot;\//i','src=&quot;'.getDomain().'/',$data['content']);
+        $data['content'] = preg_replace('/src="\//i','src="'.getDomain().'/',$data['content']);
         return resultArray(['data' => $data]);
     }
 
