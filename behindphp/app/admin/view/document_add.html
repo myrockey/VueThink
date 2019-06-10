@@ -77,7 +77,10 @@
                     uploadFile_param1.on('uploadSuccess', function (file, response) {
                         console.log(file)
                         console.log(response)
-
+                        if(response.code == 0){
+                            layer.msg(response.errormsg, {icon: 1, anim: 6, time: 1000});
+                            return false;
+                        }
                         var show_img_url = response.headpath;
 
                         $('#uploadFile_show_div2').html('<div class="layui-word-aux">' + show_img_url + '</div>');
