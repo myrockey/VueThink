@@ -51,6 +51,7 @@
       var wow = new WOW({
         boxClass: 'wow',
         animateClass: 'animated',
+        live: false,
         offset: 0,
         mobile: true
       })
