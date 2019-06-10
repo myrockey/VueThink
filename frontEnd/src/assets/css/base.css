@@ -608,6 +608,9 @@ a {
 	max-width: 1000px;
 	margin: 0 auto;
 }
+.hs-new-box .hs-news-item img{
+	max-width: 430px;
+}
 .hs-new-box .hs-news-item .el-divider{
 	max-width: 908px;
 	margin:40px 0 60px 5px;
