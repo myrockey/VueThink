@@ -1892,8 +1892,9 @@ function getMemberGrade($data)
 
 /**
  * 获取域名  例如：http://www.rimount.com
+ * //保证域名配置，前台是www开头 例如：www.rimount.com，后台是admin开头 例如：admin.rimount.com
  */
 function getDomain(){
-
-    return (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") .'://'.$_SERVER['HTTP_HOST'];
+    $domain = preg_replace('/www/i','admin',$_SERVER['HTTP_HOST']);
+    return (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") .'://'.$domain;
 }
