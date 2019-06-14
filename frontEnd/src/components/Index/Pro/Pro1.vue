@@ -74,7 +74,7 @@
         proTabData: [
           { label: '日程管理',
             title: '日程管理平台',
-            titleEn: 'Schedule management'.toUpperCase(),
+            titleEn: 'Schedule Management Platform'.toUpperCase(),
             detail: [
               { src: require('../../../assets/images/img01.png'), title: '个人行程日历', desc: '实时制定/修改个人日程，形成个人专属行程日历，可设置行程提醒' },
               { src: require('../../../assets/images/img02.png'), title: '领导行程', desc: '呈现领导行程信息，设置行程开放级别，如个人可见、指定可见、群组可见、全部可见等。' },
@@ -93,7 +93,7 @@
           },
           { label: '品宣资料',
             title: '品宣资料平台',
-            titleEn: 'Pinxuan Information Platform'.toUpperCase(),
+            titleEn: 'Brand Publicity Materials Platform'.toUpperCase(),
             detail: [
               { src: require('../../../assets/images/img08.png'), title: '资料云盘', desc: '企业私有化资料共享云盘，业务资料归档管理。按照子公司、项目等主体划分云盘。管理员后台实时上传/更新资料。员工账号分级授权查看/分享/收藏资料。应用内或跨应用分享。' },
               { src: require('../../../assets/images/img09.png'), title: '加密资料盘', desc: '重要资料加密管理。' },
@@ -122,7 +122,7 @@
           },
           { label: '任务管理',
             title: '任务管理平台',
-            titleEn: 'Task management platform'.toUpperCase(),
+            titleEn: 'Task Management Platform'.toUpperCase(),
             detail: [
               { src: require('../../../assets/images/img19.png'), title: '任务分解/分配', desc: '团队负责人创建任务并分配给团队成员，标记任务紧急程度，设置完成截止时间。' },
               { src: require('../../../assets/images/img20.png'), title: '任务发送', desc: '自选短信、应用内等方式发送任务，任务到期前提醒等。设置任务抄送人，监督任务进度。' },
@@ -161,7 +161,7 @@
           },
           { label: '安全防范管理',
             title: '安全防范管理平台',
-            titleEn: 'Security management platform '.toUpperCase(),
+            titleEn: 'Safety Preventive Management Platform'.toUpperCase(),
             detail: [
               { src: require('../../../assets/images/img34.png'), title: '系统截屏预警', desc: '系统用户截图时预警提示。同一ID三次预警后将后台报警，通过ID和截图页面判断信息泄露情形。' },
               { src: require('../../../assets/images/img35.png'), title: '账号分级管理', desc: '系统账号仅由后台授权，不可独立注册，分级管理资料信息调阅权限。' },

@@ -4,7 +4,23 @@
             <a href="/" class="hs-logo"></a>
             <el-menu :default-active="$route.path" class="el-menu-demo hs-el-menu" mode="horizontal">
                 <el-menu-item index="Index"><router-link :to="{name: 'Index'}">首页</router-link></el-menu-item>
-                <el-menu-item v-for="item in indexMenuData" index="item.link"><router-link :to="{name: item.link}">{{item.name}}</router-link></el-menu-item>
+                <!--<el-menu-item v-for="item in indexMenuData" index="item.link"><router-link :to="{name: item.link}">{{item.name}}</router-link></el-menu-item>-->
+                <el-submenu index="Pro1">
+                    <template slot="title">产品</template>
+                    <el-menu-item index="Pro1" class="index-menu-col"><router-link :to="{name: 'Pro1'}">智慧办公管理系统</router-link></el-menu-item>
+                    <el-menu-item index="Pro2" class="index-menu-col"><router-link :to="{name: 'Pro2'}">城市之芯资产行情终端</router-link></el-menu-item>
+                    <el-menu-item index="Pro3" class="index-menu-col"><router-link :to="{name: 'Pro3'}">周期研习社</router-link></el-menu-item>
+                </el-submenu>
+                <el-menu-item index="Service"><router-link :to="{name: 'Service'}">服务</router-link></el-menu-item>
+                <el-menu-item index="Coor"><router-link :to="{name: 'Coor'}">合作伙伴</router-link></el-menu-item>
+                <el-submenu index="About">
+                    <template slot="title">关于我们</template>
+                    <el-menu-item index="About" class="index-menu-col about-col"><router-link :to="{name: 'About'}">公司介绍</router-link></el-menu-item>
+                    <el-menu-item index="NewsList" class="index-menu-col about-col"><router-link :to="{name: 'NewsList'}">新闻中心</router-link></el-menu-item>
+                    <el-menu-item index="Join" class="index-menu-col about-col"><router-link :to="{name: 'Join'}">加入我们</router-link></el-menu-item>
+                    <el-menu-item index="Contact" class="index-menu-col about-col"><router-link :to="{name: 'Contact'}">联系我们</router-link></el-menu-item>
+                </el-submenu>
+                <el-menu-item index="Download"><router-link :to="{name: 'Download'}">下载</router-link></el-menu-item>
             </el-menu>
             <div class="hs-clear"></div>
         </div>

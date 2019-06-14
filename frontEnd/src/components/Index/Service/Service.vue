@@ -3,13 +3,13 @@
         <el-container>
             <index-header></index-header>
             <el-main>
-                <el-carousel :interval="5000" arrow="always" :autoplay="true" :loop="true" class="hs-banner-box">
-                    <el-carousel-item v-for="item in imgData">
-                        <img width="100%" :src="item.src" :alt="item.title"/>
+                <el-carousel :interval="5000" arrow="never" :autoplay="true" :loop="true" class="hs-banner-box">
+                    <el-carousel-item>
+                        <img width="100%" :src="imgDefaultData.src" :alt="imgDefaultData.title"/>
                     </el-carousel-item>
                 </el-carousel>
-                <div class="hs-banner-tab-box">
-                    <el-tabs class="hs-banner-tab">
+                <div class="hs-banner-tab-box hs-service">
+                    <el-tabs class="hs-banner-tab" @tab-click="handleClick">
                         <el-tab-pane v-for="(item, index) in serviceTabData" :label="item.label" :name="$index">
                             <el-row class="hs-container padding-0 hs-m-t-100">
                                 <div v-for="item2 in item.detail">
@@ -34,6 +34,7 @@
   export default {
     data() {
       return {
+        imgDefaultData: { src: require('../../../assets/images/banner01.png'), title: '河山官网' },
         imgData: [
           { src: require('../../../assets/images/banner01.png'), title: '河山官网' },
           { src: require('../../../assets/images/banner02.png'), title: '河山官网' },
@@ -69,6 +70,9 @@
     methods: {
       jump(pathLink) {
         this.$router.push(pathLink)
+      },
+      handleClick(tab, event) {
+        this.imgDefaultData = this.imgData[tab.index]
       }
     },
     components: {
