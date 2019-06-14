@@ -69,7 +69,7 @@
         bannerTitle: '智慧办公管理系统',
         bannerDesc: '一款企业数字化应管理系统，集办公管理、资料规整、业务拓展、私密沟通为一体，功能完备、紧密联动的企业数字化管理平台解决方案，助企业实现、财、物、客全数字化管理。',
         imgData: [
-          { src: require('../../../assets/images/pro1.png'), title: '城市之芯', link: 'Pro1' }
+          { src: require('../../../assets/images/pro1.jpg'), title: '城市之芯', link: 'Pro1' }
         ],
         proTabData: [
           { label: '日程管理',

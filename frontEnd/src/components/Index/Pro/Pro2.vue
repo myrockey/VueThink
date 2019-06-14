@@ -56,7 +56,7 @@
       return {
         btnData: { title: '进入城市之芯官网', link: 'www.citycore88.com', src: 'http://www.citycore88.com' },
         imgData: [
-          { src: require('../../../assets/images/pro2.png'), title: '城市之芯', link: 'Pro2' }
+          { src: require('../../../assets/images/pro2.jpg'), title: '城市之芯', link: 'Pro2' }
         ],
         pro2Data: {
           title: '痛点',

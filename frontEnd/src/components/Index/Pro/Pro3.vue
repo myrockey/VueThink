@@ -42,7 +42,7 @@
     data() {
       return {
         imgData: [
-          { src: require('../../../assets/images/pro3.png'), title: '城市之芯', link: 'Pro3' }
+          { src: require('../../../assets/images/pro3.jpg'), title: '城市之芯', link: 'Pro3' }
         ],
         imgQrData: { src: require('../../../assets/images/pro3_qr.png'), title: '周期研习社' },
         imgPro3Data: { src: require('../../../assets/images/pro3_01.png'), title: '周期研习社' },
