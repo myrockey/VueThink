@@ -2,7 +2,7 @@
     <el-header class="hs-header">
         <div class="hs-container hs-menu-pc">
             <a href="/" class="hs-logo"></a>
-            <el-menu :default-active="$route.path" class="el-menu-demo hs-el-menu" mode="horizontal">
+            <el-menu :default-active="$route.path" class="el-menu-demo hs-el-menu" mode="horizontal" @select="handleSelect">
                 <el-menu-item index="Index"><router-link :to="{name: 'Index'}">首页</router-link></el-menu-item>
                 <!--<el-menu-item v-for="item in indexMenuData" index="item.link"><router-link :to="{name: item.link}">{{item.name}}</router-link></el-menu-item>-->
                 <el-submenu index="Pro1">
@@ -17,7 +17,7 @@
                     <template slot="title">关于我们</template>
                     <el-menu-item index="About" class="index-menu-col about-col"><router-link :to="{name: 'About'}">公司介绍</router-link></el-menu-item>
                     <el-menu-item index="NewsList" class="index-menu-col about-col"><router-link :to="{name: 'NewsList'}">新闻中心</router-link></el-menu-item>
-                    <el-menu-item index="Join" class="index-menu-col about-col"><router-link :to="{name: 'Join'}">加入我们</router-link></el-menu-item>
+                    <el-menu-item index="JoinList" class="index-menu-col about-col"><router-link :to="{name: 'JoinList'}">加入我们</router-link></el-menu-item>
                     <el-menu-item index="Contact" class="index-menu-col about-col"><router-link :to="{name: 'Contact'}">联系我们</router-link></el-menu-item>
                 </el-submenu>
                 <el-menu-item index="Download"><router-link :to="{name: 'Download'}">下载</router-link></el-menu-item>
@@ -60,6 +60,9 @@
       }
     },
     methods: {
+      handleSelect(key, keyPath) {
+        console.log(key, keyPath)
+      }
     },
     created() {
     },

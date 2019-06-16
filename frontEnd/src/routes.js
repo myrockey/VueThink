@@ -9,7 +9,8 @@ import Contact from './components/Index/About/Contact.vue'
 import Download from './components/Index/Download/Download.vue'
 import NewsList from './components/Index/News/list.vue'
 import NewsDetail from './components/Index/News/detail.vue'
-import Join from './components/Index/Join/Join.vue'
+import JoinList from './components/Index/Join/List.vue'
+import JoinDetail from './components/Index/Join/Detail.vue'
 import Login from './components/Account/Login.vue'
 import refresh from './components/refresh.vue'
 import Home from './components/Home.vue'
@@ -52,7 +53,8 @@ const routes = [
   { path: '/download', component: Download, name: 'Download' },
   { path: '/news/list', component: NewsList, name: 'NewsList' },
   { path: '/news/detail/:id', component: NewsDetail, name: 'NewsDetail' },
-  { path: '/join', component: Join, name: 'Join' },
+  { path: '/join/list', component: JoinList, name: 'JoinList' },
+  { path: '/join/detail/:id', component: JoinDetail, name: 'JoinDetail' },
   { path: '/home/login', component: Login, name: 'Login' },
   {
     path: '/home',

@@ -11,6 +11,7 @@ return [
         ':version/api/articles'		   =>'api/:version.Article',
         ':version/api/coors'		   =>'api/:version.Coor',
         ':version/api/documents'	   =>'api/:version.Document',
+        ':version/api/works'	   =>'api/:version.Work',
     ],
     // 首页文章简要
     ':version/api/index/articleLists' => ['api/:version.Index/articleLists', ['method' => 'GET']],

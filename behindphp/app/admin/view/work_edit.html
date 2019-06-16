@@ -1,0 +1,83 @@
+{extend name="base" /}
+{block name="body"}
+
+<!--tab标签-->
+<div class="layui-tab-brief">
+
+    <div class="layui-tab-content">
+        <div class="layui-tab-item layui-show">
+            <form class="layui-form form-container" data-url="{:url('workEdit')}"
+                  localtion-url="{:url('workList')}">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">标题</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="title" value="{$info.title}" required lay-verify="required"
+                               placeholder="必填项" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">工作地点</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="address" value="{$info.address}" required lay-verify="required"
+                               placeholder="必填项" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">工作经验</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="year" value="{$info.year}" required lay-verify="required"
+                               placeholder="必填项" class="layui-input">
+                    </div>
+                </div>
+               <div class="layui-form-item">
+                    <label class="layui-form-label">学历</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="study" value="{$info.study}" required lay-verify="required"
+                               placeholder="必填项" class="layui-input">
+                    </div>
+                </div>
+               <div class="layui-form-item">
+                    <label class="layui-form-label">工作类型</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="type" value="{$info.type}" required lay-verify="required"
+                               placeholder="必填项" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">招聘人数</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="num" value="{$info.num}" required lay-verify="required"
+                               placeholder="必填项" class="layui-input">
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label">职位描述</label>
+                    <div class="layui-input-block">
+                        <textarea name="desc" placeholder="必填项" class="layui-textarea">{$info.desc|htmlspecialchars_decode}</textarea>
+
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">内容</label>
+                    <div class="layui-input-block">
+                        <textarea name="content" placeholder="" id="content">{$info.content|htmlspecialchars_decode}</textarea>
+
+                    </div>
+                </div>
+                <input type="hidden" name="id" value="{$info.id}">
+                <div class="btable-paged">
+                    <div class="layui-main">
+                        <div class="formbtngroup">
+                            <button class="layui-btn layui-btn-small" lay-submit="" lay-filter="formadd">更新</button>
+                            <a href="javascript:;" class="layui-btn layui-btn-primary layui-btn-small closebtn">返回</a>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{:hook('ArticleEditor', array('name'=> 'content','number'=>10000,'value'=> '','items'=>''))}
+
+{/block}
