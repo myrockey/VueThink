@@ -67,6 +67,7 @@
     created() {
     },
     mounted() {
+//      document.querySelector('.hs-el-menu a.router-link-exact-active.router-link-active').style.borderBottom = '2px solid #CCC'
       var wow = new WOW({
         boxClass: 'wow',
         animateClass: 'animated',
@@ -75,6 +76,8 @@
         mobile: true
       })
       wow.init()
+    },
+    watch: {
     }
   }
 </script>

@@ -175,23 +175,43 @@ a {
 	float: left;
 	border-bottom: 0 !important;
 }
-.hs-el-menu>.el-menu-item{
-    line-height: 108px;
+.hs-el-menu>.el-menu-item a{
 	height: 110px;
+}
+.hs-el-menu>.el-menu-item.is-active{
+	border: 0 !important;
+}
+.hs-el-menu> .el-menu-item{
+	height: 110px;
+}
+.hs-el-menu>.el-menu-item a{
+	height: 108px;
+	line-height: 108px;
+	display: inline-block;
+}
+.hs-menu-pc .el-menu--horizontal>.el-menu-item:not(.is-disabled):focus, .hs-menu-pc .el-menu--horizontal>.el-menu-item:not(.is-disabled):hover, .hs-menu-pc .el-menu--horizontal>.el-submenu .el-submenu__title:hover{
+	background-color: transparent;
+	border-bottom: 0 !important;
+}
+.hs-menu-pc .el-menu--horizontal>.el-submenu .el-submenu__title:hover{
+	background-color: transparent;
+	border-bottom: 2px solid #333 !important;
+}
+ .hs-el-menu>.el-menu-item a:hover{
+	border-bottom:2px solid #333 !important;
 }
 .hs-el-menu .el-menu-item,.hs-el-menu .el-submenu .el-submenu__title{
 	font-size: 20px;
 	color: #323232 !important;
 }
-.hs-el-menu>.el-menu-item.is-active{
-	border-bottom:2px solid #FBF4EB !important;
-}
-.el-menu--horizontal>.el-menu-item.is-active{
-	border-bottom:2px solid #FBF4EB !important;
-}
+
 .hs-el-menu>.el-menu-item a.router-link-exact-active.router-link-active{
 	/*color: #333333;*/
 	/*font-weight: bold;*/
+	border-bottom:2px solid #CBA955 !important;
+}
+body >.el-menu--horizontal .el-menu-item a.router-link-exact-active.router-link-active{
+	border-bottom:2px solid #CBA955 !important;
 }
 .hs-header{}
 .hs-logo{
@@ -258,10 +278,9 @@ a {
 .hs-menu-el-dropdown .el-icon-arrow-down {
 	font-size: 12px;
 }
-.hs-menu-pc .el-menu--horizontal>.el-menu-item:not(.is-disabled):focus, .hs-menu-pc .el-menu--horizontal>.el-menu-item:not(.is-disabled):hover, .hs-menu-pc .el-menu--horizontal>.el-submenu .el-submenu__title:hover{
-	background-color: transparent;
-	border-bottom: 2px solid #CBA955 !important;
-}
+
+
+
 .hs-menu-pc .el-menu--horizontal>.el-submenu .el-submenu__title{
 	font-size: 20px;
 	line-height:110px;
@@ -279,6 +298,7 @@ body >.el-menu--horizontal{
 	-webkit-box-shadow:0 2px 12px 0 rgba(0,0,0,.1);
 	box-shadow: 0 2px 12px 0 rgba(0,0,0,.1);
 }
+
 body >.el-menu--horizontal>ul{
 	max-width:1200px;
 	margin: 0 auto;
