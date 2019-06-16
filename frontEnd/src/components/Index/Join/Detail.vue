@@ -46,7 +46,7 @@
                             <div class="m-t-20" v-html='text(worksData.desc)'></div>
                             <div class="join-detail-item">任职要求</div>
                             <div class="m-t-20" v-html='text(worksData.content)'></div>
-                            <div class="join-detail-item">投递简历</div>
+                            <div class="join-detail-item m-b-30">投递简历</div>
                         </el-card>
                     </div>
                 </div>
