@@ -18,13 +18,13 @@
                                   <img src="http://zixuephp.net/static/images/qqzoneshare.png" width="30">
                               </div>-->
                               <div class="fl p-r-10" @click="shareTo('wechat')">
-                                  <img src="http://zixuephp.net/static/images/wechatshare.png" width="20">
+                                  <img :src="imgIcon1.src" width="20">
                               </div>
                               <div class="fl p-r-10" @click="shareTo('sina')">
-                                  <img src="http://zixuephp.net/static/images/sinaweiboshare.png" width="20">
+                                  <img :src="imgIcon2.src" width="20">
                               </div>
                               <div class="fl p-r-10" @click="shareTo('qq')">
-                                  <img src="http://zixuephp.net/static/images/qqshare.png" width="20">
+                                  <img :src="imgIcon3.src" width="20">
                               </div>
                               <div class="hs-clear"></div>
 
@@ -46,7 +46,8 @@
                             <div class="m-t-20" v-html='text(worksData.desc)'></div>
                             <div class="join-detail-item">任职要求</div>
                             <div class="m-t-20" v-html='text(worksData.content)'></div>
-                            <div class="join-detail-item m-b-30">投递简历</div>
+                            <div class="join-detail-item">投递简历</div>
+                            <div class="m-t-20  m-b-30">13510123411@139.com</div>
                         </el-card>
                     </div>
                 </div>
@@ -67,6 +68,9 @@
         imgData: [
           { src: require('../../../assets/images/banner11.png'), title: '河山官网' }
         ],
+        imgIcon1: { src: require('../../../assets/images/icon1.png'), title: 'icon' },
+        imgIcon2: { src: require('../../../assets/images/icon2.png'), title: 'icon' },
+        imgIcon3: { src: require('../../../assets/images/icon3.png'), title: 'icon' },
         id: null,
         worksData: {
           title: '',
