@@ -915,6 +915,9 @@ body >.el-menu--horizontal .el-menu-item a.router-link-exact-active.router-link-
 .hs-service .el-tabs__nav-scroll .el-tabs__nav{
 	float: none;
 }
+.hs-service .service-cont-img{
+	text-align: center !important;
+}
 /*服务 */
 
 @media screen and (min-width: 1367px) {
