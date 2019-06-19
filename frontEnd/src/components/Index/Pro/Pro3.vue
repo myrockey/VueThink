@@ -15,9 +15,13 @@
 
                         <div class="pro3-btn-box">
                         <div class="hs-container">
+                            <el-row class="fr m-l-30">
+                                <img width="132" height="132" :src="imgQrData.src" :alt="imgQrData.title"/>
+                                <div>客服微信二维码</div>
+                            </el-row>
                             <el-row class="fr">
                             <img width="132" height="132" :src="imgQrData.src" :alt="imgQrData.title"/>
-                            <div>微信二维码扫码进入</div>
+                            <div>扫码进入周期研习社</div>
                             </el-row>
                         </div>
                         </div>

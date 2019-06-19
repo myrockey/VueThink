@@ -48,8 +48,8 @@
           { src: require('../../../assets/images/banner09.png'), title: '河山官网' }
         ],
         title: '深圳河山信息技术有限公司',
-        tel: '联系电话：0755-85462357',
-        service: '客服微信：135478896542',
+        tel: '联系电话：0755-61123863',
+        service: '客服微信：13510123411',
         address: '地址：深圳市南山区高新南环路29号留学生创业大厦',
         imgWechat: { src: require('../../../assets/images/contact.png'), title: '河山官网' },
         titleMap: '深圳河山信息技术有限公司所在地地图',
