@@ -41,7 +41,7 @@ class Article extends ApiBaseCommon
     {
         $where = self::$articleLogic->getWhere($this->param);
         $limit = isset($this->param['limit']) ? $this->param['limit'] : 0;
-        $data = self::$articleLogic->getArticleList($where, 'm.id,m.title,m.create_time,m.description', 'id desc',$limit);
+        $data = self::$articleLogic->getArticleList(['m.ispublic'=>1,'m.status'=>1], 'm.id,m.title,m.create_time,m.description', 'settop desc,id desc',$limit);
         //遍历对象
         $domain = getDomain();
         if(!empty($data)){

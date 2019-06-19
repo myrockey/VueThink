@@ -21,7 +21,7 @@ class Index extends ApiBaseCommon
      */
     public function articleLists(){
 
-        $data = model('Article')->where(['status'=>1,'ispublic'=>1])->field('id,title')->order('id desc')->limit(2)->select();
+        $data = model('Article')->where(['status'=>1,'ispublic'=>1])->field('id,title')->order('settop desc,id desc')->limit(2)->select();
         return resultArray(['data' => $data]);
     }
     

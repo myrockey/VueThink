@@ -12,7 +12,7 @@
                     <el-tabs class="hs-banner-tab" @tab-click="handleClick">
                         <el-tab-pane v-for="(item, index) in serviceTabData" :label="item.label" :name="$index">
                             <el-row class="hs-container padding-0 hs-m-t-100">
-                                <div v-for="item2 in item.detail">
+                                <div v-for="item2 in item.detail" class="service-cont-img">
                                     <el-image class="wow slideInUp" data-wow-duration="1s" data-wow-delay="1s" width="100%" :src="item2.src" lazy></el-image>
                                 </div>
                             </el-row>
